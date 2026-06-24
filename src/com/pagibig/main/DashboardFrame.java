@@ -60,6 +60,12 @@ public class DashboardFrame extends JFrame {
         JLabel headerLabel = new JLabel("Pag-IBIG Fund Member Database System");
         headerLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            dataStore.refreshFromDatabase();
+            refreshAllTables();
+        });
+
         JButton helpButton = new JButton("Help Desk");
         helpButton.addActionListener(e -> showHelpDialog());
         JButton logoutButton = new JButton("Log Out");
@@ -68,6 +74,7 @@ public class DashboardFrame extends JFrame {
         JPanel headerBar = new JPanel(new BorderLayout(10, 0));
         headerBar.add(headerLabel, BorderLayout.WEST);
         JPanel headerActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        headerActions.add(refreshButton);
         headerActions.add(helpButton);
         headerActions.add(logoutButton);
         headerBar.add(headerActions, BorderLayout.EAST);
@@ -228,7 +235,7 @@ public class DashboardFrame extends JFrame {
             int modelRow = table.convertRowIndexToModel(selectedRow);
             int choice = JOptionPane.showConfirmDialog(this, "Delete selected " + label + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
-                switch (label) {
+                boolean success = switch (label) {
                     case "Member" -> dataStore.deleteMember(modelRow);
                     case "Contact" -> dataStore.deleteContact(modelRow);
                     case "Employment" -> dataStore.deleteEmployment(modelRow);
@@ -236,8 +243,9 @@ public class DashboardFrame extends JFrame {
                     case "Heir" -> dataStore.deleteHeir(modelRow);
                     case "Government ID" -> dataStore.deleteGovernmentId(modelRow);
                     case "Employer" -> dataStore.deleteEmployer(modelRow);
-                }
-                refreshAllTables();
+                    default -> false;
+                };
+                handleDeleteResult(success, label);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Please select a row.", "No selection", JOptionPane.INFORMATION_MESSAGE);
@@ -290,12 +298,10 @@ public class DashboardFrame extends JFrame {
                     birthField.getText().trim(),
                     citizenshipField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateMember(rowIndex, record);
-            } else {
-                dataStore.addMember(record);
-            }
-            refreshMemberTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateMember(rowIndex, record)
+                    : dataStore.addMember(record);
+            handleSaveResult(success, "Member");
         }
     }
 
@@ -356,12 +362,10 @@ public class DashboardFrame extends JFrame {
                     presentField.getText().trim(),
                     preferredField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateContact(rowIndex, record);
-            } else {
-                dataStore.addContact(record);
-            }
-            refreshContactTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateContact(rowIndex, record)
+                    : dataStore.addContact(record);
+            handleSaveResult(success, "Contact");
         }
     }
 
@@ -412,12 +416,10 @@ public class DashboardFrame extends JFrame {
                     dateField.getText().trim(),
                     incomeField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateEmployment(rowIndex, record);
-            } else {
-                dataStore.addEmployment(record);
-            }
-            refreshEmploymentTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateEmployment(rowIndex, record)
+                    : dataStore.addEmployment(record);
+            handleSaveResult(success, "Employment");
         }
     }
 
@@ -458,12 +460,10 @@ public class DashboardFrame extends JFrame {
                     toField.getText().trim(),
                     officeField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updatePreviousEmployment(rowIndex, record);
-            } else {
-                dataStore.addPreviousEmployment(record);
-            }
-            refreshPreviousEmploymentTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updatePreviousEmployment(rowIndex, record)
+                    : dataStore.addPreviousEmployment(record);
+            handleSaveResult(success, "Previous Employment");
         }
     }
 
@@ -504,12 +504,10 @@ public class DashboardFrame extends JFrame {
                     relationshipField.getText().trim(),
                     birthField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateHeir(rowIndex, record);
-            } else {
-                dataStore.addHeir(record);
-            }
-            refreshHeirTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateHeir(rowIndex, record)
+                    : dataStore.addHeir(record);
+            handleSaveResult(success, "Heir");
         }
     }
 
@@ -560,12 +558,10 @@ public class DashboardFrame extends JFrame {
                     afpField.getText().trim(),
                     depedField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateGovernmentId(rowIndex, record);
-            } else {
-                dataStore.addGovernmentId(record);
-            }
-            refreshGovernmentIdTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateGovernmentId(rowIndex, record)
+                    : dataStore.addGovernmentId(record);
+            handleSaveResult(success, "Government ID");
         }
     }
 
@@ -596,12 +592,30 @@ public class DashboardFrame extends JFrame {
                     nameField.getText().trim(),
                     addressField.getText().trim()
             );
-            if (rowIndex >= 0) {
-                dataStore.updateEmployer(rowIndex, record);
-            } else {
-                dataStore.addEmployer(record);
-            }
-            refreshEmployerTable();
+            boolean success = rowIndex >= 0
+                    ? dataStore.updateEmployer(rowIndex, record)
+                    : dataStore.addEmployer(record);
+            handleSaveResult(success, "Employer");
+        }
+    }
+
+    private void handleSaveResult(boolean success, String entityName) {
+        if (success) {
+            refreshAllTables();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Failed to save " + entityName + ".\nCheck that IDs are unique and required records exist.",
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleDeleteResult(boolean success, String entityName) {
+        if (success) {
+            refreshAllTables();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Failed to delete " + entityName + ".\nIt may be referenced by other records.",
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
