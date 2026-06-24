@@ -1,14 +1,13 @@
 package com.pagibig.data;
 
 import com.pagibig.model.*;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Database Access Object for all Pag-IBIG entities.
- * Every write operation returns true on success, false on failure.
+ * Fully synchronized with the actual MySQL schema names.
  */
 public class DatabaseDAO {
 
@@ -16,13 +15,13 @@ public class DatabaseDAO {
 
     public List<MemberRecord> loadAllMembers() {
         List<MemberRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, mem_name, mem_type, sex, birth_date, citizenship FROM members";
+        String sql = "SELECT Pagibig_ID, mem_name, mem_type, sex, birth_date, citizenship FROM member";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new MemberRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("mem_name"),
                         rs.getString("mem_type"),
                         rs.getString("sex"),
@@ -37,7 +36,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertMember(MemberRecord m) {
-        String sql = "INSERT INTO members (pagibig_id, mem_name, mem_type, sex, birth_date, citizenship) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO member (Pagibig_ID, mem_name, mem_type, sex, birth_date, citizenship) VALUES (?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, m.getPagibigId());
@@ -54,7 +53,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateMember(MemberRecord m) {
-        String sql = "UPDATE members SET mem_name=?, mem_type=?, sex=?, birth_date=?, citizenship=? WHERE pagibig_id=?";
+        String sql = "UPDATE member SET mem_name=?, mem_type=?, sex=?, birth_date=?, citizenship=? WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, m.getMemName());
@@ -71,7 +70,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteMember(String pagibigId) {
-        String sql = "DELETE FROM members WHERE pagibig_id=?";
+        String sql = "DELETE FROM member WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -86,13 +85,13 @@ public class DatabaseDAO {
 
     public List<ContactRecord> loadAllContacts() {
         List<ContactRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, cell_num, home_num, business_direct, business_trunk, email_address, perm_address, present_address, pref_mail_address FROM contacts";
+        String sql = "SELECT Pagibig_ID, cell_num, home_num, business_direct, business_trunk, email_address, perm_address, present_address, pref_mail_address FROM contact";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new ContactRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("cell_num"),
                         rs.getString("home_num"),
                         rs.getString("business_direct"),
@@ -110,7 +109,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertContact(ContactRecord c) {
-        String sql = "INSERT INTO contacts (pagibig_id, cell_num, home_num, business_direct, business_trunk, email_address, perm_address, present_address, pref_mail_address) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO contact (Pagibig_ID, cell_num, home_num, business_direct, business_trunk, email_address, perm_address, present_address, pref_mail_address) VALUES (?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, c.getPagibigId());
@@ -130,7 +129,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateContact(ContactRecord c) {
-        String sql = "UPDATE contacts SET cell_num=?, home_num=?, business_direct=?, business_trunk=?, email_address=?, perm_address=?, present_address=?, pref_mail_address=? WHERE pagibig_id=?";
+        String sql = "UPDATE contact SET cell_num=?, home_num=?, business_direct=?, business_trunk=?, email_address=?, perm_address=?, present_address=?, pref_mail_address=? WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, c.getCellNum());
@@ -150,7 +149,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteContact(String pagibigId) {
-        String sql = "DELETE FROM contacts WHERE pagibig_id=?";
+        String sql = "DELETE FROM contact WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -165,19 +164,19 @@ public class DatabaseDAO {
 
     public List<EmploymentRecord> loadAllEmployment() {
         List<EmploymentRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, employer_id, employment_status, occupation, office_assignment, date_employed, monthly_income FROM employment";
+        String sql = "SELECT Pagibig_ID, employer_id, employment_status, occupation, office_assignment, date_employed, Monthly_Income FROM employment";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new EmploymentRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("employer_id"),
                         rs.getString("employment_status"),
                         rs.getString("occupation"),
                         rs.getString("office_assignment"),
                         rs.getString("date_employed"),
-                        rs.getString("monthly_income")
+                        rs.getString("Monthly_Income")
                 ));
             }
         } catch (SQLException e) {
@@ -187,7 +186,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertEmployment(EmploymentRecord e) {
-        String sql = "INSERT INTO employment (pagibig_id, employer_id, employment_status, occupation, office_assignment, date_employed, monthly_income) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO employment (Pagibig_ID, employer_id, employment_status, occupation, office_assignment, date_employed, Monthly_Income) VALUES (?,?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getPagibigId());
@@ -205,7 +204,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateEmployment(EmploymentRecord e) {
-        String sql = "UPDATE employment SET employment_status=?, occupation=?, office_assignment=?, date_employed=?, monthly_income=? WHERE pagibig_id=? AND employer_id=?";
+        String sql = "UPDATE employment SET employment_status=?, occupation=?, office_assignment=?, date_employed=?, Monthly_Income=? WHERE Pagibig_ID=? AND employer_id=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getEmploymentStatus());
@@ -223,7 +222,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteEmployment(String pagibigId, String employerId) {
-        String sql = "DELETE FROM employment WHERE pagibig_id=? AND employer_id=?";
+        String sql = "DELETE FROM employment WHERE Pagibig_ID=? AND employer_id=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -239,27 +238,27 @@ public class DatabaseDAO {
 
     public List<PreviousEmploymentRecord> loadAllPreviousEmployment() {
         List<PreviousEmploymentRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, employer_id, date_from, date_to, prev_office_assignment FROM previous_employment";
+        String sql = "SELECT Pagibig_ID, employer_id, date_from, date_to, prev_office_assignment FROM prevemployment";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new PreviousEmploymentRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("employer_id"),
                         rs.getString("date_from"),
                         rs.getString("date_to"),
                         rs.getString("prev_office_assignment")
-                ));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error loading previous employment: " + e.getMessage());
+            ));
         }
-        return list;
+    } catch (SQLException e) {
+        System.err.println("Error loading previous employment: " + e.getMessage());
     }
+    return list;
+}
 
     public boolean insertPreviousEmployment(PreviousEmploymentRecord p) {
-        String sql = "INSERT INTO previous_employment (pagibig_id, employer_id, date_from, date_to, prev_office_assignment) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO prevemployment (Pagibig_ID, employer_id, date_from, date_to, prev_office_assignment) VALUES (?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, p.getPagibigId());
@@ -275,7 +274,7 @@ public class DatabaseDAO {
     }
 
     public boolean updatePreviousEmployment(PreviousEmploymentRecord p) {
-        String sql = "UPDATE previous_employment SET date_to=?, prev_office_assignment=? WHERE pagibig_id=? AND employer_id=? AND date_from=?";
+        String sql = "UPDATE prevemployment SET date_to=?, prev_office_assignment=? WHERE Pagibig_ID=? AND employer_id=? AND date_from=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, p.getDateTo());
@@ -291,7 +290,7 @@ public class DatabaseDAO {
     }
 
     public boolean deletePreviousEmployment(String pagibigId, String employerId, String dateFrom) {
-        String sql = "DELETE FROM previous_employment WHERE pagibig_id=? AND employer_id=? AND date_from=?";
+        String sql = "DELETE FROM prevemployment WHERE Pagibig_ID=? AND employer_id=? AND date_from=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -308,13 +307,13 @@ public class DatabaseDAO {
 
     public List<HeirRecord> loadAllHeirs() {
         List<HeirRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, heir_code, heir_name, relationship, heir_date_birth FROM heirs";
+        String sql = "SELECT Pagibig_ID, heir_code, heir_name, relationship, heir_date_birth FROM heir";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new HeirRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("heir_code"),
                         rs.getString("heir_name"),
                         rs.getString("relationship"),
@@ -328,7 +327,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertHeir(HeirRecord h) {
-        String sql = "INSERT INTO heirs (pagibig_id, heir_code, heir_name, relationship, heir_date_birth) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO heir (Pagibig_ID, heir_code, heir_name, relationship, heir_date_birth) VALUES (?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, h.getPagibigId());
@@ -344,7 +343,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateHeir(HeirRecord h) {
-        String sql = "UPDATE heirs SET heir_name=?, relationship=?, heir_date_birth=? WHERE pagibig_id=? AND heir_code=?";
+        String sql = "UPDATE heir SET heir_name=?, relationship=?, heir_date_birth=? WHERE Pagibig_ID=? AND heir_code=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, h.getHeirName());
@@ -360,7 +359,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteHeir(String pagibigId, String heirCode) {
-        String sql = "DELETE FROM heirs WHERE pagibig_id=? AND heir_code=?";
+        String sql = "DELETE FROM heir WHERE Pagibig_ID=? AND heir_code=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -376,15 +375,15 @@ public class DatabaseDAO {
 
     public List<GovernmentIdRecord> loadAllGovernmentIds() {
         List<GovernmentIdRecord> list = new ArrayList<>();
-        String sql = "SELECT pagibig_id, tin_num, sss_num, crn, em_num, afp_pnp_num, deped_code FROM government_ids";
+        String sql = "SELECT Pagibig_ID, tin_num, SSS_Num, crn, em_num, afp_pnp_num, deped_code FROM governmentid";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new GovernmentIdRecord(
-                        rs.getString("pagibig_id"),
+                        rs.getString("Pagibig_ID"),
                         rs.getString("tin_num"),
-                        rs.getString("sss_num"),
+                        rs.getString("SSS_Num"),
                         rs.getString("crn"),
                         rs.getString("em_num"),
                         rs.getString("afp_pnp_num"),
@@ -398,7 +397,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertGovernmentId(GovernmentIdRecord g) {
-        String sql = "INSERT INTO government_ids (pagibig_id, tin_num, sss_num, crn, em_num, afp_pnp_num, deped_code) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO governmentid (Pagibig_ID, tin_num, SSS_Num, crn, em_num, afp_pnp_num, deped_code) VALUES (?,?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, g.getPagibigId());
@@ -416,7 +415,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateGovernmentId(GovernmentIdRecord g) {
-        String sql = "UPDATE government_ids SET tin_num=?, sss_num=?, crn=?, em_num=?, afp_pnp_num=?, deped_code=? WHERE pagibig_id=?";
+        String sql = "UPDATE governmentid SET tin_num=?, SSS_Num=?, crn=?, em_num=?, afp_pnp_num=?, deped_code=? WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, g.getTinNum());
@@ -434,7 +433,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteGovernmentId(String pagibigId) {
-        String sql = "DELETE FROM government_ids WHERE pagibig_id=?";
+        String sql = "DELETE FROM governmentid WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
@@ -449,7 +448,7 @@ public class DatabaseDAO {
 
     public List<EmployerRecord> loadAllEmployers() {
         List<EmployerRecord> list = new ArrayList<>();
-        String sql = "SELECT employer_id, employer_name, employer_address FROM employers";
+        String sql = "SELECT employer_id, employer_name, employer_address FROM employer";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -467,7 +466,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertEmployer(EmployerRecord e) {
-        String sql = "INSERT INTO employers (employer_id, employer_name, employer_address) VALUES (?,?,?)";
+        String sql = "INSERT INTO employer (employer_id, employer_name, employer_address) VALUES (?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getEmployerId());
@@ -481,7 +480,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateEmployer(EmployerRecord e) {
-        String sql = "UPDATE employers SET employer_name=?, employer_address=? WHERE employer_id=?";
+        String sql = "UPDATE employer SET employer_name=?, employer_address=? WHERE employer_id=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getEmployerName());
@@ -495,7 +494,7 @@ public class DatabaseDAO {
     }
 
     public boolean deleteEmployer(String employerId) {
-        String sql = "DELETE FROM employers WHERE employer_id=?";
+        String sql = "DELETE FROM employer WHERE employer_id=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, employerId);
