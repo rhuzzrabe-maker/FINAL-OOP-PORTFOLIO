@@ -7,7 +7,6 @@ import com.pagibig.model.GovernmentIdRecord;
 import com.pagibig.model.HeirRecord;
 import com.pagibig.model.MemberRecord;
 import com.pagibig.model.PreviousEmploymentRecord;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class DataStore {
         loadAllFromDatabase();
     }
 
-    /** Pulls every table from the database into the in-memory lists. */
+    /** Pulls every table out of MySQL to fill memory lists */
     public void loadAllFromDatabase() {
         members.clear();
         members.addAll(dao.loadAllMembers());
@@ -55,248 +54,169 @@ public class DataStore {
 
         employers.clear();
         employers.addAll(dao.loadAllEmployers());
-
-        System.out.println("DataStore loaded: " +
-                members.size() + " members, " +
-                contacts.size() + " contacts, " +
-                employments.size() + " employment records, " +
-                previousEmployments.size() + " previous employment records, " +
-                heirs.size() + " heirs, " +
-                governmentIds.size() + " government IDs, " +
-                employers.size() + " employers");
-    }
-
-    /** Convenience alias for UI refresh buttons. */
-    public void refreshFromDatabase() {
-        loadAllFromDatabase();
     }
 
     // ==================== GETTERS ====================
+    public List<MemberRecord> getMembers() { return members; }
+    public List<ContactRecord> getContacts() { return contacts; }
+    public List<EmploymentRecord> getEmployments() { return employments; }
+    public List<PreviousEmploymentRecord> getPreviousEmployments() { return previousEmployments; }
+    public List<HeirRecord> getHeirs() { return heirs; }
+    public List<GovernmentIdRecord> getGovernmentIds() { return governmentIds; }
+    public List<EmployerRecord> getEmployers() { return employers; }
 
-    public List<MemberRecord> getMembers() {
-        return members;
-    }
+    // ==================== WRITE PIPELINES ====================
 
-    public List<ContactRecord> getContacts() {
-        return contacts;
-    }
-
-    public List<EmploymentRecord> getEmployments() {
-        return employments;
-    }
-
-    public List<PreviousEmploymentRecord> getPreviousEmployments() {
-        return previousEmployments;
-    }
-
-    public List<HeirRecord> getHeirs() {
-        return heirs;
-    }
-
-    public List<GovernmentIdRecord> getGovernmentIds() {
-        return governmentIds;
-    }
-
-    public List<EmployerRecord> getEmployers() {
-        return employers;
-    }
-
-    // ==================== MEMBERS ====================
-
-    public boolean addMember(MemberRecord member) {
-        if (dao.insertMember(member)) {
-            members.add(member);
-            return true;
-        }
+    public boolean addMember(MemberRecord r) {
+        if (dao.insertMember(r)) { members.add(r); return true; }
         return false;
     }
-
-    public boolean updateMember(int index, MemberRecord member) {
-        if (index >= 0 && index < members.size() && dao.updateMember(member)) {
-            members.set(index, member);
-            return true;
-        }
+    public boolean updateMember(int index, MemberRecord r) {
+        if (dao.updateMember(r)) { members.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteMember(int index) {
-        if (index >= 0 && index < members.size()) {
-            String pagibigId = members.get(index).getPagibigId();
-            if (dao.deleteMember(pagibigId)) {
-                // CASCADE DELETE may have removed related records, so reload everything
-                loadAllFromDatabase();
-                return true;
-            }
-        }
+        MemberRecord r = members.get(index);
+        if (dao.deleteMember(r.getPagibigId())) { members.remove(index); return true; }
         return false;
     }
 
-    // ==================== CONTACTS ====================
-
-    public boolean addContact(ContactRecord contact) {
-        if (dao.insertContact(contact)) {
-            contacts.add(contact);
-            return true;
-        }
+    public boolean addContact(ContactRecord r) {
+        if (dao.insertContact(r)) { contacts.add(r); return true; }
         return false;
     }
-
-    public boolean updateContact(int index, ContactRecord contact) {
-        if (index >= 0 && index < contacts.size() && dao.updateContact(contact)) {
-            contacts.set(index, contact);
-            return true;
-        }
+    public boolean updateContact(int index, ContactRecord r) {
+        if (dao.updateContact(r)) { contacts.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteContact(int index) {
-        if (index >= 0 && index < contacts.size() && dao.deleteContact(contacts.get(index).getPagibigId())) {
-            contacts.remove(index);
-            return true;
-        }
+        ContactRecord r = contacts.get(index);
+        if (dao.deleteContact(r.getPagibigId())) { contacts.remove(index); return true; }
         return false;
     }
 
-    // ==================== EMPLOYMENT ====================
-
-    public boolean addEmployment(EmploymentRecord employment) {
-        if (dao.insertEmployment(employment)) {
-            employments.add(employment);
-            return true;
-        }
+    public boolean addEmployment(EmploymentRecord r) {
+        if (dao.insertEmployment(r)) { employments.add(r); return true; }
         return false;
     }
-
-    public boolean updateEmployment(int index, EmploymentRecord employment) {
-        if (index >= 0 && index < employments.size() && dao.updateEmployment(employment)) {
-            employments.set(index, employment);
-            return true;
-        }
+    public boolean updateEmployment(int index, EmploymentRecord r) {
+        if (dao.updateEmployment(r)) { employments.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteEmployment(int index) {
-        if (index >= 0 && index < employments.size()) {
-            EmploymentRecord e = employments.get(index);
-            if (dao.deleteEmployment(e.getPagibigId(), e.getEmployerId())) {
-                employments.remove(index);
-                return true;
-            }
-        }
+        EmploymentRecord r = employments.get(index);
+        if (dao.deleteEmployment(r.getPagibigId(), r.getEmployerId())) { employments.remove(index); return true; }
         return false;
     }
 
-    // ==================== PREVIOUS EMPLOYMENT ====================
-
-    public boolean addPreviousEmployment(PreviousEmploymentRecord previousEmployment) {
-        if (dao.insertPreviousEmployment(previousEmployment)) {
-            previousEmployments.add(previousEmployment);
-            return true;
-        }
+    public boolean addPreviousEmployment(PreviousEmploymentRecord r) {
+        if (dao.insertPreviousEmployment(r)) { previousEmployments.add(r); return true; }
         return false;
     }
-
-    public boolean updatePreviousEmployment(int index, PreviousEmploymentRecord previousEmployment) {
-        if (index >= 0 && index < previousEmployments.size() && dao.updatePreviousEmployment(previousEmployment)) {
-            previousEmployments.set(index, previousEmployment);
-            return true;
-        }
+    public boolean updatePreviousEmployment(int index, PreviousEmploymentRecord r) {
+        if (dao.updatePreviousEmployment(r)) { previousEmployments.set(index, r); return true; }
         return false;
     }
-
     public boolean deletePreviousEmployment(int index) {
-        if (index >= 0 && index < previousEmployments.size()) {
-            PreviousEmploymentRecord p = previousEmployments.get(index);
-            if (dao.deletePreviousEmployment(p.getPagibigId(), p.getEmployerId(), p.getDateFrom())) {
-                previousEmployments.remove(index);
-                return true;
-            }
-        }
+        PreviousEmploymentRecord r = previousEmployments.get(index);
+        if (dao.deletePreviousEmployment(r.getPagibigId(), r.getEmployerId(), r.getDateFrom())) { previousEmployments.remove(index); return true; }
         return false;
     }
 
-    // ==================== HEIRS ====================
-
-    public boolean addHeir(HeirRecord heir) {
-        if (dao.insertHeir(heir)) {
-            heirs.add(heir);
-            return true;
-        }
+    public boolean addHeir(HeirRecord r) {
+        if (dao.insertHeir(r)) { heirs.add(r); return true; }
         return false;
     }
-
-    public boolean updateHeir(int index, HeirRecord heir) {
-        if (index >= 0 && index < heirs.size() && dao.updateHeir(heir)) {
-            heirs.set(index, heir);
-            return true;
-        }
+    public boolean updateHeir(int index, HeirRecord r) {
+        if (dao.updateHeir(r)) { heirs.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteHeir(int index) {
-        if (index >= 0 && index < heirs.size()) {
-            HeirRecord h = heirs.get(index);
-            if (dao.deleteHeir(h.getPagibigId(), h.getHeirCode())) {
-                heirs.remove(index);
-                return true;
-            }
-        }
+        HeirRecord r = heirs.get(index);
+        if (dao.deleteHeir(r.getPagibigId(), r.getHeirCode())) { heirs.remove(index); return true; }
         return false;
     }
 
-    // ==================== GOVERNMENT IDS ====================
-
-    public boolean addGovernmentId(GovernmentIdRecord governmentId) {
-        if (dao.insertGovernmentId(governmentId)) {
-            governmentIds.add(governmentId);
-            return true;
-        }
+    public boolean addGovernmentId(GovernmentIdRecord r) {
+        if (dao.insertGovernmentId(r)) { governmentIds.add(r); return true; }
         return false;
     }
-
-    public boolean updateGovernmentId(int index, GovernmentIdRecord governmentId) {
-        if (index >= 0 && index < governmentIds.size() && dao.updateGovernmentId(governmentId)) {
-            governmentIds.set(index, governmentId);
-            return true;
-        }
+    public boolean updateGovernmentId(int index, GovernmentIdRecord r) {
+        if (dao.updateGovernmentId(r)) { governmentIds.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteGovernmentId(int index) {
-        if (index >= 0 && index < governmentIds.size() && dao.deleteGovernmentId(governmentIds.get(index).getPagibigId())) {
-            governmentIds.remove(index);
-            return true;
-        }
+        GovernmentIdRecord r = governmentIds.get(index);
+        if (dao.deleteGovernmentId(r.getPagibigId())) { governmentIds.remove(index); return true; }
         return false;
     }
 
-    // ==================== EMPLOYERS ====================
-
-    public boolean addEmployer(EmployerRecord employer) {
-        if (dao.insertEmployer(employer)) {
-            employers.add(employer);
-            return true;
-        }
+    public boolean addEmployer(EmployerRecord r) {
+        if (dao.insertEmployer(r)) { employers.add(r); return true; }
         return false;
     }
-
-    public boolean updateEmployer(int index, EmployerRecord employer) {
-        if (index >= 0 && index < employers.size() && dao.updateEmployer(employer)) {
-            employers.set(index, employer);
-            return true;
-        }
+    public boolean updateEmployer(int index, EmployerRecord r) {
+        if (dao.updateEmployer(r)) { employers.set(index, r); return true; }
         return false;
     }
-
     public boolean deleteEmployer(int index) {
-        if (index >= 0 && index < employers.size()) {
-            String employerId = employers.get(index).getEmployerId();
-            if (dao.deleteEmployer(employerId)) {
-                // CASCADE DELETE may have removed related records, so reload everything
-                loadAllFromDatabase();
-                return true;
-            }
-        }
+        EmployerRecord r = employers.get(index);
+        if (dao.deleteEmployer(r.getEmployerId())) { employers.remove(index); return true; }
         return false;
+    }
+
+    // =====================================================================
+    // ⚡ FIXED CASCADING EXTENSION METHODS (Synced variable names to 'dao')
+    // =====================================================================
+    
+    public boolean deleteMemberByKey(String pagibigId) {
+        boolean databaseStatus = dao.deleteMember(pagibigId);
+        if (databaseStatus) {
+            members.removeIf(m -> m.getPagibigId().equals(pagibigId));
+        }
+        return databaseStatus;
+    }
+
+    public void deleteContactByMember(String pagibigId) {
+        dao.deleteContact(pagibigId);
+        contacts.removeIf(c -> c.getPagibigId().equals(pagibigId));
+    }
+
+    public void deleteEmploymentByMember(String pagibigId) {
+        List<EmploymentRecord> targets = new ArrayList<>();
+        for (EmploymentRecord e : employments) {
+            if (e.getPagibigId().equals(pagibigId)) targets.add(e);
+        }
+        for (EmploymentRecord e : targets) {
+            dao.deleteEmployment(e.getPagibigId(), e.getEmployerId());
+        }
+        employments.removeIf(e -> e.getPagibigId().equals(pagibigId));
+    }
+
+    public void deletePreviousEmploymentByMember(String pagibigId) {
+        List<PreviousEmploymentRecord> targets = new ArrayList<>();
+        for (PreviousEmploymentRecord p : previousEmployments) {
+            if (p.getPagibigId().equals(pagibigId)) targets.add(p);
+        }
+        for (PreviousEmploymentRecord p : targets) {
+            dao.deletePreviousEmployment(p.getPagibigId(), p.getEmployerId(), p.getDateFrom());
+        }
+        previousEmployments.removeIf(p -> p.getPagibigId().equals(pagibigId));
+    }
+
+    public void deleteHeirsByMember(String pagibigId) {
+        List<HeirRecord> targets = new ArrayList<>();
+        for (HeirRecord h : heirs) {
+            if (h.getPagibigId().equals(pagibigId)) targets.add(h);
+        }
+        for (HeirRecord h : targets) {
+            dao.deleteHeir(h.getPagibigId(), h.getHeirCode());
+        }
+        heirs.removeIf(h -> h.getPagibigId().equals(pagibigId));
+    }
+
+    public void deleteGovernmentIdByMember(String pagibigId) {
+        dao.deleteGovernmentId(pagibigId);
+        governmentIds.removeIf(g -> g.getPagibigId().equals(pagibigId));
     }
 }
