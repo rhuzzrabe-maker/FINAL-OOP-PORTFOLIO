@@ -15,18 +15,36 @@ public class DatabaseDAO {
 
     public List<MemberRecord> loadAllMembers() {
         List<MemberRecord> list = new ArrayList<>();
-        String sql = "SELECT Pagibig_ID, mem_name, mem_type, sex, birth_date, citizenship FROM member";
+        // We explicitly name all 22 columns in a strict, known order
+        String sql = "SELECT Pagibig_ID, regis_num, occ_stats, first_time, mem_type, mem_subtype, type_work, type_country, mem_name, fat_name, mot_name, spouse_name, memcert_name, birth_date, place_birth, sex, height, weight, marital_status, citizenship, facial_features, frequency_payment FROM member";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
+                // FIXED: We extract data using numeric positions (1-22) to avoid case/spelling exceptions
                 list.add(new MemberRecord(
-                        rs.getString("Pagibig_ID"),
-                        rs.getString("mem_name"),
-                        rs.getString("mem_type"),
-                        rs.getString("sex"),
-                        rs.getString("birth_date"),
-                        rs.getString("citizenship")
+                        rs.getString(1),  // Pagibig_ID
+                        rs.getString(2),  // regis_num
+                        rs.getString(3),  // occ_stats
+                        rs.getString(4),  // first_time
+                        rs.getString(5),  // mem_type
+                        rs.getString(6),  // mem_subtype
+                        rs.getString(7),  // type_work
+                        rs.getString(8),  // type_country
+                        rs.getString(9),  // mem_name
+                        rs.getString(10), // fat_name
+                        rs.getString(11), // mot_name
+                        rs.getString(12), // spouse_name
+                        rs.getString(13), // memcert_name
+                        rs.getString(14), // birth_date
+                        rs.getString(15), // place_birth
+                        rs.getString(16), // sex
+                        rs.getString(17), // height
+                        rs.getString(18), // weight
+                        rs.getString(19), // marital_status
+                        rs.getString(20), // citizenship
+                        rs.getString(21), // facial_features
+                        rs.getString(22)  // frequency_payment
                 ));
             }
         } catch (SQLException e) {
@@ -36,15 +54,17 @@ public class DatabaseDAO {
     }
 
     public boolean insertMember(MemberRecord m) {
-        String sql = "INSERT INTO member (Pagibig_ID, mem_name, mem_type, sex, birth_date, citizenship) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO member VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, m.getPagibigId());
-            ps.setString(2, m.getMemName());
-            ps.setString(3, m.getMemType());
-            ps.setString(4, m.getSex());
-            ps.setString(5, m.getBirthDate());
-            ps.setString(6, m.getCitizenship());
+            ps.setString(1, m.getPagibigId()); ps.setString(2, m.getRegisNum()); ps.setString(3, m.getOccupationStatus());
+            ps.setString(4, m.getFirstTime()); ps.setString(5, m.getMemType()); ps.setString(6, m.getMemSubtype());
+            ps.setString(7, m.getTypeWork()); ps.setString(8, m.getTypeCountry()); ps.setString(9, m.getMemName());
+            ps.setString(10, m.getFatName()); ps.setString(11, m.getMotName()); ps.setString(12, m.getSpouseName());
+            ps.setString(13, m.getMemCertName()); ps.setString(14, m.getBirthDate()); ps.setString(15, m.getPlaceOfBirth());
+            ps.setString(16, m.getSex()); ps.setString(17, m.getHeight()); ps.setString(18, m.getWeight());
+            ps.setString(19, m.getMaritalStatus()); ps.setString(20, m.getCitizenship()); ps.setString(21, m.getFacialFeatures());
+            ps.setString(22, m.getFrequencyOfPayment());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error inserting member: " + e.getMessage());
@@ -52,16 +72,34 @@ public class DatabaseDAO {
         }
     }
 
+    // Keep your loadAllMembers() and insertMember() here...
+
     public boolean updateMember(MemberRecord m) {
-        String sql = "UPDATE member SET mem_name=?, mem_type=?, sex=?, birth_date=?, citizenship=? WHERE Pagibig_ID=?";
+        String sql = "UPDATE member SET regis_num=?, occ_stats=?, first_time=?, mem_type=?, mem_subtype=?, type_work=?, type_country=?, mem_name=?, fat_name=?, mot_name=?, spouse_name=?, memcert_name=?, birth_date=?, place_birth=?, sex=?, height=?, weight=?, marital_status=?, citizenship=?, facial_features=?, frequency_payment=? WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, m.getMemName());
-            ps.setString(2, m.getMemType());
-            ps.setString(3, m.getSex());
-            ps.setString(4, m.getBirthDate());
-            ps.setString(5, m.getCitizenship());
-            ps.setString(6, m.getPagibigId());
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, m.getRegisNum());
+            ps.setString(2, m.getOccupationStatus());
+            ps.setString(3, m.getFirstTime());
+            ps.setString(4, m.getMemType());
+            ps.setString(5, m.getMemSubtype());
+            ps.setString(6, m.getTypeWork());
+            ps.setString(7, m.getTypeCountry());
+            ps.setString(8, m.getMemName());
+            ps.setString(9, m.getFatName());
+            ps.setString(10, m.getMotName());
+            ps.setString(11, m.getSpouseName());
+            ps.setString(12, m.getMemCertName());
+            ps.setString(13, m.getBirthDate());
+            ps.setString(14, m.getPlaceOfBirth());
+            ps.setString(15, m.getSex());
+            ps.setString(16, m.getHeight());
+            ps.setString(17, m.getWeight());
+            ps.setString(18, m.getMaritalStatus());
+            ps.setString(19, m.getCitizenship());
+            ps.setString(20, m.getFacialFeatures());
+            ps.setString(21, m.getFrequencyOfPayment());
+            ps.setString(22, m.getPagibigId()); // The WHERE clause target ID
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error updating member: " + e.getMessage());
@@ -72,7 +110,7 @@ public class DatabaseDAO {
     public boolean deleteMember(String pagibigId) {
         String sql = "DELETE FROM member WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pagibigId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -238,7 +276,7 @@ public class DatabaseDAO {
 
     public List<PreviousEmploymentRecord> loadAllPreviousEmployment() {
         List<PreviousEmploymentRecord> list = new ArrayList<>();
-        String sql = "SELECT Pagibig_ID, employer_id, date_from, date_to, prev_office_assignment FROM prevemployment";
+        String sql = "SELECT Pagibig_ID, employer_id, date_from, date_to, prevoffice_assignment FROM prevemployment";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -248,7 +286,7 @@ public class DatabaseDAO {
                         rs.getString("employer_id"),
                         rs.getString("date_from"),
                         rs.getString("date_to"),
-                        rs.getString("prev_office_assignment")
+                        rs.getString("prevoffice_assignment")
             ));
         }
     } catch (SQLException e) {
@@ -258,7 +296,7 @@ public class DatabaseDAO {
 }
 
     public boolean insertPreviousEmployment(PreviousEmploymentRecord p) {
-        String sql = "INSERT INTO prevemployment (Pagibig_ID, employer_id, date_from, date_to, prev_office_assignment) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO prevemployment (Pagibig_ID, employer_id, date_from, date_to, prevoffice_assignment) VALUES (?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, p.getPagibigId());
@@ -274,7 +312,7 @@ public class DatabaseDAO {
     }
 
     public boolean updatePreviousEmployment(PreviousEmploymentRecord p) {
-        String sql = "UPDATE prevemployment SET date_to=?, prev_office_assignment=? WHERE Pagibig_ID=? AND employer_id=? AND date_from=?";
+        String sql = "UPDATE prevemployment SET date_to=?, prevoffice_assignment=? WHERE Pagibig_ID=? AND employer_id=? AND date_from=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, p.getDateTo());
@@ -307,7 +345,7 @@ public class DatabaseDAO {
 
     public List<HeirRecord> loadAllHeirs() {
         List<HeirRecord> list = new ArrayList<>();
-        String sql = "SELECT Pagibig_ID, heir_code, heir_name, relationship, heir_date_birth FROM heir";
+        String sql = "SELECT Pagibig_ID, heir_code, heir_name, relationship, heir_datebirth FROM heir";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -317,7 +355,7 @@ public class DatabaseDAO {
                         rs.getString("heir_code"),
                         rs.getString("heir_name"),
                         rs.getString("relationship"),
-                        rs.getString("heir_date_birth")
+                        rs.getString("heir_datebirth")
                 ));
             }
         } catch (SQLException e) {
@@ -327,7 +365,7 @@ public class DatabaseDAO {
     }
 
     public boolean insertHeir(HeirRecord h) {
-        String sql = "INSERT INTO heir (Pagibig_ID, heir_code, heir_name, relationship, heir_date_birth) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO heir (Pagibig_ID, heir_code, heir_name, relationship, heir_datebirth) VALUES (?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, h.getPagibigId());
@@ -343,7 +381,7 @@ public class DatabaseDAO {
     }
 
     public boolean updateHeir(HeirRecord h) {
-        String sql = "UPDATE heir SET heir_name=?, relationship=?, heir_date_birth=? WHERE Pagibig_ID=? AND heir_code=?";
+        String sql = "UPDATE heir SET heir_name=?, relationship=?, heir_datebirth=? WHERE Pagibig_ID=? AND heir_code=?";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, h.getHeirName());

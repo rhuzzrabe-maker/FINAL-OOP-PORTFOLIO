@@ -2,13 +2,12 @@ package com.pagibig.main;
 
 import com.pagibig.data.DataStore;
 import com.pagibig.model.ContactRecord;
+import com.pagibig.model.EmployerRecord;
 import com.pagibig.model.EmploymentRecord;
 import com.pagibig.model.GovernmentIdRecord;
 import com.pagibig.model.HeirRecord;
 import com.pagibig.model.MemberRecord;
 import com.pagibig.model.PreviousEmploymentRecord;
-import com.pagibig.model.EmployerRecord;
-
 import java.awt.*;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -98,16 +97,23 @@ public class DashboardFrame extends JFrame {
         searchPanel.add(clearSearch);
         content.add(searchPanel, BorderLayout.SOUTH);
 
-        memberModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Name", "Type", "Sex", "Birth Date", "Citizenship"}, 0) {
+        memberModel = new DefaultTableModel(new Object[]{
+            "Pagibig ID", "Regis Num", "Occupation Status", "First Time", 
+            "Member Type", "Member Subtype", "Type Work", "Type Country", 
+            "Member Name", "Fat Name", "Mot Name", "Spouse Name", 
+            "MemCert Name", "Birth Date", "Place of Birth", "Sex", 
+            "Height", "Weight", "Marital Status", "Citizenship", 
+            "Facial Features", "Frequency of Payment"
+        }, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
-        contactModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Cell Num", "Home Num", "Business Direct", "Business Trunk", "Email", "Perm Address", "Present Address", "Preferred Mail"}, 0) {
+        contactModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Cell Num", "Home Num", "Business Direct", "Business Trunk", "Email Address", "Perm Address", "Present Address", "Preferred Mail Address"}, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
-        employmentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Status", "Occupation", "Office", "Date Employed", "Income"}, 0) {
+        employmentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Status", "Occupation", "Office Assignment", "Date Employed", "Monthly Income"}, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
-        previousEmploymentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Date From", "Date To", "Prev Office"}, 0) {
+        previousEmploymentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Date From", "Date To", "Prev Office Assignment"}, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
         heirModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Heir Code", "Heir Name", "Relationship", "Birth Date"}, 0) {
@@ -116,7 +122,7 @@ public class DashboardFrame extends JFrame {
         governmentIdModel = new DefaultTableModel(new Object[]{"Pagibig ID", "TIN", "SSS", "CRN", "EM Num", "AFP/PNP", "DepEd Code"}, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
-        employerModel = new DefaultTableModel(new Object[]{"Employer ID", "Employer Name", "Address"}, 0) {
+        employerModel = new DefaultTableModel(new Object[]{"Employer ID", "Employer Name", "Employer Address"}, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
 
@@ -257,46 +263,94 @@ public class DashboardFrame extends JFrame {
     }
 
     private void showMemberDialog(int rowIndex) {
+        // 1. Declare ALL 22 text fields
         JTextField idField = new JTextField();
-        JTextField nameField = new JTextField();
+        JTextField regisField = new JTextField();
+        JTextField occField = new JTextField();
+        JTextField firstTimeField = new JTextField();
         JTextField typeField = new JTextField();
-        JTextField sexField = new JTextField();
+        JTextField subtypeField = new JTextField();
+        JTextField workField = new JTextField();
+        JTextField countryField = new JTextField();
+        JTextField nameField = new JTextField();
+        JTextField fatField = new JTextField();
+        JTextField motField = new JTextField();
+        JTextField spouseField = new JTextField();
+        JTextField certField = new JTextField();
         JTextField birthField = new JTextField();
+        JTextField placeField = new JTextField();
+        JTextField sexField = new JTextField();
+        JTextField heightField = new JTextField();
+        JTextField weightField = new JTextField();
+        JTextField maritalField = new JTextField();
         JTextField citizenshipField = new JTextField();
+        JTextField facialField = new JTextField();
+        JTextField paymentField = new JTextField();
 
+        // 2. If editing an existing row, populate the fields
         if (rowIndex >= 0) {
             MemberRecord existing = dataStore.getMembers().get(rowIndex);
             idField.setText(existing.getPagibigId());
-            nameField.setText(existing.getMemName());
+            regisField.setText(existing.getRegisNum());
+            occField.setText(existing.getOccupationStatus());
+            firstTimeField.setText(existing.getFirstTime());
             typeField.setText(existing.getMemType());
-            sexField.setText(existing.getSex());
+            subtypeField.setText(existing.getMemSubtype());
+            workField.setText(existing.getTypeWork());
+            countryField.setText(existing.getTypeCountry());
+            nameField.setText(existing.getMemName());
+            fatField.setText(existing.getFatName());
+            motField.setText(existing.getMotName());
+            spouseField.setText(existing.getSpouseName());
+            certField.setText(existing.getMemCertName());
             birthField.setText(existing.getBirthDate());
+            placeField.setText(existing.getPlaceOfBirth());
+            sexField.setText(existing.getSex());
+            heightField.setText(existing.getHeight());
+            weightField.setText(existing.getWeight());
+            maritalField.setText(existing.getMaritalStatus());
             citizenshipField.setText(existing.getCitizenship());
+            facialField.setText(existing.getFacialFeatures());
+            paymentField.setText(existing.getFrequencyOfPayment());
         }
 
-        JPanel panel = new JPanel(new GridLayout(0, 1, 4, 4));
-        panel.add(new JLabel("Pagibig ID:"));
-        panel.add(idField);
-        panel.add(new JLabel("Member Name:"));
-        panel.add(nameField);
-        panel.add(new JLabel("Membership Type:"));
-        panel.add(typeField);
-        panel.add(new JLabel("Sex:"));
-        panel.add(sexField);
-        panel.add(new JLabel("Birth Date (YYYY-MM-DD):"));
-        panel.add(birthField);
-        panel.add(new JLabel("Citizenship:"));
-        panel.add(citizenshipField);
+        // 3. Create the input panel grid layout
+        JPanel panel = new JPanel(new GridLayout(0, 2, 6, 6)); // 2 columns for label and field side-by-side
+        panel.add(new JLabel("Pag-IBIG ID:")); panel.add(idField);
+        panel.add(new JLabel("Registration Num:")); panel.add(regisField);
+        panel.add(new JLabel("Occupation Status:")); panel.add(occField);
+        panel.add(new JLabel("First Time Member?:")); panel.add(firstTimeField);
+        panel.add(new JLabel("Member Type:")); panel.add(typeField);
+        panel.add(new JLabel("Member Subtype:")); panel.add(subtypeField);
+        panel.add(new JLabel("Type of Work:")); panel.add(workField);
+        panel.add(new JLabel("Type Country:")); panel.add(countryField);
+        panel.add(new JLabel("Member Name:")); panel.add(nameField);
+        panel.add(new JLabel("Father's Name:")); panel.add(fatField);
+        panel.add(new JLabel("Mother's Name:")); panel.add(motField);
+        panel.add(new JLabel("Spouse Name:")); panel.add(spouseField);
+        panel.add(new JLabel("Certificate Name:")); panel.add(certField);
+        panel.add(new JLabel("Birth Date (YYYY-MM-DD):")); panel.add(birthField);
+        panel.add(new JLabel("Place of Birth:")); panel.add(placeField);
+        panel.add(new JLabel("Sex:")); panel.add(sexField);
+        panel.add(new JLabel("Height (cm):")); panel.add(heightField);
+        panel.add(new JLabel("Weight (kg):")); panel.add(weightField);
+        panel.add(new JLabel("Marital Status:")); panel.add(maritalField);
+        panel.add(new JLabel("Citizenship:")); panel.add(citizenshipField);
+        panel.add(new JLabel("Facial Features:")); panel.add(facialField);
+        panel.add(new JLabel("Frequency of Payment:")); panel.add(paymentField);
 
+        // 4. Show dialog box
         int result = JOptionPane.showConfirmDialog(this, panel, rowIndex < 0 ? "Add Member" : "Edit Member", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             MemberRecord record = new MemberRecord(
-                    idField.getText().trim(),
-                    nameField.getText().trim(),
-                    typeField.getText().trim(),
-                    sexField.getText().trim(),
-                    birthField.getText().trim(),
-                    citizenshipField.getText().trim()
+                    idField.getText().trim(), regisField.getText().trim(), occField.getText().trim(),
+                    firstTimeField.getText().trim(), typeField.getText().trim(), subtypeField.getText().trim(),
+                    workField.getText().trim(), countryField.getText().trim(), nameField.getText().trim(),
+                    fatField.getText().trim(), motField.getText().trim(), spouseField.getText().trim(),
+                    certField.getText().trim(), birthField.getText().trim(), placeField.getText().trim(),
+                    sexField.getText().trim(), heightField.getText().trim(), weightField.getText().trim(),
+                    maritalField.getText().trim(), citizenshipField.getText().trim(), facialField.getText().trim(),
+                    paymentField.getText().trim()
             );
             boolean success = rowIndex >= 0
                     ? dataStore.updateMember(rowIndex, record)
@@ -632,7 +686,16 @@ public class DashboardFrame extends JFrame {
     private void refreshMemberTable() {
         memberModel.setRowCount(0);
         for (MemberRecord member : dataStore.getMembers()) {
-            memberModel.addRow(new Object[]{member.getPagibigId(), member.getMemName(), member.getMemType(), member.getSex(), member.getBirthDate(), member.getCitizenship()});
+            memberModel.addRow(new Object[]{
+                member.getPagibigId(), member.getRegisNum(), member.getOccupationStatus(),
+                member.getFirstTime(), member.getMemType(), member.getMemSubtype(),
+                member.getTypeWork(), member.getTypeCountry(), member.getMemName(),
+                member.getFatName(), member.getMotName(), member.getSpouseName(),
+                member.getMemCertName(), member.getBirthDate(), member.getPlaceOfBirth(),
+                member.getSex(), member.getHeight(), member.getWeight(),
+                member.getMaritalStatus(), member.getCitizenship(), member.getFacialFeatures(),
+                member.getFrequencyOfPayment()
+            });
         }
         applySearchFilter();
     }
