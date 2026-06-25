@@ -452,7 +452,9 @@ public class DashboardFrame extends JFrame {
     }
 
     private ContactRecord gatherWizardContactNode(String trackingId) {
-        JTextField cellField = new JTextField(); JTextField homeField = new JTextField(); JTextField directField = new JTextField();
+        JTextField cellField = new JTextField();
+        applyTextPlaceholderHint(cellField, "+63 XXX XXXX XXX");
+        JTextField homeField = new JTextField(); JTextField directField = new JTextField();
         JTextField trunkField = new JTextField(); JTextField emailField = new JTextField(); JTextField permField = new JTextField();
         JTextField presentField = new JTextField();
         JComboBox<String> prefCombo = new JComboBox<>(new String[]{"-- Select Preferred Address --", "Present Home Address", "Permanent Home Address", "Employer/Business Address"});
@@ -481,7 +483,11 @@ public class DashboardFrame extends JFrame {
             int res = JOptionPane.showConfirmDialog(this, p, "Wizard Step 2: Contact Specifications", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (res != JOptionPane.OK_OPTION) return null;
 
-            String cVal = cellField.getText().trim(); String permVal = permField.getText().trim().toUpperCase();
+            String cVal = cellField.getText().trim(); 
+            if (cVal.equals("+63 XXX XXXX XXX")) {
+                cVal = ""; 
+            }
+            String permVal = permField.getText().trim().toUpperCase();
             String presVal = syncCb.isSelected() ? permVal : presentField.getText().trim().toUpperCase();
 
             if (cVal.isEmpty() || permVal.isEmpty() || presVal.isEmpty() || prefCombo.getSelectedIndex() <= 0) {
@@ -591,36 +597,51 @@ public class DashboardFrame extends JFrame {
         JTextField birthField = new JTextField();
 
         if (rowIndex >= 0) {
+            // Edit mode locks down identifying values
             com.pagibig.model.HeirRecord existing = dataStore.getHeirs().get(modelToViewRowIndex(rowIndex, heirTable));
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
-            codeField.setText(existing.getHeirCode()); codeField.setEditable(false);
+            idField.setText(existing.getPagibigId()); 
+            idField.setEditable(false);
+            codeField.setText(existing.getHeirCode()); 
+            codeField.setEditable(false);
+            
             nameField.setText(existing.getHeirName());
             relField.setText(existing.getRelationship());
             birthField.setText(existing.getHeirDateBirth());
+        } else {
+            // Standalone creation mode prompts for the existing member ID first
+            String targetMemberId = JOptionPane.showInputDialog(this, "Enter existing Member Pag-IBIG ID for this Heir:", "Heir Association", JOptionPane.QUESTION_MESSAGE);
+            if (targetMemberId == null || targetMemberId.trim().isEmpty()) return;
+            
+            boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equalsIgnoreCase(targetMemberId.trim()));
+            if (!exist) {
+                JOptionPane.showMessageDialog(this, "Save Refused: Member Pag-IBIG ID does not exist.", "Foreign Key Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            idField.setText(targetMemberId.trim().toUpperCase());
+            idField.setEditable(false);
+            
+            // Automatically calculate the next sequence number for this specific member ID
+            codeField.setText(generateNextHeirCode(targetMemberId.trim()));
+            codeField.setEditable(false);
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Pag-IBIG ID: *")); p.add(idField);
-        p.add(new JLabel("Heir Code: *")); p.add(codeField);
+        p.add(new JLabel("Pag-IBIG ID:")); p.add(idField);
+        p.add(new JLabel("Heir Code:")); p.add(codeField);
         p.add(new JLabel("Heir Name: *")); p.add(nameField);
         p.add(new JLabel("Relationship: *")); p.add(relField);
         p.add(new JLabel("Birth Date: *")); p.add(birthField);
 
         int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Heir" : "Edit Heir", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            String rawId = idField.getText().trim();
-            if (rawId.isEmpty() || codeField.getText().trim().isEmpty() || nameField.getText().trim().isEmpty()) {
+            if (nameField.getText().trim().isEmpty() || relField.getText().trim().isEmpty() || birthField.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Validation Error: Missing fields.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            if (rowIndex < 0) {
-                boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equals(rawId));
-                if (!exist) { JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE); return; }
-            }
-
-            com.pagibig.model.HeirRecord record = new com.pagibig.model.HeirRecord(rawId, codeField.getText().trim(), nameField.getText().trim().toUpperCase(), relField.getText().trim().toUpperCase(), birthField.getText().trim());
-            boolean success = rowIndex >= 0 ? dataStore.updateHeir(rowIndex, record) : dataStore.addHeir(record);
+            com.pagibig.model.HeirRecord record = new com.pagibig.model.HeirRecord(idField.getText(), codeField.getText(), nameField.getText().trim().toUpperCase(), relField.getText().trim().toUpperCase(), birthField.getText().trim());
+            boolean success = rowIndex >= 0 ? dataStore.updateHeir(modelToViewRowIndex(rowIndex, heirTable), record) : dataStore.addHeir(record);
             handleSaveResult(success, "Heir");
         }
     }
@@ -677,25 +698,29 @@ public class DashboardFrame extends JFrame {
 
         if (rowIndex >= 0) {
             com.pagibig.model.EmployerRecord existing = dataStore.getEmployers().get(rowIndex);
-            idField.setText(existing.getEmployerId()); idField.setEditable(false);
+            idField.setText(existing.getEmployerId()); 
+            idField.setEditable(false); // Locked during edit mutations
             nameField.setText(existing.getEmployerName());
             addressField.setText(existing.getEmployerAddress());
+        } else {
+            // Auto-populate the next increment ID code during addition
+            idField.setText(generateNextEmployerId());
+            idField.setEditable(false);
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Employer ID: *")); p.add(idField);
+        p.add(new JLabel("Employer ID:")); p.add(idField);
         p.add(new JLabel("Employer Name: *")); p.add(nameField);
         p.add(new JLabel("Employer Address: *")); p.add(addressField);
 
         int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Employer" : "Edit Employer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            String empId = idField.getText().trim();
-            if (empId.isEmpty() || nameField.getText().trim().isEmpty() || addressField.getText().trim().isEmpty()) {
+            if (nameField.getText().trim().isEmpty() || addressField.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Missing required info.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            com.pagibig.model.EmployerRecord record = new com.pagibig.model.EmployerRecord(empId, nameField.getText().trim().toUpperCase(), addressField.getText().trim().toUpperCase());
+            com.pagibig.model.EmployerRecord record = new com.pagibig.model.EmployerRecord(idField.getText(), nameField.getText().trim().toUpperCase(), addressField.getText().trim().toUpperCase());
             boolean success = rowIndex >= 0 ? dataStore.updateEmployer(rowIndex, record) : dataStore.addEmployer(record);
             handleSaveResult(success, "Employer");
         }
@@ -1031,8 +1056,14 @@ public class DashboardFrame extends JFrame {
 
         int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Contact" : "Edit Contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            String rawId = idField.getText().trim(); String cell = cellField.getText().trim();
-            String perm = permField.getText().trim().toUpperCase(); String present = syncCb.isSelected() ? perm : presentField.getText().trim().toUpperCase();
+            String rawId = idField.getText().trim();
+            String cell = cellField.getText().trim();
+            if (cell.equals("+63 XXX XXXX XXX")){
+                cell = "";
+            }
+
+            String perm = permField.getText().trim().toUpperCase(); 
+            String present = syncCb.isSelected() ? perm : presentField.getText().trim().toUpperCase();
 
             if (rawId.isEmpty() || cell.isEmpty() || perm.isEmpty() || present.isEmpty() || prefCombo.getSelectedIndex() <= 0) {
                 JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory contact elements.", "Validation Error", JOptionPane.ERROR_MESSAGE);
@@ -1275,5 +1306,59 @@ public class DashboardFrame extends JFrame {
             // Set the preferred width with a small padding (e.g., 10 pixels) so text isn't cramped
             table.getColumnModel().getColumn(column).setPreferredWidth(maxWidth + 10);
         }
+    }
+
+    private String generateNextHeirCode(String pagibigId) {
+        int maxNum = 0;
+        for (com.pagibig.model.HeirRecord h : dataStore.getHeirs()) {
+            if (h.getPagibigId().equals(pagibigId) && h.getHeirCode() != null && h.getHeirCode().startsWith("H")) {
+                try {
+                    // Extract the numeric portion following the 'H' prefix
+                    int num = Integer.parseInt(h.getHeirCode().substring(1));
+                    if (num > maxNum) maxNum = num;
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return "H" + String.format("%03d", maxNum + 1);
+    }
+
+    private String generateNextEmployerId() {
+        int maxNum = 0;
+        for (com.pagibig.model.EmployerRecord emp : dataStore.getEmployers()) {
+            if (emp.getEmployerId() != null) {
+                // Remove non-numeric prefixes like "EMP" or "E" to isolate raw number
+                String digits = emp.getEmployerId().replaceAll("[^0-9]", "");
+                if (!digits.isEmpty()) {
+                    try {
+                        int num = Integer.parseInt(digits);
+                        if (num > maxNum) maxNum = num;
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+        return "E" + String.format("%03d", maxNum + 1);
+    }
+
+    private void applyTextPlaceholderHint(JTextField field, String placeholderText) {
+        field.setText(placeholderText);
+        field.setForeground(Color.GRAY);
+        
+        field.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (field.getText().equals(placeholderText)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (field.getText().trim().isEmpty()) {
+                    field.setText(placeholderText);
+                    field.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 }
