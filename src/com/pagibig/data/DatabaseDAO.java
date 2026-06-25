@@ -57,14 +57,62 @@ public class DatabaseDAO {
         String sql = "INSERT INTO member VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DataConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, m.getPagibigId()); ps.setString(2, m.getRegisNum()); ps.setString(3, m.getOccupationStatus());
-            ps.setString(4, m.getFirstTime()); ps.setString(5, m.getMemType()); ps.setString(6, m.getMemSubtype());
-            ps.setString(7, m.getTypeWork()); ps.setString(8, m.getTypeCountry()); ps.setString(9, m.getMemName());
-            ps.setString(10, m.getFatName()); ps.setString(11, m.getMotName()); ps.setString(12, m.getSpouseName());
-            ps.setString(13, m.getMemCertName()); ps.setString(14, m.getBirthDate()); ps.setString(15, m.getPlaceOfBirth());
-            ps.setString(16, m.getSex()); ps.setString(17, m.getHeight()); ps.setString(18, m.getWeight());
-            ps.setString(19, m.getMaritalStatus()); ps.setString(20, m.getCitizenship()); ps.setString(21, m.getFacialFeatures());
-            ps.setString(22, m.getFrequencyOfPayment());
+            
+            ps.setString(1, m.getPagibigId()); 
+            ps.setString(2, m.getRegisNum()); 
+            ps.setString(3, m.getOccupationStatus());
+            ps.setString(4, m.getFirstTime()); 
+            ps.setString(5, m.getMemType()); 
+            ps.setString(6, m.getMemSubtype());
+            
+            // Type Work Nullability
+            if (m.getTypeWork() == null || m.getTypeWork().trim().isEmpty()) ps.setNull(7, java.sql.Types.VARCHAR);
+            else ps.setString(7, m.getTypeWork());
+            
+            // Type Country Nullability
+            if (m.getTypeCountry() == null || m.getTypeCountry().trim().isEmpty()) ps.setNull(8, java.sql.Types.VARCHAR);
+            else ps.setString(8, m.getTypeCountry());
+            
+            ps.setString(9, m.getMemName());
+            
+            if (m.getFatName() == null || m.getFatName().trim().isEmpty()) ps.setNull(10, java.sql.Types.VARCHAR);
+            else ps.setString(10, m.getFatName());
+            
+            ps.setString(11, m.getMotName());
+            
+            if (m.getSpouseName() == null || m.getSpouseName().trim().isEmpty()) ps.setNull(12, java.sql.Types.VARCHAR);
+            else ps.setString(12, m.getSpouseName());
+            
+            if (m.getMemCertName() == null || m.getMemCertName().trim().isEmpty()) ps.setNull(13, java.sql.Types.VARCHAR);
+            else ps.setString(13, m.getMemCertName());
+            
+            ps.setString(14, m.getBirthDate()); 
+            ps.setString(15, m.getPlaceOfBirth());
+            ps.setString(16, m.getSex()); 
+            
+            // CRITICAL INT FIX: Check both null AND empty string for Height
+            if (m.getHeight() == null || m.getHeight().trim().isEmpty()) {
+                ps.setNull(17, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(17, Integer.parseInt(m.getHeight().trim()));
+            }
+            
+            // CRITICAL INT FIX: Check both null AND empty string for Weight
+            if (m.getWeight() == null || m.getWeight().trim().isEmpty()) {
+                ps.setNull(18, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(18, Integer.parseInt(m.getWeight().trim()));
+            }
+            
+            ps.setString(19, m.getMaritalStatus()); 
+            ps.setString(20, m.getCitizenship()); 
+            
+            if (m.getFacialFeatures() == null || m.getFacialFeatures().trim().isEmpty()) ps.setNull(21, java.sql.Types.VARCHAR);
+            else ps.setString(21, m.getFacialFeatures());
+            
+            if (m.getFrequencyOfPayment() == null || m.getFrequencyOfPayment().trim().isEmpty()) ps.setNull(22, java.sql.Types.VARCHAR);
+            else ps.setString(22, m.getFrequencyOfPayment());
+            
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error inserting member: " + e.getMessage());
@@ -72,34 +120,65 @@ public class DatabaseDAO {
         }
     }
 
-    // Keep your loadAllMembers() and insertMember() here...
-
     public boolean updateMember(MemberRecord m) {
         String sql = "UPDATE member SET regis_num=?, occ_stats=?, first_time=?, mem_type=?, mem_subtype=?, type_work=?, type_country=?, mem_name=?, fat_name=?, mot_name=?, spouse_name=?, memcert_name=?, birth_date=?, place_birth=?, sex=?, height=?, weight=?, marital_status=?, citizenship=?, facial_features=?, frequency_payment=? WHERE Pagibig_ID=?";
         try (Connection conn = DataConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
             ps.setString(1, m.getRegisNum());
             ps.setString(2, m.getOccupationStatus());
             ps.setString(3, m.getFirstTime());
             ps.setString(4, m.getMemType());
             ps.setString(5, m.getMemSubtype());
-            ps.setString(6, m.getTypeWork());
-            ps.setString(7, m.getTypeCountry());
+            
+            if (m.getTypeWork() == null || m.getTypeWork().trim().isEmpty()) ps.setNull(6, java.sql.Types.VARCHAR);
+            else ps.setString(6, m.getTypeWork());
+            
+            if (m.getTypeCountry() == null || m.getTypeCountry().trim().isEmpty()) ps.setNull(7, java.sql.Types.VARCHAR);
+            else ps.setString(7, m.getTypeCountry());
+            
             ps.setString(8, m.getMemName());
-            ps.setString(9, m.getFatName());
+            
+            if (m.getFatName() == null || m.getFatName().trim().isEmpty()) ps.setNull(9, java.sql.Types.VARCHAR);
+            else ps.setString(9, m.getFatName());
+            
             ps.setString(10, m.getMotName());
-            ps.setString(11, m.getSpouseName());
-            ps.setString(12, m.getMemCertName());
+            
+            if (m.getSpouseName() == null || m.getSpouseName().trim().isEmpty()) ps.setNull(11, java.sql.Types.VARCHAR);
+            else ps.setString(11, m.getSpouseName());
+            
+            if (m.getMemCertName() == null || m.getMemCertName().trim().isEmpty()) ps.setNull(12, java.sql.Types.VARCHAR);
+            else ps.setString(12, m.getMemCertName());
+            
             ps.setString(13, m.getBirthDate());
             ps.setString(14, m.getPlaceOfBirth());
             ps.setString(15, m.getSex());
-            ps.setString(16, m.getHeight());
-            ps.setString(17, m.getWeight());
+            
+            // Height update sanitizer
+            if (m.getHeight() == null || m.getHeight().trim().isEmpty()) {
+                ps.setNull(16, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(16, Integer.parseInt(m.getHeight().trim()));
+            }
+            
+            // Weight update sanitizer
+            if (m.getWeight() == null || m.getWeight().trim().isEmpty()) {
+                ps.setNull(17, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(17, Integer.parseInt(m.getWeight().trim()));
+            }
+            
             ps.setString(18, m.getMaritalStatus());
             ps.setString(19, m.getCitizenship());
-            ps.setString(20, m.getFacialFeatures());
-            ps.setString(21, m.getFrequencyOfPayment());
-            ps.setString(22, m.getPagibigId()); // The WHERE clause target ID
+            
+            if (m.getFacialFeatures() == null || m.getFacialFeatures().trim().isEmpty()) ps.setNull(20, java.sql.Types.VARCHAR);
+            else ps.setString(20, m.getFacialFeatures());
+            
+            if (m.getFrequencyOfPayment() == null || m.getFrequencyOfPayment().trim().isEmpty()) ps.setNull(21, java.sql.Types.VARCHAR);
+            else ps.setString(21, m.getFrequencyOfPayment());
+            
+            ps.setString(22, m.getPagibigId());
+            
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error updating member: " + e.getMessage());

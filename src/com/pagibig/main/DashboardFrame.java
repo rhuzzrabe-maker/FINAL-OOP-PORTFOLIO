@@ -270,15 +270,37 @@ public class DashboardFrame extends JFrame {
     }
 
     private void showMemberDialog(int rowIndex) {
-        // 1. Declare ALL 22 text fields
+        // 1. Core UI Input Components
         JTextField idField = new JTextField();
         JTextField regisField = new JTextField();
-        JTextField occField = new JTextField();
-        JTextField firstTimeField = new JTextField();
-        JTextField typeField = new JTextField();
-        JTextField subtypeField = new JTextField();
-        JTextField workField = new JTextField();
+        
+        String[] occStatuses = {"-- Select Status --", "EMPLOYED", "UNEMPLOYED"};
+        JComboBox<String> occCombo = new JComboBox<>(occStatuses);
+        
+        JRadioButton firstTimeYes = new JRadioButton("YES");
+        JRadioButton firstTimeNo = new JRadioButton("NO");
+        ButtonGroup firstTimeGroup = new ButtonGroup();
+        firstTimeGroup.add(firstTimeYes);
+        firstTimeGroup.add(firstTimeNo);
+        firstTimeNo.setSelected(true);
+        
+        String[] memTypes = {"-- Select Membership Type --", "MANDATORY", "VOLUNTARY"};
+        JComboBox<String> typeCombo = new JComboBox<>(memTypes);
+        
+        JComboBox<String> subtypeCombo = new JComboBox<>(new String[]{"-- Select Membership Type First --"});
+
+        // Dynamic Conditional Components
+        JLabel othersLabel = new JLabel("Specify Subtype: *");
+        JTextField othersTextField = new JTextField();
+      
+        JLabel workLabel = new JLabel("Type of Work: *");
+        String[] workTypes = {"-- Select Type of Work --", "Land-based", "Sea-based"};
+        JComboBox<String> workCombo = new JComboBox<>(workTypes);
+
+        JLabel countryLabel = new JLabel("Type Country: *");
         JTextField countryField = new JTextField();
+
+        // Standard Text Fields
         JTextField nameField = new JTextField();
         JTextField fatField = new JTextField();
         JTextField motField = new JTextField();
@@ -286,25 +308,143 @@ public class DashboardFrame extends JFrame {
         JTextField certField = new JTextField();
         JTextField birthField = new JTextField();
         JTextField placeField = new JTextField();
-        JTextField sexField = new JTextField();
+        
+        JRadioButton sexMale = new JRadioButton("Male");
+        JRadioButton sexFemale = new JRadioButton("Female");
+        ButtonGroup sexGroup = new ButtonGroup();
+        sexGroup.add(sexMale);
+        sexGroup.add(sexFemale);
+        sexMale.setSelected(true);
+
         JTextField heightField = new JTextField();
         JTextField weightField = new JTextField();
-        JTextField maritalField = new JTextField();
+        
+        String[] maritalStatuses = {"-- Select Marital Status --", "Single / Unmarried", "Widow / er", "Annulled", "Married", "Legally Separated"};
+        JComboBox<String> maritalCombo = new JComboBox<>(maritalStatuses);
+        
         JTextField citizenshipField = new JTextField();
         JTextField facialField = new JTextField();
-        JTextField paymentField = new JTextField();
+        
+        String[] frequencies = {"-- Select Frequency --", "Monthly", "Quarterly"};
+        JComboBox<String> paymentCombo = new JComboBox<>(frequencies);
 
-        // 2. If editing an existing row, populate the fields
+        // Hide all conditional components initially
+        othersLabel.setVisible(false); othersTextField.setVisible(false);
+        workLabel.setVisible(false); workCombo.setVisible(false);
+        countryLabel.setVisible(false); countryField.setVisible(false);
+
+        // =====================================================================
+        // 🏗️ INITIALIZE NESTED SUB-PANELS EARLY (Fixes the Compilation Error!)
+        // =====================================================================
+        JPanel othersPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        othersPanel.add(othersLabel); othersPanel.add(othersTextField);
+        othersPanel.setVisible(false);
+
+        JPanel ofwPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        ofwPanel.add(workLabel); ofwPanel.add(workCombo);
+        ofwPanel.add(countryLabel); ofwPanel.add(countryField);
+        ofwPanel.setVisible(false);
+
+        // =====================================================================
+        // 🔄 SIDEBAR SELECTION RULES AUTOMATION
+        // =====================================================================
+        typeCombo.addActionListener(e -> {
+            String selectedType = (String) typeCombo.getSelectedItem();
+            subtypeCombo.removeAllItems();
+            
+            if ("MANDATORY".equals(selectedType)) {
+                subtypeCombo.addItem("-- Select Mandatory Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("OVERSEAS FILIPINO WORKER (OFW)");
+                subtypeCombo.addItem("SELF-EMPLOYED");
+                subtypeCombo.addItem("OTHERS");
+            } else if ("VOLUNTARY".equals(selectedType)) {
+                subtypeCombo.addItem("-- Select Voluntary Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("INDIVIDUAL PAYOR");
+                subtypeCombo.addItem("OTHERS");
+            } else {
+                subtypeCombo.addItem("-- Select Membership Type First --");
+            }
+            subtypeCombo.setSelectedIndex(0);
+        });
+
+        subtypeCombo.addActionListener(e -> {
+            String selectedSub = (String) subtypeCombo.getSelectedItem();
+            if (selectedSub == null) return;
+
+            boolean isOthers = "OTHERS".equals(selectedSub);
+            boolean isOfw = "OVERSEAS FILIPINO WORKER (OFW)".equals(selectedSub);
+
+            // Toggle child components
+            othersLabel.setVisible(isOthers);
+            othersTextField.setVisible(isOthers);
+            workLabel.setVisible(isOfw);
+            workCombo.setVisible(isOfw);
+            countryLabel.setVisible(isOfw);
+            countryField.setVisible(isOfw);
+
+            // Collapse or expand the container rows instantly
+            othersPanel.setVisible(isOthers);
+            ofwPanel.setVisible(isOfw);
+
+            // Pack window sizing smoothly
+            if (subtypeCombo.getParent() != null) {
+                Container mainContainer = subtypeCombo.getParent().getParent();
+                if (mainContainer != null) {
+                    mainContainer.revalidate();
+                    mainContainer.repaint();
+                    SwingUtilities.getWindowAncestor(mainContainer).pack();
+                }
+            }
+        });
+
+        // =====================================================================
+        // 💾 DATA RESTORATION PIPELINE (WHEN EDITING)
+        // =====================================================================
         if (rowIndex >= 0) {
             MemberRecord existing = dataStore.getMembers().get(rowIndex);
             idField.setText(existing.getPagibigId());
             regisField.setText(existing.getRegisNum());
-            occField.setText(existing.getOccupationStatus());
-            firstTimeField.setText(existing.getFirstTime());
-            typeField.setText(existing.getMemType());
-            subtypeField.setText(existing.getMemSubtype());
-            workField.setText(existing.getTypeWork());
+            
+            if ("EMPLOYED".equalsIgnoreCase(existing.getOccupationStatus())) occCombo.setSelectedIndex(1);
+            else if ("UNEMPLOYED".equalsIgnoreCase(existing.getOccupationStatus())) occCombo.setSelectedIndex(2);
+            
+            if ("YES".equalsIgnoreCase(existing.getFirstTime())) firstTimeYes.setSelected(true);
+            else firstTimeNo.setSelected(true);
+            
+            typeCombo.setSelectedItem(existing.getMemType()); 
+            
+            String sub = existing.getMemSubtype();
+            if (sub != null) {
+                boolean standardMatch = false;
+                for (int i = 0; i < subtypeCombo.getItemCount(); i++) {
+                    if (subtypeCombo.getItemAt(i).equals(sub)) {
+                        subtypeCombo.setSelectedItem(sub);
+                        standardMatch = true;
+                        break;
+                    }
+                }
+                if (!standardMatch && !sub.isEmpty()) {
+                    subtypeCombo.setSelectedItem("OTHERS");
+                    othersTextField.setText(sub);
+                    othersPanel.setVisible(true);
+                    othersLabel.setVisible(true);
+                    othersTextField.setVisible(true);
+                }
+            }
+
+            workCombo.setSelectedItem(existing.getTypeWork());
             countryField.setText(existing.getTypeCountry());
+            
+            if ("OVERSEAS FILIPINO WORKER (OFW)".equals(sub)) {
+                ofwPanel.setVisible(true);
+                workLabel.setVisible(true);
+                workCombo.setVisible(true);
+                countryLabel.setVisible(true);
+                countryField.setVisible(true);
+            }
+
             nameField.setText(existing.getMemName());
             fatField.setText(existing.getFatName());
             motField.setText(existing.getMotName());
@@ -312,53 +452,115 @@ public class DashboardFrame extends JFrame {
             certField.setText(existing.getMemCertName());
             birthField.setText(existing.getBirthDate());
             placeField.setText(existing.getPlaceOfBirth());
-            sexField.setText(existing.getSex());
+            
+            if ("M".equalsIgnoreCase(existing.getSex())) sexMale.setSelected(true);
+            else if ("F".equalsIgnoreCase(existing.getSex())) sexFemale.setSelected(true);
+
             heightField.setText(existing.getHeight());
             weightField.setText(existing.getWeight());
-            maritalField.setText(existing.getMaritalStatus());
+            
+            switch (existing.getMaritalStatus()) {
+                case "S" -> maritalCombo.setSelectedIndex(1);
+                case "W" -> maritalCombo.setSelectedIndex(2);
+                case "A" -> maritalCombo.setSelectedIndex(3);
+                case "M" -> maritalCombo.setSelectedIndex(4);
+                case "LS" -> maritalCombo.setSelectedIndex(5);
+            }
+            
             citizenshipField.setText(existing.getCitizenship());
             facialField.setText(existing.getFacialFeatures());
-            paymentField.setText(existing.getFrequencyOfPayment());
+            paymentCombo.setSelectedItem(existing.getFrequencyOfPayment());
         }
+        
+        // =====================================================================
+        // 🏗️ MAIN GRID LAYOUT ASSEMBLY
+        // =====================================================================
+        JPanel topPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        topPanel.add(new JLabel("Pag-IBIG ID: *")); topPanel.add(idField);
+        topPanel.add(new JLabel("Registration Num: *")); topPanel.add(regisField);
+        topPanel.add(new JLabel("Occupation Status: *")); topPanel.add(occCombo);
+        
+        JPanel radioFirstTime = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        radioFirstTime.add(firstTimeYes); radioFirstTime.add(firstTimeNo);
+        topPanel.add(new JLabel("First Time Member?: *")); topPanel.add(radioFirstTime);
+        
+        topPanel.add(new JLabel("Member Type: *")); topPanel.add(typeCombo);
+        topPanel.add(new JLabel("Member Subtype: *")); topPanel.add(subtypeCombo);
 
-        // 3. Create the input panel grid layout
-        JPanel panel = new JPanel(new GridLayout(0, 2, 6, 6)); // 2 columns for label and field side-by-side
-        panel.add(new JLabel("Pag-IBIG ID:")); panel.add(idField);
-        panel.add(new JLabel("Registration Num:")); panel.add(regisField);
-        panel.add(new JLabel("Occupation Status:")); panel.add(occField);
-        panel.add(new JLabel("First Time Member?:")); panel.add(firstTimeField);
-        panel.add(new JLabel("Member Type:")); panel.add(typeField);
-        panel.add(new JLabel("Member Subtype:")); panel.add(subtypeField);
-        panel.add(new JLabel("Type of Work:")); panel.add(workField);
-        panel.add(new JLabel("Type Country:")); panel.add(countryField);
-        panel.add(new JLabel("Member Name:")); panel.add(nameField);
-        panel.add(new JLabel("Father's Name:")); panel.add(fatField);
-        panel.add(new JLabel("Mother's Name:")); panel.add(motField);
-        panel.add(new JLabel("Spouse Name:")); panel.add(spouseField);
-        panel.add(new JLabel("Certificate Name:")); panel.add(certField);
-        panel.add(new JLabel("Birth Date (YYYY-MM-DD):")); panel.add(birthField);
-        panel.add(new JLabel("Place of Birth:")); panel.add(placeField);
-        panel.add(new JLabel("Sex:")); panel.add(sexField);
-        panel.add(new JLabel("Height (cm):")); panel.add(heightField);
-        panel.add(new JLabel("Weight (kg):")); panel.add(weightField);
-        panel.add(new JLabel("Marital Status:")); panel.add(maritalField);
-        panel.add(new JLabel("Citizenship:")); panel.add(citizenshipField);
-        panel.add(new JLabel("Facial Features:")); panel.add(facialField);
-        panel.add(new JLabel("Frequency of Payment:")); panel.add(paymentField);
+        JPanel bottomPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        bottomPanel.add(new JLabel("Member Name: *")); bottomPanel.add(nameField);
+        bottomPanel.add(new JLabel("Father's Name:")); bottomPanel.add(fatField);
+        bottomPanel.add(new JLabel("Mother's Name: *")); bottomPanel.add(motField);
+        bottomPanel.add(new JLabel("Spouse Name:")); bottomPanel.add(spouseField);
+        bottomPanel.add(new JLabel("Certificate Name:")); bottomPanel.add(certField);
+        bottomPanel.add(new JLabel("Birth Date (YYYY-MM-DD): *")); bottomPanel.add(birthField);
+        bottomPanel.add(new JLabel("Place of Birth: *")); bottomPanel.add(placeField);
+        
+        JPanel radioSex = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        radioSex.add(sexMale); radioSex.add(sexFemale);
+        bottomPanel.add(new JLabel("Sex: *")); bottomPanel.add(radioSex);
+        
+        bottomPanel.add(new JLabel("Height (cm):")); bottomPanel.add(heightField);
+        bottomPanel.add(new JLabel("Weight (kg):")); bottomPanel.add(weightField);
+        bottomPanel.add(new JLabel("Marital Status: *")); bottomPanel.add(maritalCombo);
+        bottomPanel.add(new JLabel("Citizenship: *")); bottomPanel.add(citizenshipField);
+        bottomPanel.add(new JLabel("Facial Features:")); bottomPanel.add(facialField);
+        bottomPanel.add(new JLabel("Frequency of Payment:")); bottomPanel.add(paymentCombo);
 
-        // 4. Show dialog box
-        int result = JOptionPane.showConfirmDialog(this, panel, rowIndex < 0 ? "Add Member" : "Edit Member", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        
+        topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+
+        mainPanel.add(topPanel);
+        mainPanel.add(othersPanel);
+        mainPanel.add(ofwPanel);   
+        mainPanel.add(bottomPanel);
+
+        // 4. Show the interactive dialog box
+        int result = JOptionPane.showConfirmDialog(this, mainPanel, rowIndex < 0 ? "Add Member" : "Edit Member", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
+            String selectedOcc = occCombo.getSelectedIndex() == 0 ? "" : (String) occCombo.getSelectedItem();
+            String selectedFirstTime = firstTimeYes.isSelected() ? "YES" : "NO";
+            String selectedType = typeCombo.getSelectedIndex() == 0 ? "" : (String) typeCombo.getSelectedItem();
+            
+            String selectedSubtype = "";
+            if (subtypeCombo.getSelectedIndex() > 0) {
+                selectedSubtype = (String) subtypeCombo.getSelectedItem();
+                if ("OTHERS".equals(selectedSubtype)) {
+                    selectedSubtype = othersTextField.getText().trim().toUpperCase();
+                }
+            }
+
+            String finalWork = "OVERSEAS FILIPINO WORKER (OFW)".equals((String)subtypeCombo.getSelectedItem()) && workCombo.getSelectedIndex() > 0 
+                               ? (String) workCombo.getSelectedItem() : "";
+            String finalCountry = "OVERSEAS FILIPINO WORKER (OFW)".equals((String)subtypeCombo.getSelectedItem()) 
+                                 ? countryField.getText().trim().toUpperCase() : "";
+            String finalSex = sexMale.isSelected() ? "M" : "F";
+            
+            String finalMarital = "";
+            switch (maritalCombo.getSelectedIndex()) {
+                case 1 -> finalMarital = "S";
+                case 2 -> finalMarital = "W";
+                case 3 -> finalMarital = "A";
+                case 4 -> finalMarital = "M";
+                case 5 -> finalMarital = "LS";
+            }
+            
+            String finalPayment = paymentCombo.getSelectedIndex() == 0 ? "" : (String) paymentCombo.getSelectedItem();
+
             MemberRecord record = new MemberRecord(
-                    idField.getText().trim(), regisField.getText().trim(), occField.getText().trim(),
-                    firstTimeField.getText().trim(), typeField.getText().trim(), subtypeField.getText().trim(),
-                    workField.getText().trim(), countryField.getText().trim(), nameField.getText().trim(),
-                    fatField.getText().trim(), motField.getText().trim(), spouseField.getText().trim(),
-                    certField.getText().trim(), birthField.getText().trim(), placeField.getText().trim(),
-                    sexField.getText().trim(), heightField.getText().trim(), weightField.getText().trim(),
-                    maritalField.getText().trim(), citizenshipField.getText().trim(), facialField.getText().trim(),
-                    paymentField.getText().trim()
+                    idField.getText().trim(), regisField.getText().trim(), selectedOcc,
+                    selectedFirstTime, selectedType, selectedSubtype,
+                    finalWork, finalCountry, nameField.getText().trim().toUpperCase(),
+                    fatField.getText().trim().toUpperCase(), motField.getText().trim().toUpperCase(), spouseField.getText().trim().toUpperCase(),
+                    certField.getText().trim().toUpperCase(), birthField.getText().trim(), placeField.getText().trim().toUpperCase(),
+                    finalSex, heightField.getText().trim(), weightField.getText().trim(),
+                    finalMarital, citizenshipField.getText().trim().toUpperCase(), facialField.getText().trim().toUpperCase(),
+                    finalPayment
             );
+            
             boolean success = rowIndex >= 0
                     ? dataStore.updateMember(rowIndex, record)
                     : dataStore.addMember(record);

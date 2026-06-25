@@ -27,7 +27,6 @@ public class MemberRecord {
     private String facialFeatures;
     private String frequencyOfPayment;
 
-    // Updated Constructor
     public MemberRecord(String pagibigId, String regisNum, String occupationStatus, String firstTime, 
                         String memType, String memSubtype, String typeWork, String typeCountry, 
                         String memName, String fatName, String motName, String spouseName, 
