@@ -1,7 +1,6 @@
 package com.pagibig.main;
 
 import com.pagibig.data.DataStore;
-
 import java.awt.*;
 import javax.swing.*;
 
@@ -70,7 +69,7 @@ public class LoginFrame extends JFrame {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
 
-        if ("admin".equals(username) && "grp3db.IM".equals(password)) {
+        if ("admin".equals(username) && "grp3db.OOP".equals(password)) {
             DashboardFrame dashboard = new DashboardFrame(new DataStore());
             dashboard.setVisible(true);
             dispose();

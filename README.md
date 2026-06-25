@@ -39,4 +39,4 @@ This project is a Java Swing conversion of the original HTML/CSS/JS Pag-IBIG adm
 ## Credentials
 
 - Username: `admin`
-- Password: `grp3db.IM`
+- Password: `grp3db.OOP`

@@ -73,7 +73,7 @@ DB_PASSWORD=your_password_here
 ## 6. Login Credentials
 
 - Username: `admin`
-- Password: `grp3db.IM`
+- Password: `grp3db.OOP`
 
 ## What Changed
 
