@@ -128,36 +128,43 @@ public class DashboardFrame extends JFrame {
 
         memberTable = new JTable(memberModel);
         memberTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        memberTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         memberSorter = new TableRowSorter<>(memberModel);
         memberTable.setRowSorter(memberSorter);
 
         contactTable = new JTable(contactModel);
         contactTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        contactTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         contactSorter = new TableRowSorter<>(contactModel);
         contactTable.setRowSorter(contactSorter);
 
         employmentTable = new JTable(employmentModel);
         employmentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        employmentTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         employmentSorter = new TableRowSorter<>(employmentModel);
         employmentTable.setRowSorter(employmentSorter);
 
         previousEmploymentTable = new JTable(previousEmploymentModel);
         previousEmploymentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        previousEmploymentTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         previousEmploymentSorter = new TableRowSorter<>(previousEmploymentModel);
         previousEmploymentTable.setRowSorter(previousEmploymentSorter);
 
         heirTable = new JTable(heirModel);
         heirTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        heirTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         heirSorter = new TableRowSorter<>(heirModel);
         heirTable.setRowSorter(heirSorter);
 
         governmentIdTable = new JTable(governmentIdModel);
         governmentIdTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        governmentIdTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         governmentIdSorter = new TableRowSorter<>(governmentIdModel);
         governmentIdTable.setRowSorter(governmentIdSorter);
 
         employerTable = new JTable(employerModel);
         employerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        employerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         employerSorter = new TableRowSorter<>(employerModel);
         employerTable.setRowSorter(employerSorter);
 
@@ -681,6 +688,14 @@ public class DashboardFrame extends JFrame {
         refreshHeirTable();
         refreshGovernmentIdTable();
         refreshEmployerTable();
+
+        packColumnWidths(memberTable);
+        packColumnWidths(contactTable);
+        packColumnWidths(employmentTable);
+        packColumnWidths(previousEmploymentTable);
+        packColumnWidths(heirTable);
+        packColumnWidths(governmentIdTable);
+        packColumnWidths(employerTable);
     }
 
     private void refreshMemberTable() {
@@ -779,6 +794,29 @@ public class DashboardFrame extends JFrame {
             case 4 -> heirSorter.setRowFilter(filter);
             case 5 -> governmentIdSorter.setRowFilter(filter);
             case 6 -> employerSorter.setRowFilter(filter);
+        }
+    }
+
+    private void packColumnWidths(JTable table) {
+        // Iterate through every column in the table
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            int maxWidth = 0;
+
+            // Check the width of the column header
+            Object headerValue = table.getColumnModel().getColumn(column).getHeaderValue();
+            java.awt.Component headerComp = table.getTableHeader().getDefaultRenderer()
+                    .getTableCellRendererComponent(table, headerValue, false, false, -1, column);
+            maxWidth = Math.max(maxWidth, headerComp.getPreferredSize().width);
+
+            // Iterate through every row to find the longest input in this column
+            for (int row = 0; row < table.getRowCount(); row++) {
+                java.awt.Component cellComp = table.getCellRenderer(row, column)
+                        .getTableCellRendererComponent(table, table.getValueAt(row, column), false, false, row, column);
+                maxWidth = Math.max(maxWidth, cellComp.getPreferredSize().width);
+            }
+
+            // Set the preferred width with a small padding (e.g., 10 pixels) so text isn't cramped
+            table.getColumnModel().getColumn(column).setPreferredWidth(maxWidth + 10);
         }
     }
 }
