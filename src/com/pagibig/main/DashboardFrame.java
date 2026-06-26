@@ -110,33 +110,59 @@ public class DashboardFrame extends JFrame {
         searchPanel.add(rowCountLabel);
         content.add(searchPanel, BorderLayout.SOUTH);
 
-        memberModel = new DefaultTableModel(new Object[]{
-            "Pagibig ID", "Regis Num", "Occupation Status", "First Time", 
-            "Member Type", "Member Subtype", "Type Work", "Type Country", 
-            "Member Name", "Fat Name", "Mot Name", "Spouse Name", 
-            "MemCert Name", "Birth Date", "Place of Birth", "Sex", 
-            "Height", "Weight", "Marital Status", "Citizenship", 
-            "Facial Features", "Frequency of Payment"
+        memberModel = new DefaultTableModel(new Object[] {
+                "Pagibig ID", "Regis Num", "Occupation Status", "First Time",
+                "Member Type", "Member Subtype", "Type Work", "Type Country",
+                "Member Name", "Fat Name", "Mot Name", "Spouse Name",
+                "MemCert Name", "Birth Date", "Place of Birth", "Sex",
+                "Height", "Weight", "Marital Status", "Citizenship",
+                "Facial Features", "Frequency of Payment"
         }, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        contactModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Cell Num", "Home Num", "Business Direct", "Business Trunk", "Email Address", "Perm Address", "Present Address", "Preferred Mail Address"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        contactModel = new DefaultTableModel(new Object[] { "Pagibig ID", "Cell Num", "Home Num", "Business Direct",
+                "Business Trunk", "Email Address", "Perm Address", "Present Address", "Preferred Mail Address" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        employmentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Status", "Occupation", "Office Assignment", "Date Employed", "Monthly Income"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        employmentModel = new DefaultTableModel(new Object[] { "Pagibig ID", "Employer ID", "Status", "Occupation",
+                "Office Assignment", "Date Employed", "Monthly Income" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        previousEmploymentModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Employer ID", "Date From", "Date To", "Prev Office Assignment"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        previousEmploymentModel = new DefaultTableModel(
+                new Object[] { "Pagibig ID", "Employer ID", "Date From", "Date To", "Prev Office Assignment" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        heirModel = new DefaultTableModel(new Object[]{"Pagibig ID", "Heir Code", "Heir Name", "Relationship", "Birth Date"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        heirModel = new DefaultTableModel(
+                new Object[] { "Pagibig ID", "Heir Code", "Heir Name", "Relationship", "Birth Date" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        governmentIdModel = new DefaultTableModel(new Object[]{"Pagibig ID", "TIN", "SSS", "CRN", "EM Num", "AFP/PNP", "DepEd Code"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        governmentIdModel = new DefaultTableModel(
+                new Object[] { "Pagibig ID", "TIN", "SSS", "CRN", "EM Num", "AFP/PNP", "DepEd Code" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        employerModel = new DefaultTableModel(new Object[]{"Employer ID", "Employer Name", "Employer Address"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+        employerModel = new DefaultTableModel(new Object[] { "Employer ID", "Employer Name", "Employer Address" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         memberTable = new JTable(memberModel);
@@ -200,31 +226,41 @@ public class DashboardFrame extends JFrame {
     }
 
     private JPanel createMemberTab() {
-        return createTablePanel(memberTable, "Member", () -> showMemberDialog(-1), () -> editTableSelection(memberTable, this::showMemberDialog, dataStore.getMembers().size()));
+        return createTablePanel(memberTable, "Member", () -> showMemberDialog(-1),
+                () -> editTableSelection(memberTable, this::showMemberDialog, dataStore.getMembers().size()));
     }
 
     private JPanel createContactTab() {
-        return createTablePanel(contactTable, "Contact", () -> showContactDialog(-1), () -> editTableSelection(contactTable, this::showContactDialog, dataStore.getContacts().size()));
+        return createTablePanel(contactTable, "Contact", () -> showContactDialog(-1),
+                () -> editTableSelection(contactTable, this::showContactDialog, dataStore.getContacts().size()));
     }
 
     private JPanel createEmploymentTab() {
-        return createTablePanel(employmentTable, "Employment", () -> showEmploymentDialog(-1), () -> editTableSelection(employmentTable, this::showEmploymentDialog, dataStore.getEmployments().size()));
+        return createTablePanel(employmentTable, "Employment", () -> showEmploymentDialog(-1),
+                () -> editTableSelection(employmentTable, this::showEmploymentDialog,
+                        dataStore.getEmployments().size()));
     }
 
     private JPanel createPreviousEmploymentTab() {
-        return createTablePanel(previousEmploymentTable, "Previous Employment", () -> showPreviousEmploymentDialog(-1), () -> editTableSelection(previousEmploymentTable, this::showPreviousEmploymentDialog, dataStore.getPreviousEmployments().size()));
+        return createTablePanel(previousEmploymentTable, "Previous Employment", () -> showPreviousEmploymentDialog(-1),
+                () -> editTableSelection(previousEmploymentTable, this::showPreviousEmploymentDialog,
+                        dataStore.getPreviousEmployments().size()));
     }
 
     private JPanel createHeirTab() {
-        return createTablePanel(heirTable, "Heir", () -> showHeirDialog(-1), () -> editTableSelection(heirTable, this::showHeirDialog, dataStore.getHeirs().size()));
+        return createTablePanel(heirTable, "Heir", () -> showHeirDialog(-1),
+                () -> editTableSelection(heirTable, this::showHeirDialog, dataStore.getHeirs().size()));
     }
 
     private JPanel createGovernmentIdTab() {
-        return createTablePanel(governmentIdTable, "Government ID", () -> showGovernmentIdDialog(-1), () -> editTableSelection(governmentIdTable, this::showGovernmentIdDialog, dataStore.getGovernmentIds().size()));
+        return createTablePanel(governmentIdTable, "Government ID", () -> showGovernmentIdDialog(-1),
+                () -> editTableSelection(governmentIdTable, this::showGovernmentIdDialog,
+                        dataStore.getGovernmentIds().size()));
     }
 
     private JPanel createEmployerTab() {
-        return createTablePanel(employerTable, "Employer", () -> showEmployerDialog(-1), () -> editTableSelection(employerTable, this::showEmployerDialog, dataStore.getEmployers().size()));
+        return createTablePanel(employerTable, "Employer", () -> showEmployerDialog(-1),
+                () -> editTableSelection(employerTable, this::showEmployerDialog, dataStore.getEmployers().size()));
     }
 
     private JPanel createTablePanel(JTable table, String label, Runnable addAction, Runnable editAction) {
@@ -254,24 +290,24 @@ public class DashboardFrame extends JFrame {
             int modelRow = table.convertRowIndexToModel(selectedRow);
             editor.accept(modelRow);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a row.", "No selection", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select a row.", "No selection",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     private void showHelpDialog() {
-        JOptionPane.showMessageDialog(this, "Use the tabs to switch between data types, and use Add/Edit/Delete to manage records.", "System Help Desk", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Use the tabs to switch between data types, and use Add/Edit/Delete to manage records.",
+                "System Help Desk", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // =====================================================================
-    // 🔀 PROGRAMMATIC REGISTRATION DISPATCHER
-    // =====================================================================
     private void showMemberDialog(int rowIndex) {
         if (rowIndex >= 0) {
-            // Edit Mode remains an isolated single row operation
+
             showSingleMemberEditDialog(rowIndex);
         } else {
-            // Creation Mode prompts the user for the structural wizard pathway
-            String[] options = {"Full Member Record (Across Tables)", "Only This Table"};
+
+            String[] options = { "Full Member Record (Across Tables)", "Only This Table" };
             int choice = JOptionPane.showOptionDialog(this,
                     "What type of record do you want to add?",
                     "Add Record Entry",
@@ -285,71 +321,72 @@ public class DashboardFrame extends JFrame {
         }
     }
 
-    // =====================================================================
-    // 🧙‍♂️ COMPLETE MULTI-STEP TRANSACTION WIZARD PIPELINE
-    // =====================================================================
     private void executeFullRegistrationWizardPipeline() {
         try {
-            // STEP 1: Root Member Information
+
             MemberRecord member = gatherWizardMemberNode();
-            if (member == null) return; 
+            if (member == null)
+                return;
 
             String trackingId = member.getPagibigId();
 
-            // STEP 2: Related Contact Details
             ContactRecord contact = gatherWizardContactNode(trackingId);
-            if (contact == null) return;
+            if (contact == null)
+                return;
 
-            // STEP 3: Current Employment Profile (Optional)
             java.util.List<EmploymentRecord> employments = gatherWizardEmploymentNodes(trackingId);
-            if (employments == null) return;
+            if (employments == null)
+                return;
 
-            // STEP 4: Previous Job Ledger History (Optional)
             java.util.List<PreviousEmploymentRecord> prevJobs = gatherWizardPrevEmploymentNodes(trackingId);
-            if (prevJobs == null) return;
+            if (prevJobs == null)
+                return;
 
-            // STEP 5: Beneficiary Registry (Mandatory - Enforces at least 1 Heir)
             java.util.List<HeirRecord> heirs = gatherWizardHeirNodes(trackingId);
-            if (heirs == null || heirs.isEmpty()) return;
+            if (heirs == null || heirs.isEmpty())
+                return;
 
-            // STEP 6: Government Identification Registry (Optional)
             GovernmentIdRecord govIds = gatherWizardGovernmentIdNode(trackingId);
-            if (govIds == null) return;
+            if (govIds == null)
+                return;
 
-            // === 💾 TRANSACT TRANSACTION COMIT BATCH WRITING PHASE ===
             boolean status = dataStore.addMember(member);
-            if (status) dataStore.addContact(contact);
-            
+            if (status)
+                dataStore.addContact(contact);
+
             if (status && !employments.isEmpty()) {
-                for (EmploymentRecord emp : employments) dataStore.addEmployment(emp);
+                for (EmploymentRecord emp : employments)
+                    dataStore.addEmployment(emp);
             }
             if (status && !prevJobs.isEmpty()) {
-                for (PreviousEmploymentRecord pJob : prevJobs) dataStore.addPreviousEmployment(pJob);
+                for (PreviousEmploymentRecord pJob : prevJobs)
+                    dataStore.addPreviousEmployment(pJob);
             }
             if (status && !heirs.isEmpty()) {
-                for (HeirRecord h : heirs) dataStore.addHeir(h);
+                for (HeirRecord h : heirs)
+                    dataStore.addHeir(h);
             }
-            
-            // Persist Gov ID block only if at least one alternative key field is provided
-            if (status && govIds != null && (!govIds.getTinNum().isEmpty() || !govIds.getSssNum().isEmpty() || 
-                !govIds.getCrn().isEmpty() || !govIds.getEmNum().isEmpty() || !govIds.getAfpPnpNum().isEmpty() || !govIds.getDepedCode().isEmpty())) {
+
+            if (status && govIds != null && (!govIds.getTinNum().isEmpty() || !govIds.getSssNum().isEmpty() ||
+                    !govIds.getCrn().isEmpty() || !govIds.getEmNum().isEmpty() || !govIds.getAfpPnpNum().isEmpty()
+                    || !govIds.getDepedCode().isEmpty())) {
                 dataStore.addGovernmentId(govIds);
             }
 
             if (status) {
-                JOptionPane.showMessageDialog(this, "Full member data has been successfully added to all relations!", "Registration Complete", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Full member data has been successfully added to all relations!",
+                        "Registration Complete", JOptionPane.INFORMATION_MESSAGE);
                 refreshAllTables();
             } else {
-                JOptionPane.showMessageDialog(this, "Batch transaction failure saving structural data records.", "Database Rejection", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Batch transaction failure saving structural data records.",
+                        "Database Rejection", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Execution anomaly: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Execution anomaly: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // =====================================================================
-    // 🛠️ SUB-ROUTINE TRANSACTION COMPONENT NODES
-    // =====================================================================
     private MemberRecord gatherWizardMemberNode() {
         JTextField idField = new JTextField();
         JTextField regisField = new JTextField();
@@ -357,51 +394,88 @@ public class DashboardFrame extends JFrame {
         applyLengthLimit(idField, 12);
         applyLengthLimit(regisField, 12);
 
-        JComboBox<String> occCombo = new JComboBox<>(new String[]{"-- Select Status --", "EMPLOYED", "UNEMPLOYED"});
-        JRadioButton firstTimeYes = new JRadioButton("YES"); JRadioButton firstTimeNo = new JRadioButton("NO");
-        ButtonGroup ftG = new ButtonGroup(); ftG.add(firstTimeYes); ftG.add(firstTimeNo); firstTimeNo.setSelected(true);
-        JComboBox<String> typeCombo = new JComboBox<>(new String[]{"-- Select Membership Type --", "MANDATORY", "VOLUNTARY"});
-        JComboBox<String> subtypeCombo = new JComboBox<>(new String[]{"-- Select Membership Type First --"});
-        
-        JLabel othersLabel = new JLabel("Specify Subtype: *"); JTextField othersTextField = new JTextField();
-        JLabel workLabel = new JLabel("Type of Work: *"); JComboBox<String> workCombo = new JComboBox<>(new String[]{"-- Select Type of Work --", "Land-based", "Sea-based"});
-        JLabel countryLabel = new JLabel("Type Country: *"); JTextField countryField = new JTextField();
-        
-        othersLabel.setVisible(false); othersTextField.setVisible(false);
-        workLabel.setVisible(false); workCombo.setVisible(false); countryLabel.setVisible(false); countryField.setVisible(false);
+        JComboBox<String> occCombo = new JComboBox<>(new String[] { "-- Select Status --", "EMPLOYED", "UNEMPLOYED" });
+        JRadioButton firstTimeYes = new JRadioButton("YES");
+        JRadioButton firstTimeNo = new JRadioButton("NO");
+        ButtonGroup ftG = new ButtonGroup();
+        ftG.add(firstTimeYes);
+        ftG.add(firstTimeNo);
+        firstTimeNo.setSelected(true);
+        JComboBox<String> typeCombo = new JComboBox<>(
+                new String[] { "-- Select Membership Type --", "MANDATORY", "VOLUNTARY" });
+        JComboBox<String> subtypeCombo = new JComboBox<>(new String[] { "-- Select Membership Type First --" });
 
-        JPanel oP = new JPanel(new GridLayout(0, 2, 8, 8)); 
-        oP.add(othersLabel); oP.add(othersTextField); 
+        JLabel othersLabel = new JLabel("Specify Subtype: *");
+        JTextField othersTextField = new JTextField();
+        JLabel workLabel = new JLabel("Type of Work: *");
+        JComboBox<String> workCombo = new JComboBox<>(
+                new String[] { "-- Select Type of Work --", "Land-based", "Sea-based" });
+        JLabel countryLabel = new JLabel("Type Country: *");
+        JTextField countryField = new JTextField();
+
+        othersLabel.setVisible(false);
+        othersTextField.setVisible(false);
+        workLabel.setVisible(false);
+        workCombo.setVisible(false);
+        countryLabel.setVisible(false);
+        countryField.setVisible(false);
+
+        JPanel oP = new JPanel(new GridLayout(0, 2, 8, 8));
+        oP.add(othersLabel);
+        oP.add(othersTextField);
         oP.setVisible(false);
-        JPanel ofwP = new JPanel(new GridLayout(0, 2, 8, 8)); 
-        ofwP.add(workLabel); 
-        ofwP.add(workCombo); 
-        ofwP.add(countryLabel); 
-        ofwP.add(countryField); 
+        JPanel ofwP = new JPanel(new GridLayout(0, 2, 8, 8));
+        ofwP.add(workLabel);
+        ofwP.add(workCombo);
+        ofwP.add(countryLabel);
+        ofwP.add(countryField);
         ofwP.setVisible(false);
 
         typeCombo.addActionListener(e -> {
-            String t = (String) typeCombo.getSelectedItem(); subtypeCombo.removeAllItems();
+            String t = (String) typeCombo.getSelectedItem();
+            subtypeCombo.removeAllItems();
             if ("MANDATORY".equals(t)) {
-                subtypeCombo.addItem("-- Select Mandatory Subtype --"); subtypeCombo.addItem("EMPLOYED");
-                subtypeCombo.addItem("OVERSEAS FILIPINO WORKER (OFW)"); subtypeCombo.addItem("SELF-EMPLOYED"); subtypeCombo.addItem("OTHERS");
+                subtypeCombo.addItem("-- Select Mandatory Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("OVERSEAS FILIPINO WORKER (OFW)");
+                subtypeCombo.addItem("SELF-EMPLOYED");
+                subtypeCombo.addItem("OTHERS");
             } else if ("VOLUNTARY".equals(t)) {
-                subtypeCombo.addItem("-- Select Voluntary Subtype --"); subtypeCombo.addItem("EMPLOYED");
-                subtypeCombo.addItem("INDIVIDUAL PAYOR"); subtypeCombo.addItem("OTHERS");
-            } else { subtypeCombo.addItem("-- Select Membership Type First --"); }
+                subtypeCombo.addItem("-- Select Voluntary Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("INDIVIDUAL PAYOR");
+                subtypeCombo.addItem("OTHERS");
+            } else {
+                subtypeCombo.addItem("-- Select Membership Type First --");
+            }
         });
 
         subtypeCombo.addActionListener(e -> {
-            String s = (String) subtypeCombo.getSelectedItem(); if (s == null) return;
-            boolean isO = "OTHERS".equals(s); boolean isOfw = "OVERSEAS FILIPINO WORKER (OFW)".equals(s);
-            othersLabel.setVisible(isO); othersTextField.setVisible(isO); oP.setVisible(isO);
-            workLabel.setVisible(isOfw); workCombo.setVisible(isOfw); countryLabel.setVisible(isOfw); countryField.setVisible(isOfw); ofwP.setVisible(isOfw);
+            String s = (String) subtypeCombo.getSelectedItem();
+            if (s == null)
+                return;
+            boolean isO = "OTHERS".equals(s);
+            boolean isOfw = "OVERSEAS FILIPINO WORKER (OFW)".equals(s);
+            othersLabel.setVisible(isO);
+            othersTextField.setVisible(isO);
+            oP.setVisible(isO);
+            workLabel.setVisible(isOfw);
+            workCombo.setVisible(isOfw);
+            countryLabel.setVisible(isOfw);
+            countryField.setVisible(isOfw);
+            ofwP.setVisible(isOfw);
             Window ancestor = SwingUtilities.getWindowAncestor(subtypeCombo);
-            if (ancestor != null) ancestor.pack();
+            if (ancestor != null)
+                ancestor.pack();
         });
 
-        JTextField nameField = new JTextField(); JTextField fatField = new JTextField(); JTextField motField = new JTextField(); JTextField spouseField = new JTextField();
-        JTextField certField = new JTextField(); JTextField birthField = new JTextField(); JTextField placeField = new JTextField();
+        JTextField nameField = new JTextField();
+        JTextField fatField = new JTextField();
+        JTextField motField = new JTextField();
+        JTextField spouseField = new JTextField();
+        JTextField certField = new JTextField();
+        JTextField birthField = new JTextField();
+        JTextField placeField = new JTextField();
 
         applyTextPlaceholderHint(nameField, "SURNAME, FIRST NAME MIDDLE NAME");
         applyTextPlaceholderHint(fatField, "SURNAME, FIRST NAME MIDDLE NAME");
@@ -411,66 +485,117 @@ public class DashboardFrame extends JFrame {
         applyTextPlaceholderHint(birthField, "YYYY-MM-DD");
         applyTextPlaceholderHint(placeField, "CITY / PROVINCE OF BIRTH");
 
-        JRadioButton sexM = new JRadioButton("Male"); JRadioButton sexF = new JRadioButton("Female");
-        ButtonGroup sexG = new ButtonGroup(); sexG.add(sexM); sexG.add(sexF); sexM.setSelected(true);
-        JTextField hField = new JTextField(); JTextField wField = new JTextField();
-        JComboBox<String> maritalCombo = new JComboBox<>(new String[]{"-- Select Marital Status --", "Single / Unmarried", "Widow / er", "Annulled", "Married", "Legally Separated"});
-        JTextField citizenshipField = new JTextField(); JTextField facialField = new JTextField();
-        JComboBox<String> paymentCombo = new JComboBox<>(new String[]{"-- Select Frequency --", "Monthly", "Quarterly"});
+        JRadioButton sexM = new JRadioButton("Male");
+        JRadioButton sexF = new JRadioButton("Female");
+        ButtonGroup sexG = new ButtonGroup();
+        sexG.add(sexM);
+        sexG.add(sexF);
+        sexM.setSelected(true);
+        JTextField hField = new JTextField();
+        JTextField wField = new JTextField();
+        JComboBox<String> maritalCombo = new JComboBox<>(new String[] { "-- Select Marital Status --",
+                "Single / Unmarried", "Widow / er", "Annulled", "Married", "Legally Separated" });
+        JTextField citizenshipField = new JTextField();
+        JTextField facialField = new JTextField();
+        JComboBox<String> paymentCombo = new JComboBox<>(
+                new String[] { "-- Select Frequency --", "Monthly", "Quarterly" });
 
         JPanel topP = new JPanel(new GridLayout(0, 2, 8, 8));
-        topP.add(new JLabel("Pag-IBIG ID: *")); topP.add(idField); topP.add(new JLabel("Registration Num: *")); topP.add(regisField);
-        topP.add(new JLabel("Occupation Status: *")); topP.add(occCombo); topP.add(new JLabel("First Time Member?: *"));
-        JPanel rFT = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); rFT.add(firstTimeYes); rFT.add(firstTimeNo); topP.add(rFT);
-        topP.add(new JLabel("Member Type: *")); topP.add(typeCombo); topP.add(new JLabel("Member Subtype: *")); topP.add(subtypeCombo);
+        topP.add(new JLabel("Pag-IBIG ID: *"));
+        topP.add(idField);
+        topP.add(new JLabel("Registration Num: *"));
+        topP.add(regisField);
+        topP.add(new JLabel("Occupation Status: *"));
+        topP.add(occCombo);
+        topP.add(new JLabel("First Time Member?: *"));
+        JPanel rFT = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        rFT.add(firstTimeYes);
+        rFT.add(firstTimeNo);
+        topP.add(rFT);
+        topP.add(new JLabel("Member Type: *"));
+        topP.add(typeCombo);
+        topP.add(new JLabel("Member Subtype: *"));
+        topP.add(subtypeCombo);
 
         JPanel bottomP = new JPanel(new GridLayout(0, 2, 8, 8));
-        bottomP.add(new JLabel("Member Name: *")); bottomP.add(nameField); bottomP.add(new JLabel("Father's Name:")); bottomP.add(fatField);
-        bottomP.add(new JLabel("Mother's Name: *")); bottomP.add(motField); bottomP.add(new JLabel("Spouse Name:")); bottomP.add(spouseField);
-        bottomP.add(new JLabel("Certificate Name:")); bottomP.add(certField); bottomP.add(new JLabel("Birth Date (YYYY-MM-DD): *")); bottomP.add(birthField);
-        bottomP.add(new JLabel("Place of Birth: *")); bottomP.add(placeField); bottomP.add(new JLabel("Sex: *"));
-        JPanel rS = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); rS.add(sexM); rS.add(sexF); bottomP.add(rS);
-        bottomP.add(new JLabel("Height (cm):")); bottomP.add(hField); bottomP.add(new JLabel("Weight (kg):")); bottomP.add(wField);
-        bottomP.add(new JLabel("Marital Status: *")); bottomP.add(maritalCombo); bottomP.add(new JLabel("Citizenship: *")); bottomP.add(citizenshipField);
-        bottomP.add(new JLabel("Facial Features:")); bottomP.add(facialField); bottomP.add(new JLabel("Frequency of Payment:")); bottomP.add(paymentCombo);
+        bottomP.add(new JLabel("Member Name: *"));
+        bottomP.add(nameField);
+        bottomP.add(new JLabel("Father's Name:"));
+        bottomP.add(fatField);
+        bottomP.add(new JLabel("Mother's Name: *"));
+        bottomP.add(motField);
+        bottomP.add(new JLabel("Spouse Name:"));
+        bottomP.add(spouseField);
+        bottomP.add(new JLabel("Certificate Name:"));
+        bottomP.add(certField);
+        bottomP.add(new JLabel("Birth Date (YYYY-MM-DD): *"));
+        bottomP.add(birthField);
+        bottomP.add(new JLabel("Place of Birth: *"));
+        bottomP.add(placeField);
+        bottomP.add(new JLabel("Sex: *"));
+        JPanel rS = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        rS.add(sexM);
+        rS.add(sexF);
+        bottomP.add(rS);
+        bottomP.add(new JLabel("Height (cm):"));
+        bottomP.add(hField);
+        bottomP.add(new JLabel("Weight (kg):"));
+        bottomP.add(wField);
+        bottomP.add(new JLabel("Marital Status: *"));
+        bottomP.add(maritalCombo);
+        bottomP.add(new JLabel("Citizenship: *"));
+        bottomP.add(citizenshipField);
+        bottomP.add(new JLabel("Facial Features:"));
+        bottomP.add(facialField);
+        bottomP.add(new JLabel("Frequency of Payment:"));
+        bottomP.add(paymentCombo);
 
-        JPanel mainP = new JPanel(); 
+        JPanel mainP = new JPanel();
         mainP.setLayout(new BoxLayout(mainP, BoxLayout.Y_AXIS));
         mainP.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        topP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
-        oP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
-        ofwP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
+        topP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        oP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        ofwP.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
         bottomP.setBorder(null);
 
-        mainP.add(topP); 
-        mainP.add(oP); 
-        mainP.add(ofwP); 
+        mainP.add(topP);
+        mainP.add(oP);
+        mainP.add(ofwP);
         mainP.add(bottomP);
 
         while (true) {
-            int res = JOptionPane.showConfirmDialog(this, mainP, "Step 1: Member Data", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (res != JOptionPane.OK_OPTION) return null;
+            int res = JOptionPane.showConfirmDialog(this, mainP, "Step 1: Member Data", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+            if (res != JOptionPane.OK_OPTION)
+                return null;
 
-            String rawId = idField.getText().trim(); String rawReg = regisField.getText().trim();
+            String rawId = idField.getText().trim();
+            String rawReg = regisField.getText().trim();
 
             String rawName = nameField.getText().trim();
             String rawFat = fatField.getText().trim();
             String rawMot = motField.getText().trim();
             String rawSpouse = spouseField.getText().trim();
             String rawCert = certField.getText().trim();
-            String rawBirth = birthField.getText().trim(); 
+            String rawBirth = birthField.getText().trim();
             String rawPlace = placeField.getText().trim();
 
-            if (rawName.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawName = "";
-            if (rawFat.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawFat = "";
-            if (rawMot.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawMot = "";
-            if (rawSpouse.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawSpouse = "";
-            if (rawCert.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawCert = "";
-            if (rawBirth.equals("YYYY-MM-DD")) rawBirth = "";
-            if (rawPlace.equals("CITY / PROVINCE OF BIRTH")) rawPlace = "";
+            if (rawName.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawName = "";
+            if (rawFat.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawFat = "";
+            if (rawMot.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawMot = "";
+            if (rawSpouse.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawSpouse = "";
+            if (rawCert.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawCert = "";
+            if (rawBirth.equals("YYYY-MM-DD"))
+                rawBirth = "";
+            if (rawPlace.equals("CITY / PROVINCE OF BIRTH"))
+                rawPlace = "";
 
-            // Capitalize for database engine consistency
             rawName = rawName.toUpperCase();
             rawFat = rawFat.toUpperCase();
             rawMot = rawMot.toUpperCase();
@@ -480,98 +605,162 @@ public class DashboardFrame extends JFrame {
             rawPlace = rawPlace.toUpperCase();
             String rawCit = citizenshipField.getText().trim().toUpperCase();
 
-            if (rawId.isEmpty() || rawReg.isEmpty() || occCombo.getSelectedIndex() <= 0 || typeCombo.getSelectedIndex() <= 0 || 
-                subtypeCombo.getSelectedIndex() <= 0 || rawName.isEmpty() || rawMot.isEmpty() || rawBirth.isEmpty() || rawPlace.isEmpty() || 
-                maritalCombo.getSelectedIndex() <= 0 || rawCit.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory fields marked with (*).", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            if (rawId.isEmpty() || rawReg.isEmpty() || occCombo.getSelectedIndex() <= 0
+                    || typeCombo.getSelectedIndex() <= 0 ||
+                    subtypeCombo.getSelectedIndex() <= 0 || rawName.isEmpty() || rawMot.isEmpty() || rawBirth.isEmpty()
+                    || rawPlace.isEmpty() ||
+                    maritalCombo.getSelectedIndex() <= 0 || rawCit.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory fields marked with (*).",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
-            // Verify Unique Key duplication constraints early inside the wizard stack
             boolean duplicated = false;
             for (MemberRecord record : dataStore.getMembers()) {
-                if (record.getPagibigId().equals(rawId)) { duplicated = true; break; }
+                if (record.getPagibigId().equals(rawId)) {
+                    duplicated = true;
+                    break;
+                }
             }
             if (duplicated) {
-                JOptionPane.showMessageDialog(this, "Registration Refused: Pag-IBIG ID already exists inside the database engine records.", "Primary Key Conflict", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Registration Refused: Pag-IBIG ID already exists inside the database engine records.",
+                        "Primary Key Conflict", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
             String sSub = (String) subtypeCombo.getSelectedItem();
             if ("OTHERS".equals(sSub)) {
                 sSub = othersTextField.getText().trim().toUpperCase();
-                if (sSub.isEmpty()) { JOptionPane.showMessageDialog(this, "Validation Blocked: Please specify custom Subtype.", "Validation Error", JOptionPane.ERROR_MESSAGE); continue; }
-            }
-
-            String fWork = ""; String fCountry = "";
-            if ("OVERSEAS FILIPINO WORKER (OFW)".equals((String) subtypeCombo.getSelectedItem())) {
-                if (workCombo.getSelectedIndex() <= 0 || countryField.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Validation Blocked: Work type and Country entries are required for OFWs.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                if (sSub.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Validation Blocked: Please specify custom Subtype.",
+                            "Validation Error", JOptionPane.ERROR_MESSAGE);
                     continue;
                 }
-                fWork = (String) workCombo.getSelectedItem(); fCountry = countryField.getText().trim().toUpperCase();
             }
 
-            String fMarital = switch(maritalCombo.getSelectedIndex()) { case 1->"S"; case 2->"W"; case 3->"A"; case 4->"M"; case 5->"LS"; default->""; };
-            return new MemberRecord(rawId, rawReg, (String) occCombo.getSelectedItem(), firstTimeYes.isSelected()?"YES":"NO", (String) typeCombo.getSelectedItem(), sSub,
+            String fWork = "";
+            String fCountry = "";
+            if ("OVERSEAS FILIPINO WORKER (OFW)".equals((String) subtypeCombo.getSelectedItem())) {
+                if (workCombo.getSelectedIndex() <= 0 || countryField.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Validation Blocked: Work type and Country entries are required for OFWs.",
+                            "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    continue;
+                }
+                fWork = (String) workCombo.getSelectedItem();
+                fCountry = countryField.getText().trim().toUpperCase();
+            }
+
+            String fMarital = switch (maritalCombo.getSelectedIndex()) {
+                case 1 -> "S";
+                case 2 -> "W";
+                case 3 -> "A";
+                case 4 -> "M";
+                case 5 -> "LS";
+                default -> "";
+            };
+            return new MemberRecord(rawId, rawReg, (String) occCombo.getSelectedItem(),
+                    firstTimeYes.isSelected() ? "YES" : "NO", (String) typeCombo.getSelectedItem(), sSub,
                     fWork, fCountry, rawName, rawFat, rawMot, rawSpouse, rawCert,
-                    rawBirth, rawPlace, sexM.isSelected()?"M":"F", hField.getText().trim(), wField.getText().trim(), fMarital, rawCit, facialField.getText().trim().toUpperCase(),
-                    paymentCombo.getSelectedIndex()==0?"":(String) paymentCombo.getSelectedItem());
+                    rawBirth, rawPlace, sexM.isSelected() ? "M" : "F", hField.getText().trim(), wField.getText().trim(),
+                    fMarital, rawCit, facialField.getText().trim().toUpperCase(),
+                    paymentCombo.getSelectedIndex() == 0 ? "" : (String) paymentCombo.getSelectedItem());
         }
     }
 
     private ContactRecord gatherWizardContactNode(String trackingId) {
         JTextField cellField = new JTextField();
         applyTextPlaceholderHint(cellField, "+63 XXX XXX XXXX");
-        JTextField homeField = new JTextField(); JTextField directField = new JTextField();
-        JTextField trunkField = new JTextField(); JTextField emailField = new JTextField(); JTextField permField = new JTextField();
+        JTextField homeField = new JTextField();
+        JTextField directField = new JTextField();
+        JTextField trunkField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField permField = new JTextField();
         JTextField presentField = new JTextField();
-        JComboBox<String> prefCombo = new JComboBox<>(new String[]{"-- Select Preferred Address --", "Present Home Address", "Permanent Home Address", "Employer/Business Address"});
+        JComboBox<String> prefCombo = new JComboBox<>(new String[] { "-- Select Preferred Address --",
+                "Present Home Address", "Permanent Home Address", "Employer/Business Address" });
         JCheckBox syncCb = new JCheckBox("Present Address is the same as Permanent Home Address");
 
         syncCb.addActionListener(e -> {
-            if (syncCb.isSelected()) { presentField.setText(permField.getText()); presentField.setEnabled(false); }
-            else { presentField.setEnabled(true); presentField.setText(""); }
+            if (syncCb.isSelected()) {
+                presentField.setText(permField.getText());
+                presentField.setEnabled(false);
+            } else {
+                presentField.setEnabled(true);
+                presentField.setText("");
+            }
         });
 
         permField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
         });
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Cell Number: *")); p.add(cellField); p.add(new JLabel("Home Number:")); p.add(homeField);
-        p.add(new JLabel("Business Direct:")); p.add(directField); p.add(new JLabel("Business Trunk:")); p.add(trunkField);
-        p.add(new JLabel("Email Address:")); p.add(emailField); p.add(new JLabel("Permanent Address: *")); p.add(permField);
-        p.add(syncCb); p.add(new JLabel("")); p.add(new JLabel("Present Address: *")); p.add(presentField);
-        p.add(new JLabel("Preferred Mail Address: *")); p.add(prefCombo);
+        p.add(new JLabel("Cell Number: *"));
+        p.add(cellField);
+        p.add(new JLabel("Home Number:"));
+        p.add(homeField);
+        p.add(new JLabel("Business Direct:"));
+        p.add(directField);
+        p.add(new JLabel("Business Trunk:"));
+        p.add(trunkField);
+        p.add(new JLabel("Email Address:"));
+        p.add(emailField);
+        p.add(new JLabel("Permanent Address: *"));
+        p.add(permField);
+        p.add(syncCb);
+        p.add(new JLabel(""));
+        p.add(new JLabel("Present Address: *"));
+        p.add(presentField);
+        p.add(new JLabel("Preferred Mail Address: *"));
+        p.add(prefCombo);
 
         while (true) {
-            int res = JOptionPane.showConfirmDialog(this, p, "Step 2: Contact Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (res != JOptionPane.OK_OPTION) return null;
+            int res = JOptionPane.showConfirmDialog(this, p, "Step 2: Contact Details", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+            if (res != JOptionPane.OK_OPTION)
+                return null;
 
-            String cVal = cellField.getText().trim(); 
+            String cVal = cellField.getText().trim();
             if (cVal.equals("+63 XXX XXX XXXX")) {
-                cVal = ""; 
+                cVal = "";
             }
             String permVal = permField.getText().trim().toUpperCase();
             String presVal = syncCb.isSelected() ? permVal : presentField.getText().trim().toUpperCase();
 
             if (cVal.isEmpty() || permVal.isEmpty() || presVal.isEmpty() || prefCombo.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing required contact elements.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing required contact elements.",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
-            return new ContactRecord(trackingId, cVal, homeField.getText().trim(), directField.getText().trim(), trunkField.getText().trim(), emailField.getText().trim(), permVal, presVal, (String) prefCombo.getSelectedItem());
+            return new ContactRecord(trackingId, cVal, homeField.getText().trim(), directField.getText().trim(),
+                    trunkField.getText().trim(), emailField.getText().trim(), permVal, presVal,
+                    (String) prefCombo.getSelectedItem());
         }
     }
 
     private void showEmploymentDialog(int rowIndex) {
         JTextField idField = new JTextField();
         JTextField empIdField = new JTextField();
-        JComboBox<String> statusCombo = new JComboBox<>(new String[]{"-- Select Status --", "Permanent/Regular", "Casual", "Contractual", "Project-based", "Part-time/Temporary"});
+        JComboBox<String> statusCombo = new JComboBox<>(new String[] { "-- Select Status --", "Permanent/Regular",
+                "Casual", "Contractual", "Project-based", "Part-time/Temporary" });
         JTextField occField = new JTextField();
-        JComboBox<String> officeCombo = new JComboBox<>(new String[]{"-- Select Office --", "Head Office", "Branch Office"});
+        JComboBox<String> officeCombo = new JComboBox<>(
+                new String[] { "-- Select Office --", "Head Office", "Branch Office" });
         JTextField dateField = new JTextField();
         JTextField incomeField = new JTextField();
 
@@ -579,8 +768,10 @@ public class DashboardFrame extends JFrame {
 
         if (rowIndex >= 0) {
             com.pagibig.model.EmploymentRecord existing = dataStore.getEmployments().get(rowIndex);
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
-            empIdField.setText(existing.getEmployerId()); empIdField.setEditable(false);
+            idField.setText(existing.getPagibigId());
+            idField.setEditable(false);
+            empIdField.setText(existing.getEmployerId());
+            empIdField.setEditable(false);
             statusCombo.setSelectedItem(existing.getEmploymentStatus());
             occField.setText(existing.getOccupation());
             officeCombo.setSelectedItem(existing.getOfficeAssignment());
@@ -589,30 +780,47 @@ public class DashboardFrame extends JFrame {
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Pag-IBIG ID: *")); p.add(idField);
-        p.add(new JLabel("Employer ID: *")); p.add(empIdField);
-        p.add(new JLabel("Employment Status: *")); p.add(statusCombo);
-        p.add(new JLabel("Occupation: *")); p.add(occField);
-        p.add(new JLabel("Office Assignment: *")); p.add(officeCombo);
-        p.add(new JLabel("Date Employed: *")); p.add(dateField);
-        p.add(new JLabel("Monthly Income: *")); p.add(incomeField);
+        p.add(new JLabel("Pag-IBIG ID: *"));
+        p.add(idField);
+        p.add(new JLabel("Employer ID: *"));
+        p.add(empIdField);
+        p.add(new JLabel("Employment Status: *"));
+        p.add(statusCombo);
+        p.add(new JLabel("Occupation: *"));
+        p.add(occField);
+        p.add(new JLabel("Office Assignment: *"));
+        p.add(officeCombo);
+        p.add(new JLabel("Date Employed: *"));
+        p.add(dateField);
+        p.add(new JLabel("Monthly Income: *"));
+        p.add(incomeField);
 
-        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Employment" : "Edit Employment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Employment" : "Edit Employment",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            String rawId = idField.getText().trim(); String empId = empIdField.getText().trim();
-            if (rawId.isEmpty() || empId.isEmpty() || statusCombo.getSelectedIndex() <= 0 || occField.getText().trim().isEmpty() || officeCombo.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this, "Validation Error: Missing fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            String rawId = idField.getText().trim();
+            String empId = empIdField.getText().trim();
+            if (rawId.isEmpty() || empId.isEmpty() || statusCombo.getSelectedIndex() <= 0
+                    || occField.getText().trim().isEmpty() || officeCombo.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(this, "Validation Error: Missing fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            // Check constraint if adding standalone
+
             if (rowIndex < 0) {
                 boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equals(rawId));
-                if (!exist) { JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE); return; }
+                if (!exist) {
+                    JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
 
-            com.pagibig.model.EmploymentRecord record = new com.pagibig.model.EmploymentRecord(rawId, empId, (String) statusCombo.getSelectedItem(), occField.getText().trim().toUpperCase(), (String) officeCombo.getSelectedItem(), dateField.getText().trim(), incomeField.getText().trim());
-            boolean success = rowIndex >= 0 ? dataStore.updateEmployment(rowIndex, record) : dataStore.addEmployment(record);
+            com.pagibig.model.EmploymentRecord record = new com.pagibig.model.EmploymentRecord(rawId, empId,
+                    (String) statusCombo.getSelectedItem(), occField.getText().trim().toUpperCase(),
+                    (String) officeCombo.getSelectedItem(), dateField.getText().trim(), incomeField.getText().trim());
+            boolean success = rowIndex >= 0 ? dataStore.updateEmployment(rowIndex, record)
+                    : dataStore.addEmployment(record);
             handleSaveResult(success, "Employment");
         }
     }
@@ -622,41 +830,59 @@ public class DashboardFrame extends JFrame {
         JTextField empIdField = new JTextField();
         JTextField fromField = new JTextField();
         JTextField toField = new JTextField();
-        JComboBox<String> officeCombo = new JComboBox<>(new String[]{"-- Select Office --", "Head Office", "Branch Office"});
+        JComboBox<String> officeCombo = new JComboBox<>(
+                new String[] { "-- Select Office --", "Head Office", "Branch Office" });
 
         applyLengthLimit(idField, 12);
 
         if (rowIndex >= 0) {
             com.pagibig.model.PreviousEmploymentRecord existing = dataStore.getPreviousEmployments().get(rowIndex);
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
-            empIdField.setText(existing.getEmployerId()); empIdField.setEditable(false);
-            fromField.setText(existing.getDateFrom()); fromField.setEditable(false);
+            idField.setText(existing.getPagibigId());
+            idField.setEditable(false);
+            empIdField.setText(existing.getEmployerId());
+            empIdField.setEditable(false);
+            fromField.setText(existing.getDateFrom());
+            fromField.setEditable(false);
             toField.setText(existing.getDateTo());
             officeCombo.setSelectedItem(existing.getPrevOfficeAssignment());
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Pag-IBIG ID: *")); p.add(idField);
-        p.add(new JLabel("Employer ID: *")); p.add(empIdField);
-        p.add(new JLabel("Date From: *")); p.add(fromField);
-        p.add(new JLabel("Date To: *")); p.add(toField);
-        p.add(new JLabel("Office Assignment: *")); p.add(officeCombo);
+        p.add(new JLabel("Pag-IBIG ID: *"));
+        p.add(idField);
+        p.add(new JLabel("Employer ID: *"));
+        p.add(empIdField);
+        p.add(new JLabel("Date From: *"));
+        p.add(fromField);
+        p.add(new JLabel("Date To: *"));
+        p.add(toField);
+        p.add(new JLabel("Office Assignment: *"));
+        p.add(officeCombo);
 
-        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Past Job" : "Edit Past Job", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Past Job" : "Edit Past Job",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String rawId = idField.getText().trim();
             if (rawId.isEmpty() || empIdField.getText().trim().isEmpty() || fromField.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Error: Missing fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Validation Error: Missing fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (rowIndex < 0) {
                 boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equals(rawId));
-                if (!exist) { JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE); return; }
+                if (!exist) {
+                    JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
 
-            com.pagibig.model.PreviousEmploymentRecord record = new com.pagibig.model.PreviousEmploymentRecord(rawId, empIdField.getText().trim(), fromField.getText().trim(), toField.getText().trim(), (String) officeCombo.getSelectedItem());
-            boolean success = rowIndex >= 0 ? dataStore.updatePreviousEmployment(rowIndex, record) : dataStore.addPreviousEmployment(record);
+            com.pagibig.model.PreviousEmploymentRecord record = new com.pagibig.model.PreviousEmploymentRecord(rawId,
+                    empIdField.getText().trim(), fromField.getText().trim(), toField.getText().trim(),
+                    (String) officeCombo.getSelectedItem());
+            boolean success = rowIndex >= 0 ? dataStore.updatePreviousEmployment(rowIndex, record)
+                    : dataStore.addPreviousEmployment(record);
             handleSaveResult(success, "Previous Employment");
         }
     }
@@ -673,61 +899,73 @@ public class DashboardFrame extends JFrame {
 
         if (rowIndex >= 0) {
             com.pagibig.model.HeirRecord existing = dataStore.getHeirs().get(rowIndex);
-            
-            idField.setText(existing.getPagibigId()); 
+
+            idField.setText(existing.getPagibigId());
             idField.setEditable(false);
-            codeField.setText(existing.getHeirCode()); 
+            codeField.setText(existing.getHeirCode());
             codeField.setEditable(false);
-            
+
             prefillField(nameField, existing.getHeirName(), "SURNAME, FIRST NAME MIDDLE NAME");
             relField.setText(existing.getRelationship());
             birthField.setText(existing.getHeirDateBirth());
         } else {
-            // Standalone creation mode prompts for the existing member ID first
-            String targetMemberId = JOptionPane.showInputDialog(this, "Enter existing Member Pag-IBIG ID for this Heir:", "Heir Association", JOptionPane.QUESTION_MESSAGE);
-            if (targetMemberId == null || targetMemberId.trim().isEmpty()) return;
-            
+
+            String targetMemberId = JOptionPane.showInputDialog(this,
+                    "Enter existing Member Pag-IBIG ID for this Heir:", "Heir Association",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (targetMemberId == null || targetMemberId.trim().isEmpty())
+                return;
+
             String formattedId = targetMemberId.trim().toUpperCase();
-            boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equalsIgnoreCase(formattedId));
+            boolean exist = dataStore.getMembers().stream()
+                    .anyMatch(m -> m.getPagibigId().equalsIgnoreCase(formattedId));
             if (!exist) {
-                JOptionPane.showMessageDialog(this, "Save Refused: Member Pag-IBIG ID " + formattedId + " does not exist.", "Foreign Key Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Save Refused: Member Pag-IBIG ID " + formattedId + " does not exist.", "Foreign Key Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             idField.setText(formattedId);
             idField.setEditable(false);
-            
-            // Automatically calculate the next sequence number for this specific member ID
+
             codeField.setText(generateNextHeirCode(formattedId));
             codeField.setEditable(false);
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Pag-IBIG ID:")); p.add(idField);
-        p.add(new JLabel("Heir Code:")); p.add(codeField);
-        p.add(new JLabel("Heir Name: *")); p.add(nameField);
-        p.add(new JLabel("Relationship: *")); p.add(relField);
-        p.add(new JLabel("Birth Date: *")); p.add(birthField);
+        p.add(new JLabel("Pag-IBIG ID:"));
+        p.add(idField);
+        p.add(new JLabel("Heir Code:"));
+        p.add(codeField);
+        p.add(new JLabel("Heir Name: *"));
+        p.add(nameField);
+        p.add(new JLabel("Relationship: *"));
+        p.add(relField);
+        p.add(new JLabel("Birth Date: *"));
+        p.add(birthField);
 
-        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Heir" : "Edit Heir", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Heir" : "Edit Heir",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String rawName = nameField.getText().trim().toUpperCase();
             String rawRel = relField.getText().trim().toUpperCase();
             String rawBirth = birthField.getText().trim();
 
             if (rawName.isEmpty() || rawRel.isEmpty() || rawBirth.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Error: Missing required fields marked with an asterisk (*).", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Validation Error: Missing required fields marked with an asterisk (*).", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             com.pagibig.model.HeirRecord record = new com.pagibig.model.HeirRecord(
-                idField.getText(), 
-                codeField.getText(), 
-                rawName, 
-                rawRel, 
-                rawBirth
-            );
-            
+                    idField.getText(),
+                    codeField.getText(),
+                    rawName,
+                    rawRel,
+                    rawBirth);
+
             boolean success;
             if (rowIndex >= 0) {
                 success = dataStore.updateHeir(rowIndex, record);
@@ -751,7 +989,8 @@ public class DashboardFrame extends JFrame {
 
         if (rowIndex >= 0) {
             com.pagibig.model.GovernmentIdRecord existing = dataStore.getGovernmentIds().get(rowIndex);
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
+            idField.setText(existing.getPagibigId());
+            idField.setEditable(false);
             tinField.setText(existing.getTinNum());
             sssField.setText(existing.getSssNum());
             crnField.setText(existing.getCrn());
@@ -761,26 +1000,44 @@ public class DashboardFrame extends JFrame {
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Pag-IBIG ID: *")); p.add(idField);
-        p.add(new JLabel("TIN:")); p.add(tinField);
-        p.add(new JLabel("SSS/GSIS:")); p.add(sssField);
-        p.add(new JLabel("CRN:")); p.add(crnField);
-        p.add(new JLabel("Employee Num:")); p.add(emField);
-        p.add(new JLabel("AFP/PNP Code:")); p.add(afpField);
-        p.add(new JLabel("DepEd Code:")); p.add(depedField);
+        p.add(new JLabel("Pag-IBIG ID: *"));
+        p.add(idField);
+        p.add(new JLabel("TIN:"));
+        p.add(tinField);
+        p.add(new JLabel("SSS/GSIS:"));
+        p.add(sssField);
+        p.add(new JLabel("CRN:"));
+        p.add(crnField);
+        p.add(new JLabel("Employee Num:"));
+        p.add(emField);
+        p.add(new JLabel("AFP/PNP Code:"));
+        p.add(afpField);
+        p.add(new JLabel("DepEd Code:"));
+        p.add(depedField);
 
-        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Government IDs" : "Edit Government IDs", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Government IDs" : "Edit Government IDs",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String rawId = idField.getText().trim();
-            if (rawId.isEmpty()) { JOptionPane.showMessageDialog(this, "ID is mandatory.", "Error", JOptionPane.ERROR_MESSAGE); return; }
+            if (rawId.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ID is mandatory.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             if (rowIndex < 0) {
                 boolean exist = dataStore.getMembers().stream().anyMatch(m -> m.getPagibigId().equals(rawId));
-                if (!exist) { JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE); return; }
+                if (!exist) {
+                    JOptionPane.showMessageDialog(this, "Error: Pag-IBIG ID does not exist.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
 
-            com.pagibig.model.GovernmentIdRecord record = new com.pagibig.model.GovernmentIdRecord(rawId, tinField.getText().trim(), sssField.getText().trim(), crnField.getText().trim(), emField.getText().trim(), afpField.getText().trim(), depedField.getText().trim());
-            boolean success = rowIndex >= 0 ? dataStore.updateGovernmentId(rowIndex, record) : dataStore.addGovernmentId(record);
+            com.pagibig.model.GovernmentIdRecord record = new com.pagibig.model.GovernmentIdRecord(rawId,
+                    tinField.getText().trim(), sssField.getText().trim(), crnField.getText().trim(),
+                    emField.getText().trim(), afpField.getText().trim(), depedField.getText().trim());
+            boolean success = rowIndex >= 0 ? dataStore.updateGovernmentId(rowIndex, record)
+                    : dataStore.addGovernmentId(record);
             handleSaveResult(success, "Government ID");
         }
     }
@@ -794,123 +1051,183 @@ public class DashboardFrame extends JFrame {
 
         if (rowIndex >= 0) {
             com.pagibig.model.EmployerRecord existing = dataStore.getEmployers().get(rowIndex);
-            idField.setText(existing.getEmployerId()); 
-            idField.setEditable(false); // Locked during edit mutations
+            idField.setText(existing.getEmployerId());
+            idField.setEditable(false);
             nameField.setText(existing.getEmployerName());
             addressField.setText(existing.getEmployerAddress());
         } else {
-            // Auto-populate the next increment ID code during addition
+
             idField.setText(generateNextEmployerId());
             idField.setEditable(false);
         }
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("Employer ID:")); p.add(idField);
-        p.add(new JLabel("Employer Name: *")); p.add(nameField);
-        p.add(new JLabel("Employer Address: *")); p.add(addressField);
+        p.add(new JLabel("Employer ID:"));
+        p.add(idField);
+        p.add(new JLabel("Employer Name: *"));
+        p.add(nameField);
+        p.add(new JLabel("Employer Address: *"));
+        p.add(addressField);
 
-        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Employer" : "Edit Employer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Employer" : "Edit Employer",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             if (nameField.getText().trim().isEmpty() || addressField.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Missing required info.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            com.pagibig.model.EmployerRecord record = new com.pagibig.model.EmployerRecord(idField.getText(), nameField.getText().trim().toUpperCase(), addressField.getText().trim().toUpperCase());
-            boolean success = rowIndex >= 0 ? dataStore.updateEmployer(rowIndex, record) : dataStore.addEmployer(record);
+            com.pagibig.model.EmployerRecord record = new com.pagibig.model.EmployerRecord(idField.getText(),
+                    nameField.getText().trim().toUpperCase(), addressField.getText().trim().toUpperCase());
+            boolean success = rowIndex >= 0 ? dataStore.updateEmployer(rowIndex, record)
+                    : dataStore.addEmployer(record);
             handleSaveResult(success, "Employer");
         }
     }
 
     private java.util.List<EmploymentRecord> gatherWizardEmploymentNodes(String trackingId) {
         java.util.List<EmploymentRecord> list = new ArrayList<>();
-        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to add Current Employment details?", "Step 3: Current Employment (Optional)", JOptionPane.YES_NO_OPTION);
-        if (skipChoice != JOptionPane.YES_OPTION) return list;
+        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to add Current Employment details?",
+                "Step 3: Current Employment (Optional)", JOptionPane.YES_NO_OPTION);
+        if (skipChoice != JOptionPane.YES_OPTION)
+            return list;
 
         while (true) {
             JTextField empIdField = new JTextField();
-            JComboBox<String> statusCombo = new JComboBox<>(new String[]{"-- Select Status --", "Permanent/Regular", "Casual", "Contractual", "Project-based", "Part-time/Temporary"});
+            JComboBox<String> statusCombo = new JComboBox<>(new String[] { "-- Select Status --", "Permanent/Regular",
+                    "Casual", "Contractual", "Project-based", "Part-time/Temporary" });
             JTextField occField = new JTextField();
-            JComboBox<String> officeCombo = new JComboBox<>(new String[]{"-- Select Office --", "Head Office", "Branch Office"});
-            JTextField dateField = new JTextField(); JTextField incomeField = new JTextField();
+            JComboBox<String> officeCombo = new JComboBox<>(
+                    new String[] { "-- Select Office --", "Head Office", "Branch Office" });
+            JTextField dateField = new JTextField();
+            JTextField incomeField = new JTextField();
 
             JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-            p.add(new JLabel("Employer ID: *")); p.add(empIdField); p.add(new JLabel("Status: *")); p.add(statusCombo);
-            p.add(new JLabel("Occupation: *")); p.add(occField); p.add(new JLabel("Office Assignment: *")); p.add(officeCombo);
-            p.add(new JLabel("Date Employed (YYYY-MM-DD): *")); p.add(dateField); p.add(new JLabel("Monthly Income: *")); p.add(incomeField);
+            p.add(new JLabel("Employer ID: *"));
+            p.add(empIdField);
+            p.add(new JLabel("Status: *"));
+            p.add(statusCombo);
+            p.add(new JLabel("Occupation: *"));
+            p.add(occField);
+            p.add(new JLabel("Office Assignment: *"));
+            p.add(officeCombo);
+            p.add(new JLabel("Date Employed (YYYY-MM-DD): *"));
+            p.add(dateField);
+            p.add(new JLabel("Monthly Income: *"));
+            p.add(incomeField);
 
-            int res = JOptionPane.showConfirmDialog(this, p, "Step 3: Current Employment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (res != JOptionPane.OK_OPTION) return list;
+            int res = JOptionPane.showConfirmDialog(this, p, "Step 3: Current Employment", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+            if (res != JOptionPane.OK_OPTION)
+                return list;
 
-            String eId = empIdField.getText().trim(); String occ = occField.getText().trim().toUpperCase();
-            String dEmp = dateField.getText().trim(); String inc = incomeField.getText().trim();
+            String eId = empIdField.getText().trim();
+            String occ = occField.getText().trim().toUpperCase();
+            String dEmp = dateField.getText().trim();
+            String inc = incomeField.getText().trim();
 
-            if (eId.isEmpty() || statusCombo.getSelectedIndex() <= 0 || occ.isEmpty() || officeCombo.getSelectedIndex() <= 0 || dEmp.isEmpty() || inc.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: All elements are required if filling current employment records.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            if (eId.isEmpty() || statusCombo.getSelectedIndex() <= 0 || occ.isEmpty()
+                    || officeCombo.getSelectedIndex() <= 0 || dEmp.isEmpty() || inc.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Validation Blocked: All elements are required if filling current employment records.",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
-            // Verify if Employer Reference relation ID key physically exists inside data mapping matrices
             boolean existEmp = false;
             for (EmployerRecord emp : dataStore.getEmployers()) {
-                if (emp.getEmployerId().equalsIgnoreCase(eId)) { existEmp = true; break; }
+                if (emp.getEmployerId().equalsIgnoreCase(eId)) {
+                    existEmp = true;
+                    break;
+                }
             }
             if (!existEmp) {
-                JOptionPane.showMessageDialog(this, "Constraint Refused: Employer ID '" + eId + "' does not exist. Please register the employer first.", "Foreign Key Violation", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Constraint Refused: Employer ID '" + eId
+                                + "' does not exist. Please register the employer first.",
+                        "Foreign Key Violation", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
-            list.add(new EmploymentRecord(trackingId, eId, (String) statusCombo.getSelectedItem(), occ, (String) officeCombo.getSelectedItem(), dEmp, inc));
-            int more = JOptionPane.showConfirmDialog(this, "Add another active concurrent job entry?", "Current Employment Block Multiple", JOptionPane.YES_NO_OPTION);
-            if (more != JOptionPane.YES_OPTION) break;
+            list.add(new EmploymentRecord(trackingId, eId, (String) statusCombo.getSelectedItem(), occ,
+                    (String) officeCombo.getSelectedItem(), dEmp, inc));
+            int more = JOptionPane.showConfirmDialog(this, "Add another active concurrent job entry?",
+                    "Current Employment Block Multiple", JOptionPane.YES_NO_OPTION);
+            if (more != JOptionPane.YES_OPTION)
+                break;
         }
         return list;
     }
 
     private java.util.List<PreviousEmploymentRecord> gatherWizardPrevEmploymentNodes(String trackingId) {
         java.util.List<PreviousEmploymentRecord> list = new ArrayList<>();
-        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to add Previous Employment history?", "Step 4: Previous Employment (Optional)", JOptionPane.YES_NO_OPTION);
-        if (skipChoice != JOptionPane.YES_OPTION) return list;
+        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to add Previous Employment history?",
+                "Step 4: Previous Employment (Optional)", JOptionPane.YES_NO_OPTION);
+        if (skipChoice != JOptionPane.YES_OPTION)
+            return list;
 
         while (true) {
-            JTextField empIdField = new JTextField(); JTextField fromField = new JTextField(); JTextField toField = new JTextField();
-            JComboBox<String> officeCombo = new JComboBox<>(new String[]{"-- Select Office --", "Head Office", "Branch Office"});
+            JTextField empIdField = new JTextField();
+            JTextField fromField = new JTextField();
+            JTextField toField = new JTextField();
+            JComboBox<String> officeCombo = new JComboBox<>(
+                    new String[] { "-- Select Office --", "Head Office", "Branch Office" });
 
             JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-            p.add(new JLabel("Employer ID: *")); p.add(empIdField); p.add(new JLabel("Date From (YYYY-MM-DD): *")); p.add(fromField);
-            p.add(new JLabel("Date To (YYYY-MM-DD): *")); p.add(toField); p.add(new JLabel("Office Assignment: *")); p.add(officeCombo);
+            p.add(new JLabel("Employer ID: *"));
+            p.add(empIdField);
+            p.add(new JLabel("Date From (YYYY-MM-DD): *"));
+            p.add(fromField);
+            p.add(new JLabel("Date To (YYYY-MM-DD): *"));
+            p.add(toField);
+            p.add(new JLabel("Office Assignment: *"));
+            p.add(officeCombo);
 
-            int res = JOptionPane.showConfirmDialog(this, p, "Step 4: Previous Employment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (res != JOptionPane.OK_OPTION) return list;
+            int res = JOptionPane.showConfirmDialog(this, p, "Step 4: Previous Employment",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (res != JOptionPane.OK_OPTION)
+                return list;
 
-            String eId = empIdField.getText().trim(); String dFrom = fromField.getText().trim(); String dTo = toField.getText().trim();
+            String eId = empIdField.getText().trim();
+            String dFrom = fromField.getText().trim();
+            String dTo = toField.getText().trim();
 
             if (eId.isEmpty() || dFrom.isEmpty() || dTo.isEmpty() || officeCombo.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: All elements are required if filling historical slots.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Validation Blocked: All elements are required if filling historical slots.",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
             boolean existEmp = false;
             for (EmployerRecord emp : dataStore.getEmployers()) {
-                if (emp.getEmployerId().equalsIgnoreCase(eId)) { existEmp = true; break; }
+                if (emp.getEmployerId().equalsIgnoreCase(eId)) {
+                    existEmp = true;
+                    break;
+                }
             }
             if (!existEmp) {
-                JOptionPane.showMessageDialog(this, "Constraint Refused: Employer ID '" + eId + "' does not exist inside system matrices.", "Foreign Key Violation", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Constraint Refused: Employer ID '" + eId + "' does not exist inside system matrices.",
+                        "Foreign Key Violation", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
             list.add(new PreviousEmploymentRecord(trackingId, eId, dFrom, dTo, (String) officeCombo.getSelectedItem()));
-            int more = JOptionPane.showConfirmDialog(this, "Add another past job tracking segment row?", "Historical Matrix Multiplier", JOptionPane.YES_NO_OPTION);
-            if (more != JOptionPane.YES_OPTION) break;
+            int more = JOptionPane.showConfirmDialog(this, "Add another past job tracking segment row?",
+                    "Historical Matrix Multiplier", JOptionPane.YES_NO_OPTION);
+            if (more != JOptionPane.YES_OPTION)
+                break;
         }
         return list;
     }
 
     private java.util.List<HeirRecord> gatherWizardHeirNodes(String trackingId) {
         java.util.List<HeirRecord> list = new ArrayList<>();
-        JOptionPane.showMessageDialog(this, "Proceeding to Beneficiary Configuration Profile Setup. At least (1) is required.", "Step 5: Beneficiary Registry (Mandatory)", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Proceeding to Beneficiary Configuration Profile Setup. At least (1) is required.",
+                "Step 5: Beneficiary Registry (Mandatory)", JOptionPane.INFORMATION_MESSAGE);
 
-        // Find the absolute largest heir sequence code in the system overall to avoid conflicts
         int globalMaxNum = 0;
         for (com.pagibig.model.HeirRecord h : dataStore.getHeirs()) {
             if (h.getHeirCode() != null && h.getHeirCode().toUpperCase().startsWith("H")) {
@@ -918,84 +1235,106 @@ public class DashboardFrame extends JFrame {
                     String digits = h.getHeirCode().replaceAll("[^0-9]", "");
                     if (!digits.isEmpty()) {
                         int num = Integer.parseInt(digits);
-                        if (num > globalMaxNum) globalMaxNum = num;
+                        if (num > globalMaxNum)
+                            globalMaxNum = num;
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             }
         }
 
-        // This is the true starting base code for this batch session
         int baseNumber = globalMaxNum + 1;
 
         while (true) {
-            JTextField nameField = new JTextField(); 
+            JTextField nameField = new JTextField();
             applyTextPlaceholderHint(nameField, "SURNAME, FIRST NAME MIDDLE NAME");
-            JTextField relField = new JTextField(); 
+            JTextField relField = new JTextField();
             JTextField bField = new JTextField();
-            
-            // Safely increment sequence base according to items currently in the local wizard loop list
+
             int currentSequence = baseNumber + list.size();
             String programHeirCode = "H" + String.format("%03d", currentSequence);
 
             JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-            p.add(new JLabel("Generated Heir Code:")); 
-            p.add(new JLabel(programHeirCode)); 
-            p.add(new JLabel("Heir Full Name: *")); p.add(nameField);
-            p.add(new JLabel("Relationship: *")); p.add(relField);
-            p.add(new JLabel("Date of Birth (YYYY-MM-DD): *")); p.add(bField);
+            p.add(new JLabel("Generated Heir Code:"));
+            p.add(new JLabel(programHeirCode));
+            p.add(new JLabel("Heir Full Name: *"));
+            p.add(nameField);
+            p.add(new JLabel("Relationship: *"));
+            p.add(relField);
+            p.add(new JLabel("Date of Birth (YYYY-MM-DD): *"));
+            p.add(bField);
 
-            int res = JOptionPane.showConfirmDialog(this, p, "Step 5: Beneficiary Registry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int res = JOptionPane.showConfirmDialog(this, p, "Step 5: Beneficiary Registry",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (res != JOptionPane.OK_OPTION) {
                 if (list.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Validation Violation Refused: You must supply at least one heir to construct user records.", "Mandatory Safeguard", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Validation Violation Refused: You must supply at least one heir to construct user records.",
+                            "Mandatory Safeguard", JOptionPane.WARNING_MESSAGE);
                     continue;
                 }
                 break;
             }
-            String heirN = nameField.getText().trim().toUpperCase(); 
+            String heirN = nameField.getText().trim().toUpperCase();
             if (heirN.equals("SURNAME, FIRST NAME MIDDLE NAME")) {
-                heirN = ""; 
+                heirN = "";
             }
-            String hRel = relField.getText().trim().toUpperCase(); 
+            String hRel = relField.getText().trim().toUpperCase();
             String hBirth = bField.getText().trim();
-            
+
             if (heirN.isEmpty() || hRel.isEmpty() || hBirth.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: All elements inside beneficiary slots require string tracking data.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Validation Blocked: All elements inside beneficiary slots require string tracking data.",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
 
-            // Add to batch cache list with the uniquely scaled sequence code
             list.add(new HeirRecord(trackingId, programHeirCode, heirN, hRel, hBirth));
 
-            int more = JOptionPane.showConfirmDialog(this, "Add another dependent/beneficiary to this mapping record?", "Add Another Beneficiary?", JOptionPane.YES_NO_OPTION);
-            if (more != JOptionPane.YES_OPTION) break;
+            int more = JOptionPane.showConfirmDialog(this, "Add another dependent/beneficiary to this mapping record?",
+                    "Add Another Beneficiary?", JOptionPane.YES_NO_OPTION);
+            if (more != JOptionPane.YES_OPTION)
+                break;
         }
         return list;
     }
 
     private GovernmentIdRecord gatherWizardGovernmentIdNode(String trackingId) {
-        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to log Government IDs?", "Step 6: Government IDs (Optional)", JOptionPane.YES_NO_OPTION);
-        if (skipChoice != JOptionPane.YES_OPTION) 
-            return new GovernmentIdRecord(trackingId, "", "", "", "", "", ""
-        );
+        int skipChoice = JOptionPane.showConfirmDialog(this, "Do you want to log Government IDs?",
+                "Step 6: Government IDs (Optional)", JOptionPane.YES_NO_OPTION);
+        if (skipChoice != JOptionPane.YES_OPTION)
+            return new GovernmentIdRecord(trackingId, "", "", "", "", "", "");
 
-        JTextField tinF = new JTextField(); JTextField sssF = new JTextField(); JTextField crnF = new JTextField();
-        JTextField emF = new JTextField(); JTextField afpF = new JTextField(); JTextField depedF = new JTextField();
+        JTextField tinF = new JTextField();
+        JTextField sssF = new JTextField();
+        JTextField crnF = new JTextField();
+        JTextField emF = new JTextField();
+        JTextField afpF = new JTextField();
+        JTextField depedF = new JTextField();
 
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-        p.add(new JLabel("TIN Number:")); p.add(tinF); p.add(new JLabel("SSS/GSIS Number:")); p.add(sssF);
-        p.add(new JLabel("CRN:")); p.add(crnF); p.add(new JLabel("Employee Number:")); p.add(emF);
-        p.add(new JLabel("AFP/PNP Serial Badge:")); p.add(afpF); p.add(new JLabel("DepEd Division Code:")); p.add(depedF);
+        p.add(new JLabel("TIN Number:"));
+        p.add(tinF);
+        p.add(new JLabel("SSS/GSIS Number:"));
+        p.add(sssF);
+        p.add(new JLabel("CRN:"));
+        p.add(crnF);
+        p.add(new JLabel("Employee Number:"));
+        p.add(emF);
+        p.add(new JLabel("AFP/PNP Serial Badge:"));
+        p.add(afpF);
+        p.add(new JLabel("DepEd Division Code:"));
+        p.add(depedF);
 
-        int res = JOptionPane.showConfirmDialog(this, p, "Step 6: Government IDs", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (res != JOptionPane.OK_OPTION) return new GovernmentIdRecord(trackingId, "", "", "", "", "", "");
+        int res = JOptionPane.showConfirmDialog(this, p, "Step 6: Government IDs", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        if (res != JOptionPane.OK_OPTION)
+            return new GovernmentIdRecord(trackingId, "", "", "", "", "", "");
 
-        return new GovernmentIdRecord(trackingId, tinF.getText().trim(), sssF.getText().trim(), crnF.getText().trim(), emF.getText().trim(), afpF.getText().trim(), depedF.getText().trim());
+        return new GovernmentIdRecord(trackingId, tinF.getText().trim(), sssF.getText().trim(), crnF.getText().trim(),
+                emF.getText().trim(), afpF.getText().trim(), depedF.getText().trim());
     }
 
-    // =====================================================================
-    // 🔍 STANDALONE SINGLE TABLE LOGIC GATEWAY (With Relational Checks)
-    // =====================================================================
     private void showSingleMemberEditDialog(int rowIndex) {
         JTextField idField = new JTextField();
         JTextField regisField = new JTextField();
@@ -1003,50 +1342,88 @@ public class DashboardFrame extends JFrame {
         applyLengthLimit(idField, 12);
         applyLengthLimit(regisField, 12);
 
-        JComboBox<String> occCombo = new JComboBox<>(new String[]{"-- Select Status --", "EMPLOYED", "UNEMPLOYED"});
-        JRadioButton firstTimeYes = new JRadioButton("YES"); JRadioButton firstTimeNo = new JRadioButton("NO");
-        ButtonGroup firstTimeGroup = new ButtonGroup(); firstTimeGroup.add(firstTimeYes); firstTimeGroup.add(firstTimeNo); firstTimeNo.setSelected(true);
-        JComboBox<String> typeCombo = new JComboBox<>(new String[]{"-- Select Membership Type --", "MANDATORY", "VOLUNTARY"});
-        JComboBox<String> subtypeCombo = new JComboBox<>(new String[]{"-- Select Membership Type First --"});
+        JComboBox<String> occCombo = new JComboBox<>(new String[] { "-- Select Status --", "EMPLOYED", "UNEMPLOYED" });
+        JRadioButton firstTimeYes = new JRadioButton("YES");
+        JRadioButton firstTimeNo = new JRadioButton("NO");
+        ButtonGroup firstTimeGroup = new ButtonGroup();
+        firstTimeGroup.add(firstTimeYes);
+        firstTimeGroup.add(firstTimeNo);
+        firstTimeNo.setSelected(true);
+        JComboBox<String> typeCombo = new JComboBox<>(
+                new String[] { "-- Select Membership Type --", "MANDATORY", "VOLUNTARY" });
+        JComboBox<String> subtypeCombo = new JComboBox<>(new String[] { "-- Select Membership Type First --" });
 
-        JLabel othersLabel = new JLabel("Specify Subtype: *"); JTextField othersTextField = new JTextField();
-        JLabel workLabel = new JLabel("Type of Work: *"); JComboBox<String> workCombo = new JComboBox<>(new String[]{"-- Select Type of Work --", "Land-based", "Sea-based"});
-        JLabel countryLabel = new JLabel("Type Country: *"); JTextField countryField = new JTextField();
+        JLabel othersLabel = new JLabel("Specify Subtype: *");
+        JTextField othersTextField = new JTextField();
+        JLabel workLabel = new JLabel("Type of Work: *");
+        JComboBox<String> workCombo = new JComboBox<>(
+                new String[] { "-- Select Type of Work --", "Land-based", "Sea-based" });
+        JLabel countryLabel = new JLabel("Type Country: *");
+        JTextField countryField = new JTextField();
 
-        othersLabel.setVisible(false); othersTextField.setVisible(false);
-        workLabel.setVisible(false); workCombo.setVisible(false); countryLabel.setVisible(false); countryField.setVisible(false);
+        othersLabel.setVisible(false);
+        othersTextField.setVisible(false);
+        workLabel.setVisible(false);
+        workCombo.setVisible(false);
+        countryLabel.setVisible(false);
+        countryField.setVisible(false);
 
-        JPanel othersPanel = new JPanel(new GridLayout(0, 2, 8, 8)); 
-        othersPanel.add(othersLabel); 
-        othersPanel.add(othersTextField); 
+        JPanel othersPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        othersPanel.add(othersLabel);
+        othersPanel.add(othersTextField);
         othersPanel.setVisible(false);
-        JPanel ofwPanel = new JPanel(new GridLayout(0, 2, 8, 8)); 
-        ofwPanel.add(workLabel); ofwPanel.add(workCombo); ofwPanel.add(countryLabel); 
-        ofwPanel.add(countryField); 
+        JPanel ofwPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        ofwPanel.add(workLabel);
+        ofwPanel.add(workCombo);
+        ofwPanel.add(countryLabel);
+        ofwPanel.add(countryField);
         ofwPanel.setVisible(false);
 
         typeCombo.addActionListener(e -> {
-            String selectedType = (String) typeCombo.getSelectedItem(); subtypeCombo.removeAllItems();
+            String selectedType = (String) typeCombo.getSelectedItem();
+            subtypeCombo.removeAllItems();
             if ("MANDATORY".equals(selectedType)) {
-                subtypeCombo.addItem("-- Select Mandatory Subtype --"); subtypeCombo.addItem("EMPLOYED");
-                subtypeCombo.addItem("OVERSEAS FILIPINO WORKER (OFW)"); subtypeCombo.addItem("SELF-EMPLOYED"); subtypeCombo.addItem("OTHERS");
+                subtypeCombo.addItem("-- Select Mandatory Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("OVERSEAS FILIPINO WORKER (OFW)");
+                subtypeCombo.addItem("SELF-EMPLOYED");
+                subtypeCombo.addItem("OTHERS");
             } else if ("VOLUNTARY".equals(selectedType)) {
-                subtypeCombo.addItem("-- Select Voluntary Subtype --"); subtypeCombo.addItem("EMPLOYED");
-                subtypeCombo.addItem("INDIVIDUAL PAYOR"); subtypeCombo.addItem("OTHERS");
-            } else { subtypeCombo.addItem("-- Select Membership Type First --"); }
+                subtypeCombo.addItem("-- Select Voluntary Subtype --");
+                subtypeCombo.addItem("EMPLOYED");
+                subtypeCombo.addItem("INDIVIDUAL PAYOR");
+                subtypeCombo.addItem("OTHERS");
+            } else {
+                subtypeCombo.addItem("-- Select Membership Type First --");
+            }
         });
 
         subtypeCombo.addActionListener(e -> {
-            String selectedSub = (String) subtypeCombo.getSelectedItem(); if (selectedSub == null) return;
-            boolean isOthers = "OTHERS".equals(selectedSub); boolean isOfw = "OVERSEAS FILIPINO WORKER (OFW)".equals(selectedSub);
-            othersLabel.setVisible(isOthers); othersTextField.setVisible(isOthers); othersPanel.setVisible(isOthers);
-            workLabel.setVisible(isOfw); workCombo.setVisible(isOfw); countryLabel.setVisible(isOfw); countryField.setVisible(isOfw); ofwPanel.setVisible(isOfw);
+            String selectedSub = (String) subtypeCombo.getSelectedItem();
+            if (selectedSub == null)
+                return;
+            boolean isOthers = "OTHERS".equals(selectedSub);
+            boolean isOfw = "OVERSEAS FILIPINO WORKER (OFW)".equals(selectedSub);
+            othersLabel.setVisible(isOthers);
+            othersTextField.setVisible(isOthers);
+            othersPanel.setVisible(isOthers);
+            workLabel.setVisible(isOfw);
+            workCombo.setVisible(isOfw);
+            countryLabel.setVisible(isOfw);
+            countryField.setVisible(isOfw);
+            ofwPanel.setVisible(isOfw);
             Window ancestor = SwingUtilities.getWindowAncestor(subtypeCombo);
-            if (ancestor != null) ancestor.pack();
+            if (ancestor != null)
+                ancestor.pack();
         });
 
-        JTextField nameField = new JTextField(); JTextField fatField = new JTextField(); JTextField motField = new JTextField(); JTextField spouseField = new JTextField();
-        JTextField certField = new JTextField(); JTextField birthField = new JTextField(); JTextField placeField = new JTextField();
+        JTextField nameField = new JTextField();
+        JTextField fatField = new JTextField();
+        JTextField motField = new JTextField();
+        JTextField spouseField = new JTextField();
+        JTextField certField = new JTextField();
+        JTextField birthField = new JTextField();
+        JTextField placeField = new JTextField();
 
         applyTextPlaceholderHint(nameField, "SURNAME, FIRST NAME MIDDLE NAME");
         applyTextPlaceholderHint(fatField, "SURNAME, FIRST NAME MIDDLE NAME");
@@ -1056,20 +1433,34 @@ public class DashboardFrame extends JFrame {
         applyTextPlaceholderHint(birthField, "YYYY-MM-DD");
         applyTextPlaceholderHint(placeField, "CITY / PROVINCE OF BIRTH");
 
-        JRadioButton sexMale = new JRadioButton("Male"); JRadioButton sexFemale = new JRadioButton("Female");
-        ButtonGroup sexGroup = new ButtonGroup(); sexGroup.add(sexMale); sexGroup.add(sexFemale); sexMale.setSelected(true);
-        JTextField heightField = new JTextField(); JTextField weightField = new JTextField();
-        JComboBox<String> maritalCombo = new JComboBox<>(new String[]{"-- Select Marital Status --", "Single / Unmarried", "Widow / er", "Annulled", "Married", "Legally Separated"});
-        JTextField citizenshipField = new JTextField(); JTextField facialField = new JTextField();
-        JComboBox<String> paymentCombo = new JComboBox<>(new String[]{"-- Select Frequency --", "Monthly", "Quarterly"});
+        JRadioButton sexMale = new JRadioButton("Male");
+        JRadioButton sexFemale = new JRadioButton("Female");
+        ButtonGroup sexGroup = new ButtonGroup();
+        sexGroup.add(sexMale);
+        sexGroup.add(sexFemale);
+        sexMale.setSelected(true);
+        JTextField heightField = new JTextField();
+        JTextField weightField = new JTextField();
+        JComboBox<String> maritalCombo = new JComboBox<>(new String[] { "-- Select Marital Status --",
+                "Single / Unmarried", "Widow / er", "Annulled", "Married", "Legally Separated" });
+        JTextField citizenshipField = new JTextField();
+        JTextField facialField = new JTextField();
+        JComboBox<String> paymentCombo = new JComboBox<>(
+                new String[] { "-- Select Frequency --", "Monthly", "Quarterly" });
 
         if (rowIndex >= 0) {
             MemberRecord existing = dataStore.getMembers().get(rowIndex);
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
+            idField.setText(existing.getPagibigId());
+            idField.setEditable(false);
             regisField.setText(existing.getRegisNum());
-            if ("EMPLOYED".equalsIgnoreCase(existing.getOccupationStatus())) occCombo.setSelectedIndex(1);
-            else if ("UNEMPLOYED".equalsIgnoreCase(existing.getOccupationStatus())) occCombo.setSelectedIndex(2);
-            if ("YES".equalsIgnoreCase(existing.getFirstTime())) firstTimeYes.setSelected(true); else firstTimeNo.setSelected(true);
+            if ("EMPLOYED".equalsIgnoreCase(existing.getOccupationStatus()))
+                occCombo.setSelectedIndex(1);
+            else if ("UNEMPLOYED".equalsIgnoreCase(existing.getOccupationStatus()))
+                occCombo.setSelectedIndex(2);
+            if ("YES".equalsIgnoreCase(existing.getFirstTime()))
+                firstTimeYes.setSelected(true);
+            else
+                firstTimeNo.setSelected(true);
             String existingType = existing.getMemType();
             subtypeCombo.removeAllItems();
             if ("MANDATORY".equals(existingType)) {
@@ -1084,22 +1475,34 @@ public class DashboardFrame extends JFrame {
                 subtypeCombo.addItem("INDIVIDUAL PAYOR");
                 subtypeCombo.addItem("OTHERS");
             }
-            typeCombo.setSelectedItem(existingType); 
-            
+            typeCombo.setSelectedItem(existingType);
+
             String sub = existing.getMemSubtype();
             if (sub != null) {
                 boolean standardMatch = false;
                 for (int i = 0; i < subtypeCombo.getItemCount(); i++) {
-                    if (subtypeCombo.getItemAt(i).equals(sub)) { subtypeCombo.setSelectedItem(sub); standardMatch = true; break; }
+                    if (subtypeCombo.getItemAt(i).equals(sub)) {
+                        subtypeCombo.setSelectedItem(sub);
+                        standardMatch = true;
+                        break;
+                    }
                 }
                 if (!standardMatch && !sub.isEmpty()) {
-                    subtypeCombo.setSelectedItem("OTHERS"); othersTextField.setText(sub);
-                    othersPanel.setVisible(true); othersLabel.setVisible(true); othersTextField.setVisible(true);
+                    subtypeCombo.setSelectedItem("OTHERS");
+                    othersTextField.setText(sub);
+                    othersPanel.setVisible(true);
+                    othersLabel.setVisible(true);
+                    othersTextField.setVisible(true);
                 }
             }
-            workCombo.setSelectedItem(existing.getTypeWork()); countryField.setText(existing.getTypeCountry());
+            workCombo.setSelectedItem(existing.getTypeWork());
+            countryField.setText(existing.getTypeCountry());
             if ("OVERSEAS FILIPINO WORKER (OFW)".equals(sub)) {
-                ofwPanel.setVisible(true); workLabel.setVisible(true); workCombo.setVisible(true); countryLabel.setVisible(true); countryField.setVisible(true);
+                ofwPanel.setVisible(true);
+                workLabel.setVisible(true);
+                workCombo.setVisible(true);
+                countryLabel.setVisible(true);
+                countryField.setVisible(true);
             }
             prefillField(nameField, existing.getMemName(), "SURNAME, FIRST NAME MIDDLE NAME");
             prefillField(fatField, existing.getFatName(), "SURNAME, FIRST NAME MIDDLE NAME");
@@ -1108,63 +1511,116 @@ public class DashboardFrame extends JFrame {
             prefillField(certField, existing.getMemCertName(), "SURNAME, FIRST NAME MIDDLE NAME");
             prefillField(birthField, existing.getBirthDate(), "YYYY-MM-DD");
             prefillField(placeField, existing.getPlaceOfBirth(), "CITY / PROVINCE OF BIRTH");
-            if ("M".equalsIgnoreCase(existing.getSex())) sexMale.setSelected(true); else sexFemale.setSelected(true);
-            heightField.setText(existing.getHeight()); weightField.setText(existing.getWeight());
-            switch (existing.getMaritalStatus()) { case "S" -> maritalCombo.setSelectedIndex(1); case "W" -> maritalCombo.setSelectedIndex(2); case "A" -> maritalCombo.setSelectedIndex(3); case "M" -> maritalCombo.setSelectedIndex(4); case "LS" -> maritalCombo.setSelectedIndex(5); }
-            citizenshipField.setText(existing.getCitizenship()); facialField.setText(existing.getFacialFeatures()); paymentCombo.setSelectedItem(existing.getFrequencyOfPayment());
+            if ("M".equalsIgnoreCase(existing.getSex()))
+                sexMale.setSelected(true);
+            else
+                sexFemale.setSelected(true);
+            heightField.setText(existing.getHeight());
+            weightField.setText(existing.getWeight());
+            switch (existing.getMaritalStatus()) {
+                case "S" -> maritalCombo.setSelectedIndex(1);
+                case "W" -> maritalCombo.setSelectedIndex(2);
+                case "A" -> maritalCombo.setSelectedIndex(3);
+                case "M" -> maritalCombo.setSelectedIndex(4);
+                case "LS" -> maritalCombo.setSelectedIndex(5);
+            }
+            citizenshipField.setText(existing.getCitizenship());
+            facialField.setText(existing.getFacialFeatures());
+            paymentCombo.setSelectedItem(existing.getFrequencyOfPayment());
         }
 
         JPanel topPanel = new JPanel(new GridLayout(0, 2, 8, 8));
-        topPanel.add(new JLabel("Pag-IBIG ID: *")); topPanel.add(idField); topPanel.add(new JLabel("Registration Num: *")); topPanel.add(regisField);
-        topPanel.add(new JLabel("Occupation Status: *")); topPanel.add(occCombo); topPanel.add(new JLabel("First Time Member?: *"));
-        JPanel radioFirstTime = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); radioFirstTime.add(firstTimeYes); radioFirstTime.add(firstTimeNo); topPanel.add(radioFirstTime);
-        topPanel.add(new JLabel("Member Type: *")); topPanel.add(typeCombo); topPanel.add(new JLabel("Member Subtype: *")); topPanel.add(subtypeCombo);
+        topPanel.add(new JLabel("Pag-IBIG ID: *"));
+        topPanel.add(idField);
+        topPanel.add(new JLabel("Registration Num: *"));
+        topPanel.add(regisField);
+        topPanel.add(new JLabel("Occupation Status: *"));
+        topPanel.add(occCombo);
+        topPanel.add(new JLabel("First Time Member?: *"));
+        JPanel radioFirstTime = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        radioFirstTime.add(firstTimeYes);
+        radioFirstTime.add(firstTimeNo);
+        topPanel.add(radioFirstTime);
+        topPanel.add(new JLabel("Member Type: *"));
+        topPanel.add(typeCombo);
+        topPanel.add(new JLabel("Member Subtype: *"));
+        topPanel.add(subtypeCombo);
 
         JPanel bottomPanel = new JPanel(new GridLayout(0, 2, 8, 8));
-        bottomPanel.add(new JLabel("Member Name: *")); bottomPanel.add(nameField); bottomPanel.add(new JLabel("Father's Name:")); bottomPanel.add(fatField);
-        bottomPanel.add(new JLabel("Mother's Name: *")); bottomPanel.add(motField); bottomPanel.add(new JLabel("Spouse Name:")); bottomPanel.add(spouseField);
-        bottomPanel.add(new JLabel("Certificate Name:")); bottomPanel.add(certField); bottomPanel.add(new JLabel("Birth Date (YYYY-MM-DD): *")); bottomPanel.add(birthField);
-        bottomPanel.add(new JLabel("Place of Birth: *")); bottomPanel.add(placeField); bottomPanel.add(new JLabel("Sex: *"));
-        JPanel radioSex = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); radioSex.add(sexMale); radioSex.add(sexFemale); bottomPanel.add(radioSex);
-        bottomPanel.add(new JLabel("Height (cm):")); bottomPanel.add(heightField); bottomPanel.add(new JLabel("Weight (kg):")); bottomPanel.add(weightField);
-        bottomPanel.add(new JLabel("Marital Status: *")); bottomPanel.add(maritalCombo); bottomPanel.add(new JLabel("Citizenship: *")); bottomPanel.add(citizenshipField);
-        bottomPanel.add(new JLabel("Facial Features:")); bottomPanel.add(facialField); bottomPanel.add(new JLabel("Frequency of Payment:")); bottomPanel.add(paymentCombo);
+        bottomPanel.add(new JLabel("Member Name: *"));
+        bottomPanel.add(nameField);
+        bottomPanel.add(new JLabel("Father's Name:"));
+        bottomPanel.add(fatField);
+        bottomPanel.add(new JLabel("Mother's Name: *"));
+        bottomPanel.add(motField);
+        bottomPanel.add(new JLabel("Spouse Name:"));
+        bottomPanel.add(spouseField);
+        bottomPanel.add(new JLabel("Certificate Name:"));
+        bottomPanel.add(certField);
+        bottomPanel.add(new JLabel("Birth Date (YYYY-MM-DD): *"));
+        bottomPanel.add(birthField);
+        bottomPanel.add(new JLabel("Place of Birth: *"));
+        bottomPanel.add(placeField);
+        bottomPanel.add(new JLabel("Sex: *"));
+        JPanel radioSex = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        radioSex.add(sexMale);
+        radioSex.add(sexFemale);
+        bottomPanel.add(radioSex);
+        bottomPanel.add(new JLabel("Height (cm):"));
+        bottomPanel.add(heightField);
+        bottomPanel.add(new JLabel("Weight (kg):"));
+        bottomPanel.add(weightField);
+        bottomPanel.add(new JLabel("Marital Status: *"));
+        bottomPanel.add(maritalCombo);
+        bottomPanel.add(new JLabel("Citizenship: *"));
+        bottomPanel.add(citizenshipField);
+        bottomPanel.add(new JLabel("Facial Features:"));
+        bottomPanel.add(facialField);
+        bottomPanel.add(new JLabel("Frequency of Payment:"));
+        bottomPanel.add(paymentCombo);
 
-        JPanel mainPanel = new JPanel(); 
+        JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
-        othersPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
-        ofwPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0)); 
+        topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        othersPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        ofwPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
         bottomPanel.setBorder(null);
 
-        mainPanel.add(topPanel); 
-        mainPanel.add(othersPanel); 
-        mainPanel.add(ofwPanel); 
+        mainPanel.add(topPanel);
+        mainPanel.add(othersPanel);
+        mainPanel.add(ofwPanel);
         mainPanel.add(bottomPanel);
 
-        int result = JOptionPane.showConfirmDialog(this, mainPanel, rowIndex < 0 ? "Add Member" : "Edit Member", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, mainPanel, rowIndex < 0 ? "Add Member" : "Edit Member",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            String rawId = idField.getText().trim(); 
+            String rawId = idField.getText().trim();
             String rawRegis = regisField.getText().trim();
-            
-            // Clean placeholders to uniform empty strings
+
             String rawName = nameField.getText().trim();
             String rawFat = fatField.getText().trim();
             String rawMot = motField.getText().trim();
             String rawSpouse = spouseField.getText().trim();
             String rawCert = certField.getText().trim();
-            String rawBirth = birthField.getText().trim(); 
+            String rawBirth = birthField.getText().trim();
             String rawPlace = placeField.getText().trim();
 
-            if (rawName.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawName = "";
-            if (rawFat.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawFat = "";
-            if (rawMot.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawMot = "";
-            if (rawSpouse.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawSpouse = "";
-            if (rawCert.equals("SURNAME, FIRST NAME MIDDLE NAME")) rawCert = "";
-            if (rawBirth.equals("YYYY-MM-DD")) rawBirth = "";
-            if (rawPlace.equals("CITY / PROVINCE OF BIRTH")) rawPlace = "";
+            if (rawName.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawName = "";
+            if (rawFat.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawFat = "";
+            if (rawMot.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawMot = "";
+            if (rawSpouse.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawSpouse = "";
+            if (rawCert.equals("SURNAME, FIRST NAME MIDDLE NAME"))
+                rawCert = "";
+            if (rawBirth.equals("YYYY-MM-DD"))
+                rawBirth = "";
+            if (rawPlace.equals("CITY / PROVINCE OF BIRTH"))
+                rawPlace = "";
 
             rawName = rawName.toUpperCase();
             rawFat = rawFat.toUpperCase();
@@ -1175,34 +1631,52 @@ public class DashboardFrame extends JFrame {
             rawPlace = rawPlace.toUpperCase();
             String rawCitizen = citizenshipField.getText().trim().toUpperCase();
 
-            if (rawId.isEmpty() || rawRegis.isEmpty() || occCombo.getSelectedIndex() <= 0 || typeCombo.getSelectedIndex() <= 0 || 
-                subtypeCombo.getSelectedIndex() <= 0 || rawName.isEmpty() || rawMot.isEmpty() || rawBirth.isEmpty() || rawPlace.isEmpty() || 
-                maritalCombo.getSelectedIndex() <= 0 || rawCitizen.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory fields marked with (*).", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            if (rawId.isEmpty() || rawRegis.isEmpty() || occCombo.getSelectedIndex() <= 0
+                    || typeCombo.getSelectedIndex() <= 0 ||
+                    subtypeCombo.getSelectedIndex() <= 0 || rawName.isEmpty() || rawMot.isEmpty() || rawBirth.isEmpty()
+                    || rawPlace.isEmpty() ||
+                    maritalCombo.getSelectedIndex() <= 0 || rawCitizen.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory fields marked with (*).",
+                        "Validation Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             String selectedSubtype = (String) subtypeCombo.getSelectedItem();
             if ("OTHERS".equals(selectedSubtype)) {
                 selectedSubtype = othersTextField.getText().trim().toUpperCase();
-                if (selectedSubtype.isEmpty()) { JOptionPane.showMessageDialog(this, "Validation Blocked: Specify custom Subtype.", "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
-            }
-
-            String finalWork = ""; String finalCountry = "";
-            if ("OVERSEAS FILIPINO WORKER (OFW)".equals((String) subtypeCombo.getSelectedItem())) {
-                if (workCombo.getSelectedIndex() <= 0 || countryField.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Validation Blocked: Work type and Country required for OFWs.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                if (selectedSubtype.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Validation Blocked: Specify custom Subtype.",
+                            "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                finalWork = (String) workCombo.getSelectedItem(); finalCountry = countryField.getText().trim().toUpperCase();
             }
 
-            String finalMarital = switch (maritalCombo.getSelectedIndex()) { case 1 -> "S"; case 2 -> "W"; case 3 -> "A"; case 4 -> "M"; case 5 -> "LS"; default -> ""; };
-            
-            // Fixed variable mappings used here directly
-            MemberRecord record = new MemberRecord(rawId, rawRegis, (String) occCombo.getSelectedItem(), firstTimeYes.isSelected() ? "YES" : "NO", (String) typeCombo.getSelectedItem(), selectedSubtype,
+            String finalWork = "";
+            String finalCountry = "";
+            if ("OVERSEAS FILIPINO WORKER (OFW)".equals((String) subtypeCombo.getSelectedItem())) {
+                if (workCombo.getSelectedIndex() <= 0 || countryField.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Validation Blocked: Work type and Country required for OFWs.",
+                            "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                finalWork = (String) workCombo.getSelectedItem();
+                finalCountry = countryField.getText().trim().toUpperCase();
+            }
+
+            String finalMarital = switch (maritalCombo.getSelectedIndex()) {
+                case 1 -> "S";
+                case 2 -> "W";
+                case 3 -> "A";
+                case 4 -> "M";
+                case 5 -> "LS";
+                default -> "";
+            };
+
+            MemberRecord record = new MemberRecord(rawId, rawRegis, (String) occCombo.getSelectedItem(),
+                    firstTimeYes.isSelected() ? "YES" : "NO", (String) typeCombo.getSelectedItem(), selectedSubtype,
                     finalWork, finalCountry, rawName, rawFat, rawMot, rawSpouse, rawCert,
-                    rawBirth, rawPlace, sexMale.isSelected() ? "M" : "F", heightField.getText().trim(), weightField.getText().trim(), finalMarital, rawCitizen, facialField.getText().trim().toUpperCase(),
+                    rawBirth, rawPlace, sexMale.isSelected() ? "M" : "F", heightField.getText().trim(),
+                    weightField.getText().trim(), finalMarital, rawCitizen, facialField.getText().trim().toUpperCase(),
                     paymentCombo.getSelectedIndex() == 0 ? "" : (String) paymentCombo.getSelectedItem());
 
             boolean success = rowIndex >= 0 ? dataStore.updateMember(rowIndex, record) : dataStore.addMember(record);
@@ -1210,132 +1684,183 @@ public class DashboardFrame extends JFrame {
         }
     }
 
-    // =====================================================================
-    // 🔍 COMPONENT DIALOG SPECIFICATIONS FOR CONTACT DETAILS
-    // =====================================================================
     private void showContactDialog(int rowIndex) {
-        JTextField idField = new JTextField(); 
-        JTextField cellField = new JTextField(); 
+        JTextField idField = new JTextField();
+        JTextField cellField = new JTextField();
         applyTextPlaceholderHint(cellField, "+63 XXX XXX XXXX");
         JTextField homeField = new JTextField();
-        JTextField directField = new JTextField(); 
-        JTextField trunkField = new JTextField(); 
+        JTextField directField = new JTextField();
+        JTextField trunkField = new JTextField();
         JTextField emailField = new JTextField();
-        JTextField permField = new JTextField(); 
+        JTextField permField = new JTextField();
         JTextField presentField = new JTextField();
-        JComboBox<String> prefCombo = new JComboBox<>(new String[]{"-- Select Preferred Address --", "Present Home Address", "Permanent Home Address", "Employer/Business Address"});
+        JComboBox<String> prefCombo = new JComboBox<>(new String[] { "-- Select Preferred Address --",
+                "Present Home Address", "Permanent Home Address", "Employer/Business Address" });
         JCheckBox syncCb = new JCheckBox("Present Address is the same as Permanent Home Address");
 
         applyLengthLimit(idField, 12);
-    
 
         syncCb.addActionListener(e -> {
-            if (syncCb.isSelected()) { presentField.setText(permField.getText()); presentField.setEnabled(false); }
-            else { presentField.setEnabled(true); presentField.setText(""); }
+            if (syncCb.isSelected()) {
+                presentField.setText(permField.getText());
+                presentField.setEnabled(false);
+            } else {
+                presentField.setEnabled(true);
+                presentField.setText("");
+            }
         });
 
         permField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { if(syncCb.isSelected()) presentField.setText(permField.getText()); }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                if (syncCb.isSelected())
+                    presentField.setText(permField.getText());
+            }
         });
 
         if (rowIndex >= 0) {
             ContactRecord existing = dataStore.getContacts().get(rowIndex);
-            idField.setText(existing.getPagibigId()); idField.setEditable(false);
-            prefillField(cellField, existing.getCellNum(), "+63 XXX XXX XXXX"); homeField.setText(existing.getHomeNum()); directField.setText(existing.getBusinessDirect());
-            trunkField.setText(existing.getBusinessTrunk()); emailField.setText(existing.getEmailAddress()); permField.setText(existing.getPermAddress());
-            presentField.setText(existing.getPresentAddress()); prefCombo.setSelectedItem(existing.getPrefMailAddress());
-            if (existing.getPermAddress() != null && existing.getPermAddress().equals(existing.getPresentAddress()) && !existing.getPermAddress().isEmpty()) {
-                syncCb.setSelected(true); presentField.setEnabled(false);
+            idField.setText(existing.getPagibigId());
+            idField.setEditable(false);
+            prefillField(cellField, existing.getCellNum(), "+63 XXX XXX XXXX");
+            homeField.setText(existing.getHomeNum());
+            directField.setText(existing.getBusinessDirect());
+            trunkField.setText(existing.getBusinessTrunk());
+            emailField.setText(existing.getEmailAddress());
+            permField.setText(existing.getPermAddress());
+            presentField.setText(existing.getPresentAddress());
+            prefCombo.setSelectedItem(existing.getPrefMailAddress());
+            if (existing.getPermAddress() != null && existing.getPermAddress().equals(existing.getPresentAddress())
+                    && !existing.getPermAddress().isEmpty()) {
+                syncCb.setSelected(true);
+                presentField.setEnabled(false);
             }
         }
 
-        while (true){
+        while (true) {
             JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
-            p.add(new JLabel("Pag-IBIG ID: *")); p.add(idField); p.add(new JLabel("Cell Number: *")); p.add(cellField);
-            p.add(new JLabel("Home Number:")); p.add(homeField); p.add(new JLabel("Business Direct:")); p.add(directField);
-            p.add(new JLabel("Business Trunk:")); p.add(trunkField); p.add(new JLabel("Email Address:")); p.add(emailField);
-            p.add(new JLabel("Permanent Address: *")); p.add(permField); p.add(syncCb); p.add(new JLabel(""));
-            p.add(new JLabel("Present Address: *")); p.add(presentField); p.add(new JLabel("Preferred Mail Address: *")); p.add(prefCombo);
+            p.add(new JLabel("Pag-IBIG ID: *"));
+            p.add(idField);
+            p.add(new JLabel("Cell Number: *"));
+            p.add(cellField);
+            p.add(new JLabel("Home Number:"));
+            p.add(homeField);
+            p.add(new JLabel("Business Direct:"));
+            p.add(directField);
+            p.add(new JLabel("Business Trunk:"));
+            p.add(trunkField);
+            p.add(new JLabel("Email Address:"));
+            p.add(emailField);
+            p.add(new JLabel("Permanent Address: *"));
+            p.add(permField);
+            p.add(syncCb);
+            p.add(new JLabel(""));
+            p.add(new JLabel("Present Address: *"));
+            p.add(presentField);
+            p.add(new JLabel("Preferred Mail Address: *"));
+            p.add(prefCombo);
 
-            int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Contact" : "Edit Contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Contact" : "Edit Contact",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 String rawId = idField.getText().trim();
                 String cell = cellField.getText().trim();
-                if (cell.equals("+63 XXX XXX XXXX")){
+                if (cell.equals("+63 XXX XXX XXXX")) {
                     cell = "";
                 }
 
-                String perm = permField.getText().trim().toUpperCase(); 
+                String perm = permField.getText().trim().toUpperCase();
                 String present = syncCb.isSelected() ? perm : presentField.getText().trim().toUpperCase();
 
-                if (rawId.isEmpty() || cell.isEmpty() || perm.isEmpty() || present.isEmpty() || prefCombo.getSelectedIndex() <= 0) {
-                    JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory contact elements.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                if (rawId.isEmpty() || cell.isEmpty() || perm.isEmpty() || present.isEmpty()
+                        || prefCombo.getSelectedIndex() <= 0) {
+                    JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory contact elements.",
+                            "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // REFERENTIAL INTEGRITY VALVE: Verify target Member primary key link exists
                 if (rowIndex < 0) {
                     boolean exist = false;
-                    for (MemberRecord m : dataStore.getMembers()) { if (m.getPagibigId().equals(rawId)) { exist = true; break; } }
+                    for (MemberRecord m : dataStore.getMembers()) {
+                        if (m.getPagibigId().equals(rawId)) {
+                            exist = true;
+                            break;
+                        }
+                    }
                     if (!exist) {
-                        JOptionPane.showMessageDialog(this, "Save Refused: Pag-IBIG ID '" + rawId + "' does not exist in Member Registry.", "Foreign Key Constraint", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this,
+                                "Save Refused: Pag-IBIG ID '" + rawId + "' does not exist in Member Registry.",
+                                "Foreign Key Constraint", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }
 
-                ContactRecord record = new ContactRecord(rawId, cell, homeField.getText().trim(), directField.getText().trim(), trunkField.getText().trim(), emailField.getText().trim(), perm, present, (String) prefCombo.getSelectedItem());
-                boolean success = rowIndex >= 0 ? dataStore.updateContact(rowIndex, record) : dataStore.addContact(record);
+                ContactRecord record = new ContactRecord(rawId, cell, homeField.getText().trim(),
+                        directField.getText().trim(), trunkField.getText().trim(), emailField.getText().trim(), perm,
+                        present, (String) prefCombo.getSelectedItem());
+                boolean success = rowIndex >= 0 ? dataStore.updateContact(rowIndex, record)
+                        : dataStore.addContact(record);
                 handleSaveResult(success, "Contact");
             }
         }
     }
 
-    // =====================================================================
-    // 🗑️ TRANSACTIONAL SYSTEM REMOVAL CONTROLS (With Cascaded Invalidation)
-    // =====================================================================
     private void deleteSelection(JTable table, String label) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection",
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         int modelRow = table.convertRowIndexToModel(selectedRow);
         String targetId = "";
 
-        // Collect targeted relational keys safely
-        if ("Member".equals(label)) targetId = dataStore.getMembers().get(modelRow).getPagibigId();
-        else if ("Contact".equals(label)) targetId = dataStore.getContacts().get(modelRow).getPagibigId();
-        else if ("Heir".equals(label)) targetId = dataStore.getHeirs().get(modelRow).getPagibigId();
+        if ("Member".equals(label))
+            targetId = dataStore.getMembers().get(modelRow).getPagibigId();
+        else if ("Contact".equals(label))
+            targetId = dataStore.getContacts().get(modelRow).getPagibigId();
+        else if ("Heir".equals(label))
+            targetId = dataStore.getHeirs().get(modelRow).getPagibigId();
 
-        // PROTECTIVE SAFEGUARD VALVE A: Minimum Beneficiary Threshold Limit Check
         if ("Heir".equals(label)) {
             int beneficiaryMatchCounter = 0;
             for (HeirRecord h : dataStore.getHeirs()) {
-                if (h.getPagibigId().equals(targetId)) beneficiaryMatchCounter++;
+                if (h.getPagibigId().equals(targetId))
+                    beneficiaryMatchCounter++;
             }
             if (beneficiaryMatchCounter <= 1) {
-                JOptionPane.showMessageDialog(this, "Validation Violation Refused: Member must retain at least one beneficiary inside the registry.", "Safeguard Constraint", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Validation Violation Refused: Member must retain at least one beneficiary inside the registry.",
+                        "Safeguard Constraint", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
 
-        // PROTECTIVE SAFEGUARD VALVE B: Cascaded Removal Core Notice Mapping
         String promptText = "Delete selected " + label + " record?";
         if ("Member".equals(label) || "Contact".equals(label)) {
             promptText = "WARNING: Wiping member '" + targetId + "' will execute deletions\n" +
-                         "across ALL associated tables to prevent orphaned records.\n\n" +
-                         "Are you absolutely sure you want to permanently delete this member?";
+                    "across ALL associated tables to prevent orphaned records.\n\n" +
+                    "Are you absolutely sure you want to permanently delete this member?";
         }
 
-        int choice = JOptionPane.showConfirmDialog(this, promptText, "Confirm System Deletion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (choice != JOptionPane.YES_OPTION) return;
+        int choice = JOptionPane.showConfirmDialog(this, promptText, "Confirm System Deletion",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (choice != JOptionPane.YES_OPTION)
+            return;
 
         boolean success;
         if ("Member".equals(label) || "Contact".equals(label)) {
-            // Cascade cleanup across all 6 linked relations to uphold full data integrity
+
             dataStore.deleteGovernmentIdByMember(targetId);
             dataStore.deleteHeirsByMember(targetId);
             dataStore.deletePreviousEmploymentByMember(targetId);
@@ -1343,7 +1868,7 @@ public class DashboardFrame extends JFrame {
             dataStore.deleteContactByMember(targetId);
             success = dataStore.deleteMemberByKey(targetId);
         } else {
-            // Isolated single-table remove operations
+
             success = switch (label) {
                 case "Employment" -> dataStore.deleteEmployment(modelRow);
                 case "Previous Employment" -> dataStore.deletePreviousEmployment(modelRow);
@@ -1359,18 +1884,26 @@ public class DashboardFrame extends JFrame {
     private void handleSaveResult(boolean success, String entityName) {
         if (success) {
             refreshAllTables();
-            JOptionPane.showMessageDialog(this, entityName + " record successfully updated inside ledger matrices.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, entityName + " record successfully updated inside ledger matrices.",
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Database Rejection: Failed to save " + entityName + ".\nEnsure ID linkages exist and fields match type assertions.", "Database Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Database Rejection: Failed to save " + entityName
+                            + ".\nEnsure ID linkages exist and fields match type assertions.",
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void handleDeleteResult(boolean success, String entityName) {
         if (success) {
             refreshAllTables();
-            JOptionPane.showMessageDialog(this, entityName + " record successfully scrubbed off schemas.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, entityName + " record successfully scrubbed off schemas.", "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Database Execution Fault: Failed to drop " + entityName + " reference rows.\nIt may be bound by active cross-table constraints.", "Execution Failure", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Database Execution Fault: Failed to drop " + entityName
+                            + " reference rows.\nIt may be bound by active cross-table constraints.",
+                    "Execution Failure", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -1397,15 +1930,15 @@ public class DashboardFrame extends JFrame {
     private void refreshMemberTable() {
         memberModel.setRowCount(0);
         for (MemberRecord member : dataStore.getMembers()) {
-            memberModel.addRow(new Object[]{
-                member.getPagibigId(), member.getRegisNum(), member.getOccupationStatus(),
-                member.getFirstTime(), member.getMemType(), member.getMemSubtype(),
-                member.getTypeWork(), member.getTypeCountry(), member.getMemName(),
-                member.getFatName(), member.getMotName(), member.getSpouseName(),
-                member.getMemCertName(), member.getBirthDate(), member.getPlaceOfBirth(),
-                member.getSex(), member.getHeight(), member.getWeight(),
-                member.getMaritalStatus(), member.getCitizenship(), member.getFacialFeatures(),
-                member.getFrequencyOfPayment()
+            memberModel.addRow(new Object[] {
+                    member.getPagibigId(), member.getRegisNum(), member.getOccupationStatus(),
+                    member.getFirstTime(), member.getMemType(), member.getMemSubtype(),
+                    member.getTypeWork(), member.getTypeCountry(), member.getMemName(),
+                    member.getFatName(), member.getMotName(), member.getSpouseName(),
+                    member.getMemCertName(), member.getBirthDate(), member.getPlaceOfBirth(),
+                    member.getSex(), member.getHeight(), member.getWeight(),
+                    member.getMaritalStatus(), member.getCitizenship(), member.getFacialFeatures(),
+                    member.getFrequencyOfPayment()
             });
         }
         applySearchFilter();
@@ -1414,7 +1947,9 @@ public class DashboardFrame extends JFrame {
     private void refreshContactTable() {
         contactModel.setRowCount(0);
         for (ContactRecord contact : dataStore.getContacts()) {
-            contactModel.addRow(new Object[]{contact.getPagibigId(), contact.getCellNum(), contact.getHomeNum(), contact.getBusinessDirect(), contact.getBusinessTrunk(), contact.getEmailAddress(), contact.getPermAddress(), contact.getPresentAddress(), contact.getPrefMailAddress()});
+            contactModel.addRow(new Object[] { contact.getPagibigId(), contact.getCellNum(), contact.getHomeNum(),
+                    contact.getBusinessDirect(), contact.getBusinessTrunk(), contact.getEmailAddress(),
+                    contact.getPermAddress(), contact.getPresentAddress(), contact.getPrefMailAddress() });
         }
         applySearchFilter();
     }
@@ -1422,7 +1957,9 @@ public class DashboardFrame extends JFrame {
     private void refreshEmploymentTable() {
         employmentModel.setRowCount(0);
         for (EmploymentRecord employment : dataStore.getEmployments()) {
-            employmentModel.addRow(new Object[]{employment.getPagibigId(), employment.getEmployerId(), employment.getEmploymentStatus(), employment.getOccupation(), employment.getOfficeAssignment(), employment.getDateEmployed(), employment.getMonthlyIncome()});
+            employmentModel.addRow(new Object[] { employment.getPagibigId(), employment.getEmployerId(),
+                    employment.getEmploymentStatus(), employment.getOccupation(), employment.getOfficeAssignment(),
+                    employment.getDateEmployed(), employment.getMonthlyIncome() });
         }
         applySearchFilter();
     }
@@ -1430,7 +1967,8 @@ public class DashboardFrame extends JFrame {
     private void refreshPreviousEmploymentTable() {
         previousEmploymentModel.setRowCount(0);
         for (PreviousEmploymentRecord previous : dataStore.getPreviousEmployments()) {
-            previousEmploymentModel.addRow(new Object[]{previous.getPagibigId(), previous.getEmployerId(), previous.getDateFrom(), previous.getDateTo(), previous.getPrevOfficeAssignment()});
+            previousEmploymentModel.addRow(new Object[] { previous.getPagibigId(), previous.getEmployerId(),
+                    previous.getDateFrom(), previous.getDateTo(), previous.getPrevOfficeAssignment() });
         }
         applySearchFilter();
     }
@@ -1438,7 +1976,8 @@ public class DashboardFrame extends JFrame {
     private void refreshHeirTable() {
         heirModel.setRowCount(0);
         for (HeirRecord heir : dataStore.getHeirs()) {
-            heirModel.addRow(new Object[]{heir.getPagibigId(), heir.getHeirCode(), heir.getHeirName(), heir.getRelationship(), heir.getHeirDateBirth()});
+            heirModel.addRow(new Object[] { heir.getPagibigId(), heir.getHeirCode(), heir.getHeirName(),
+                    heir.getRelationship(), heir.getHeirDateBirth() });
         }
         applySearchFilter();
     }
@@ -1446,7 +1985,9 @@ public class DashboardFrame extends JFrame {
     private void refreshGovernmentIdTable() {
         governmentIdModel.setRowCount(0);
         for (GovernmentIdRecord governmentId : dataStore.getGovernmentIds()) {
-            governmentIdModel.addRow(new Object[]{governmentId.getPagibigId(), governmentId.getTinNum(), governmentId.getSssNum(), governmentId.getCrn(), governmentId.getEmNum(), governmentId.getAfpPnpNum(), governmentId.getDepedCode()});
+            governmentIdModel.addRow(new Object[] { governmentId.getPagibigId(), governmentId.getTinNum(),
+                    governmentId.getSssNum(), governmentId.getCrn(), governmentId.getEmNum(),
+                    governmentId.getAfpPnpNum(), governmentId.getDepedCode() });
         }
         applySearchFilter();
     }
@@ -1454,7 +1995,8 @@ public class DashboardFrame extends JFrame {
     private void refreshEmployerTable() {
         employerModel.setRowCount(0);
         for (EmployerRecord employer : dataStore.getEmployers()) {
-            employerModel.addRow(new Object[]{employer.getEmployerId(), employer.getEmployerName(), employer.getEmployerAddress()});
+            employerModel.addRow(new Object[] { employer.getEmployerId(), employer.getEmployerName(),
+                    employer.getEmployerAddress() });
         }
         applySearchFilter();
     }
@@ -1496,24 +2038,21 @@ public class DashboardFrame extends JFrame {
     }
 
     private void packColumnWidths(JTable table) {
-        // Iterate through every column in the table
+
         for (int column = 0; column < table.getColumnCount(); column++) {
             int maxWidth = 0;
 
-            // Check the width of the column header
             Object headerValue = table.getColumnModel().getColumn(column).getHeaderValue();
             java.awt.Component headerComp = table.getTableHeader().getDefaultRenderer()
                     .getTableCellRendererComponent(table, headerValue, false, false, -1, column);
             maxWidth = Math.max(maxWidth, headerComp.getPreferredSize().width);
 
-            // Iterate through every row to find the longest input in this column
             for (int row = 0; row < table.getRowCount(); row++) {
                 java.awt.Component cellComp = table.getCellRenderer(row, column)
                         .getTableCellRendererComponent(table, table.getValueAt(row, column), false, false, row, column);
                 maxWidth = Math.max(maxWidth, cellComp.getPreferredSize().width);
             }
 
-            // Set the preferred width with a small padding (e.g., 10 pixels) so text isn't cramped
             table.getColumnModel().getColumn(column).setPreferredWidth(maxWidth + 10);
         }
     }
@@ -1526,9 +2065,11 @@ public class DashboardFrame extends JFrame {
                     String digits = h.getHeirCode().replaceAll("[^0-9]", "");
                     if (!digits.isEmpty()) {
                         int num = Integer.parseInt(digits);
-                        if (num > maxNum) maxNum = num;
+                        if (num > maxNum)
+                            maxNum = num;
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             }
         }
         return "H" + String.format("%03d", maxNum + 1);
@@ -1538,13 +2079,15 @@ public class DashboardFrame extends JFrame {
         int maxNum = 0;
         for (com.pagibig.model.EmployerRecord emp : dataStore.getEmployers()) {
             if (emp.getEmployerId() != null) {
-                // Remove non-numeric prefixes like "EMP" or "E" to isolate raw number
+
                 String digits = emp.getEmployerId().replaceAll("[^0-9]", "");
                 if (!digits.isEmpty()) {
                     try {
                         int num = Integer.parseInt(digits);
-                        if (num > maxNum) maxNum = num;
-                    } catch (NumberFormatException ignored) {}
+                        if (num > maxNum)
+                            maxNum = num;
+                    } catch (NumberFormatException ignored) {
+                    }
                 }
             }
         }
@@ -1554,7 +2097,7 @@ public class DashboardFrame extends JFrame {
     private void applyTextPlaceholderHint(JTextField field, String placeholderText) {
         field.setText(placeholderText);
         field.setForeground(Color.GRAY);
-        
+
         field.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
@@ -1574,33 +2117,37 @@ public class DashboardFrame extends JFrame {
         });
     }
 
-    // Helper to pre-fill a placeholder field with real data (black text)
     private void prefillField(JTextField field, String value, String placeholder) {
         if (value != null && !value.isEmpty()) {
             field.setText(value);
             field.setForeground(Color.BLACK);
         }
-        // If value is empty, leave the placeholder as-is (gray)
+
     }
 
     private void applyLengthLimit(JTextField field, int maxLength) {
-        ((javax.swing.text.AbstractDocument) field.getDocument()).setDocumentFilter(new javax.swing.text.DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
-                if (string == null) return;
-                if ((fb.getDocument().getLength() + string.length()) <= maxLength) {
-                    super.insertString(fb, offset, string, attr);
-                }
-            }
+        ((javax.swing.text.AbstractDocument) field.getDocument())
+                .setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                    @Override
+                    public void insertString(FilterBypass fb, int offset, String string,
+                            javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+                        if (string == null)
+                            return;
+                        if ((fb.getDocument().getLength() + string.length()) <= maxLength) {
+                            super.insertString(fb, offset, string, attr);
+                        }
+                    }
 
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
-                if (text == null) return;
-                if ((fb.getDocument().getLength() + text.length() - length) <= maxLength) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
-            }
-        });
+                    @Override
+                    public void replace(FilterBypass fb, int offset, int length, String text,
+                            javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
+                        if (text == null)
+                            return;
+                        if ((fb.getDocument().getLength() + text.length() - length) <= maxLength) {
+                            super.replace(fb, offset, length, text, attrs);
+                        }
+                    }
+                });
     }
 
     private void updateRowCountLabel() {
