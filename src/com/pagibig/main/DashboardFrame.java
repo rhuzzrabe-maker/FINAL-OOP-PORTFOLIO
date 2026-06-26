@@ -44,6 +44,7 @@ public class DashboardFrame extends JFrame {
 
     private final JTextField searchField;
     private final JTabbedPane tabbedPane;
+    private final JLabel rowCountLabel;
 
     public DashboardFrame(DataStore dataStore) {
         this.dataStore = dataStore;
@@ -68,6 +69,13 @@ public class DashboardFrame extends JFrame {
 
         JButton helpButton = new JButton("Help Desk");
         helpButton.addActionListener(e -> showHelpDialog());
+
+        JButton reportButton = new JButton("Print Report Summary");
+        reportButton.addActionListener(e -> {
+            MemberReportSummary summary = new MemberReportSummary(dataStore, this);
+            summary.generateAndDisplayReport();
+        });
+
         JButton logoutButton = new JButton("Log Out");
         logoutButton.addActionListener(e -> System.exit(0));
 
@@ -76,6 +84,7 @@ public class DashboardFrame extends JFrame {
         JPanel headerActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         headerActions.add(refreshButton);
         headerActions.add(helpButton);
+        headerActions.add(reportButton);
         headerActions.add(logoutButton);
         headerBar.add(headerActions, BorderLayout.EAST);
 
@@ -85,6 +94,8 @@ public class DashboardFrame extends JFrame {
         searchField.setColumns(28);
         searchField.setToolTipText("Search the active table");
         searchField.addActionListener(e -> applySearchFilter());
+
+        rowCountLabel = new JLabel("SHOWING 0 ROWS TOTAL");
 
         JButton clearSearch = new JButton("Clear");
         clearSearch.addActionListener(e -> {
@@ -96,6 +107,7 @@ public class DashboardFrame extends JFrame {
         searchPanel.add(new JLabel("Search:"));
         searchPanel.add(searchField);
         searchPanel.add(clearSearch);
+        searchPanel.add(rowCountLabel);
         content.add(searchPanel, BorderLayout.SOUTH);
 
         memberModel = new DefaultTableModel(new Object[]{
@@ -177,7 +189,10 @@ public class DashboardFrame extends JFrame {
         tabbedPane.addTab("Beneficiary Registry", createHeirTab());
         tabbedPane.addTab("Government IDs", createGovernmentIdTab());
         tabbedPane.addTab("Employer Registry", createEmployerTab());
-        tabbedPane.addChangeListener(e -> applySearchFilter());
+        tabbedPane.addChangeListener(e -> {
+            applySearchFilter();
+            updateRowCountLabel();
+        });
 
         content.add(tabbedPane, BorderLayout.CENTER);
 
@@ -1375,6 +1390,8 @@ public class DashboardFrame extends JFrame {
         packColumnWidths(heirTable);
         packColumnWidths(governmentIdTable);
         packColumnWidths(employerTable);
+
+        updateRowCountLabel();
     }
 
     private void refreshMemberTable() {
@@ -1474,6 +1491,8 @@ public class DashboardFrame extends JFrame {
             case 5 -> governmentIdSorter.setRowFilter(filter);
             case 6 -> employerSorter.setRowFilter(filter);
         }
+
+        updateRowCountLabel();
     }
 
     private void packColumnWidths(JTable table) {
@@ -1582,5 +1601,20 @@ public class DashboardFrame extends JFrame {
                 }
             }
         });
+    }
+
+    private void updateRowCountLabel() {
+        int count = switch (tabbedPane.getSelectedIndex()) {
+            case 0 -> memberTable.getRowCount();
+            case 1 -> contactTable.getRowCount();
+            case 2 -> employmentTable.getRowCount();
+            case 3 -> previousEmploymentTable.getRowCount();
+            case 4 -> heirTable.getRowCount();
+            case 5 -> governmentIdTable.getRowCount();
+            case 6 -> employerTable.getRowCount();
+            default -> 0;
+        };
+        rowCountLabel.setText("SHOWING " + count + " ROWS TOTAL");
+        rowCountLabel.setForeground(Color.GRAY);
     }
 }
