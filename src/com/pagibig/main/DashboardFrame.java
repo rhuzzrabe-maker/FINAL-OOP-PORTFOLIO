@@ -507,7 +507,7 @@ public class DashboardFrame extends JFrame {
 
     private ContactRecord gatherWizardContactNode(String trackingId) {
         JTextField cellField = new JTextField();
-        applyTextPlaceholderHint(cellField, "+63 XXX XXXX XXX");
+        applyTextPlaceholderHint(cellField, "+63 XXX XXX XXXX");
         JTextField homeField = new JTextField(); JTextField directField = new JTextField();
         JTextField trunkField = new JTextField(); JTextField emailField = new JTextField(); JTextField permField = new JTextField();
         JTextField presentField = new JTextField();
@@ -537,7 +537,7 @@ public class DashboardFrame extends JFrame {
             if (res != JOptionPane.OK_OPTION) return null;
 
             String cVal = cellField.getText().trim(); 
-            if (cVal.equals("+63 XXX XXXX XXX")) {
+            if (cVal.equals("+63 XXX XXX XXXX")) {
                 cVal = ""; 
             }
             String permVal = permField.getText().trim().toUpperCase();
@@ -1201,7 +1201,7 @@ public class DashboardFrame extends JFrame {
     private void showContactDialog(int rowIndex) {
         JTextField idField = new JTextField(); 
         JTextField cellField = new JTextField(); 
-        applyTextPlaceholderHint(cellField, "+63 XXX XXXX XXX");
+        applyTextPlaceholderHint(cellField, "+63 XXX XXX XXXX");
         JTextField homeField = new JTextField();
         JTextField directField = new JTextField(); 
         JTextField trunkField = new JTextField(); 
@@ -1228,7 +1228,7 @@ public class DashboardFrame extends JFrame {
         if (rowIndex >= 0) {
             ContactRecord existing = dataStore.getContacts().get(rowIndex);
             idField.setText(existing.getPagibigId()); idField.setEditable(false);
-            prefillField(cellField, existing.getCellNum(), "+63 XXX XXXX XXX"); homeField.setText(existing.getHomeNum()); directField.setText(existing.getBusinessDirect());
+            prefillField(cellField, existing.getCellNum(), "+63 XXX XXX XXXX"); homeField.setText(existing.getHomeNum()); directField.setText(existing.getBusinessDirect());
             trunkField.setText(existing.getBusinessTrunk()); emailField.setText(existing.getEmailAddress()); permField.setText(existing.getPermAddress());
             presentField.setText(existing.getPresentAddress()); prefCombo.setSelectedItem(existing.getPrefMailAddress());
             if (existing.getPermAddress() != null && existing.getPermAddress().equals(existing.getPresentAddress()) && !existing.getPermAddress().isEmpty()) {
@@ -1248,7 +1248,7 @@ public class DashboardFrame extends JFrame {
             if (result == JOptionPane.OK_OPTION) {
                 String rawId = idField.getText().trim();
                 String cell = cellField.getText().trim();
-                if (cell.equals("+63 XXX XXXX XXX")){
+                if (cell.equals("+63 XXX XXX XXXX")){
                     cell = "";
                 }
 
