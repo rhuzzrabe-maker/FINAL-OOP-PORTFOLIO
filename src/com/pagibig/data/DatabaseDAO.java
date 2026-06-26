@@ -5,23 +5,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Database Access Object for all Pag-IBIG entities.
- * Fully synchronized with the actual MySQL schema names.
- */
 public class DatabaseDAO {
 
     // ==================== MEMBERS ====================
 
     public List<MemberRecord> loadAllMembers() {
         List<MemberRecord> list = new ArrayList<>();
-        // We explicitly name all 22 columns in a strict, known order
         String sql = "SELECT Pagibig_ID, regis_num, occ_stats, first_time, mem_type, mem_subtype, type_work, type_country, mem_name, fat_name, mot_name, spouse_name, memcert_name, birth_date, place_birth, sex, height, weight, marital_status, citizenship, facial_features, frequency_payment FROM member";
         try (Connection conn = DataConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                // FIXED: We extract data using numeric positions (1-22) to avoid case/spelling exceptions
                 list.add(new MemberRecord(
                         rs.getString(1),  // Pagibig_ID
                         rs.getString(2),  // regis_num
@@ -90,14 +84,12 @@ public class DatabaseDAO {
             ps.setString(15, m.getPlaceOfBirth());
             ps.setString(16, m.getSex()); 
             
-            // CRITICAL INT FIX: Check both null AND empty string for Height
             if (m.getHeight() == null || m.getHeight().trim().isEmpty()) {
                 ps.setNull(17, java.sql.Types.INTEGER);
             } else {
                 ps.setInt(17, Integer.parseInt(m.getHeight().trim()));
             }
             
-            // CRITICAL INT FIX: Check both null AND empty string for Weight
             if (m.getWeight() == null || m.getWeight().trim().isEmpty()) {
                 ps.setNull(18, java.sql.Types.INTEGER);
             } else {

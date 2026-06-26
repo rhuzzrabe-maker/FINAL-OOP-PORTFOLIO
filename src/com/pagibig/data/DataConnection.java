@@ -12,10 +12,10 @@ import java.util.Map;
 public class DataConnection {
     private static Map<String, String> env = null;
 
-    // Helper method to parse the .env file
+    // Parse .env files
     private static void loadEnv() {
         env = new HashMap<>();
-        // Looks for the .env file in the root folder of the project
+        // Look for .env in the root folder
         try (BufferedReader reader = new BufferedReader(new FileReader(".env"))) {
             String line;
             while ((line = reader.readLine()) != null) {
