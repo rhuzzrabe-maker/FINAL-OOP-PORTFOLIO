@@ -771,7 +771,6 @@ public class DashboardFrame extends JFrame {
             idField.setText(existing.getPagibigId());
             idField.setEditable(false);
             empIdField.setText(existing.getEmployerId());
-            empIdField.setEditable(false);
             statusCombo.setSelectedItem(existing.getEmploymentStatus());
             occField.setText(existing.getOccupation());
             officeCombo.setSelectedItem(existing.getOfficeAssignment());
@@ -790,7 +789,7 @@ public class DashboardFrame extends JFrame {
         p.add(occField);
         p.add(new JLabel("Office Assignment: *"));
         p.add(officeCombo);
-        p.add(new JLabel("Date Employed: *"));
+        p.add(new JLabel("Date Employed (YYYY-MM-DD): *"));
         p.add(dateField);
         p.add(new JLabel("Monthly Income: *"));
         p.add(incomeField);
@@ -840,9 +839,7 @@ public class DashboardFrame extends JFrame {
             idField.setText(existing.getPagibigId());
             idField.setEditable(false);
             empIdField.setText(existing.getEmployerId());
-            empIdField.setEditable(false);
             fromField.setText(existing.getDateFrom());
-            fromField.setEditable(false);
             toField.setText(existing.getDateTo());
             officeCombo.setSelectedItem(existing.getPrevOfficeAssignment());
         }
@@ -852,9 +849,9 @@ public class DashboardFrame extends JFrame {
         p.add(idField);
         p.add(new JLabel("Employer ID: *"));
         p.add(empIdField);
-        p.add(new JLabel("Date From: *"));
+        p.add(new JLabel("Date From (YYYY-MM-DD): *"));
         p.add(fromField);
-        p.add(new JLabel("Date To: *"));
+        p.add(new JLabel("Date To (YYYY-MM-DD): *"));
         p.add(toField);
         p.add(new JLabel("Office Assignment: *"));
         p.add(officeCombo);
@@ -1215,7 +1212,7 @@ public class DashboardFrame extends JFrame {
 
             list.add(new PreviousEmploymentRecord(trackingId, eId, dFrom, dTo, (String) officeCombo.getSelectedItem()));
             int more = JOptionPane.showConfirmDialog(this, "Add another past job tracking segment row?",
-                    "Historical Matrix Multiplier", JOptionPane.YES_NO_OPTION);
+                    "Previous Employment Block Multiple", JOptionPane.YES_NO_OPTION);
             if (more != JOptionPane.YES_OPTION)
                 break;
         }
@@ -1771,6 +1768,11 @@ public class DashboardFrame extends JFrame {
 
             int result = JOptionPane.showConfirmDialog(this, p, rowIndex < 0 ? "Add Contact" : "Edit Contact",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result != JOptionPane.OK_OPTION) {
+                break;
+            }
+
             if (result == JOptionPane.OK_OPTION) {
                 String rawId = idField.getText().trim();
                 String cell = cellField.getText().trim();
@@ -1785,7 +1787,7 @@ public class DashboardFrame extends JFrame {
                         || prefCombo.getSelectedIndex() <= 0) {
                     JOptionPane.showMessageDialog(this, "Validation Blocked: Missing mandatory contact elements.",
                             "Validation Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    continue;
                 }
 
                 if (rowIndex < 0) {
@@ -1800,7 +1802,7 @@ public class DashboardFrame extends JFrame {
                         JOptionPane.showMessageDialog(this,
                                 "Save Refused: Pag-IBIG ID '" + rawId + "' does not exist in Member Registry.",
                                 "Foreign Key Constraint", JOptionPane.ERROR_MESSAGE);
-                        return;
+                        continue;
                     }
                 }
 
@@ -1810,6 +1812,7 @@ public class DashboardFrame extends JFrame {
                 boolean success = rowIndex >= 0 ? dataStore.updateContact(rowIndex, record)
                         : dataStore.addContact(record);
                 handleSaveResult(success, "Contact");
+                break;
             }
         }
     }
@@ -1831,6 +1834,8 @@ public class DashboardFrame extends JFrame {
             targetId = dataStore.getContacts().get(modelRow).getPagibigId();
         else if ("Heir".equals(label))
             targetId = dataStore.getHeirs().get(modelRow).getPagibigId();
+        else if ("Employer".equals(label))
+            targetId = dataStore.getEmployers().get(modelRow).getEmployerId();
 
         if ("Heir".equals(label)) {
             int beneficiaryMatchCounter = 0;
@@ -1843,6 +1848,24 @@ public class DashboardFrame extends JFrame {
                         "Validation Violation Refused: Member must retain at least one beneficiary inside the registry.",
                         "Safeguard Constraint", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+        }
+
+        if ("Employer".equals(label)) {
+            final String empIdToCheck = targetId; 
+
+            boolean isLinkedToCurrentJob = dataStore.getEmployments().stream()
+                    .anyMatch(emp -> empIdToCheck.equalsIgnoreCase(emp.getEmployerId()));
+
+            boolean isLinkedToPastJob = dataStore.getPreviousEmployments().stream()
+                    .anyMatch(prev -> empIdToCheck.equalsIgnoreCase(prev.getEmployerId()));
+
+            if (isLinkedToCurrentJob || isLinkedToPastJob) {
+                JOptionPane.showMessageDialog(this,
+                        "Constraint Refused: Cannot delete Employer ID '" + empIdToCheck
+                        + "' because it is currently linked to a member's employment history.",
+                        "Foreign Key Constraint Error", JOptionPane.ERROR_MESSAGE);
+                return; 
             }
         }
 
@@ -1868,7 +1891,6 @@ public class DashboardFrame extends JFrame {
             dataStore.deleteContactByMember(targetId);
             success = dataStore.deleteMemberByKey(targetId);
         } else {
-
             success = switch (label) {
                 case "Employment" -> dataStore.deleteEmployment(modelRow);
                 case "Previous Employment" -> dataStore.deletePreviousEmployment(modelRow);
