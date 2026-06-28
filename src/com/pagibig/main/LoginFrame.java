@@ -37,7 +37,7 @@ public class LoginFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
 
-        // --- Username Segment ---
+        // === Username Segment ===
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 4, 0); // Spacing above the box
@@ -51,7 +51,7 @@ public class LoginFrame extends JFrame {
         usernameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
         formPanel.add(usernameField, gbc);
 
-        // --- Password Segment ---
+        // === Password Segment ===
         gbc.gridy = 2;
         gbc.insets = new Insets(0, 0, 4, 0);
         JLabel passLabel = new JLabel("Password");
@@ -66,7 +66,7 @@ public class LoginFrame extends JFrame {
 
         content.add(formPanel, BorderLayout.CENTER);
 
-        // --- Buttons ---
+        // === Buttons ===
         JButton loginButton = new JButton("Log In");
         loginButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         loginButton.setPreferredSize(new Dimension(100, 36)); 
