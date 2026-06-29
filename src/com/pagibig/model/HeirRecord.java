@@ -1,3 +1,5 @@
+/* Data class storing a member's designated heir, their relationship, and date of birth. */
+
 package com.pagibig.model;
 
 public class HeirRecord {

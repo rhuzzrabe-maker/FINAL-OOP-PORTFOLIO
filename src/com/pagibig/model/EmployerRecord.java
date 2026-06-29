@@ -1,3 +1,5 @@
+/* Data class representing an employer entity with an ID, name, and address. */
+
 package com.pagibig.model;
 
 public class EmployerRecord {

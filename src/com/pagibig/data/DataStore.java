@@ -1,3 +1,7 @@
+/*  Acts as an in-memory cache of all database tables.
+    It delegates reads/writes to DatabaseDAO and keeps local lists in sync so 
+    the rest of the app can query data without hitting the database every time. */
+
 package com.pagibig.data;
 
 import com.pagibig.model.ContactRecord;
@@ -10,13 +14,6 @@ import com.pagibig.model.PreviousEmploymentRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DB-backed data store. Loads all records from MySQL on construction
- * and syncs every add/update/delete back to the database through DatabaseDAO.
- *
- * Write operations only update the in-memory lists if the database operation
- * succeeds, so the UI never shows data that doesn't actually exist in the DB.
- */
 public class DataStore {
     private final DatabaseDAO dao = new DatabaseDAO();
 
@@ -165,10 +162,6 @@ public class DataStore {
         return false;
     }
 
-    // =====================================================================
-    // ⚡ FIXED CASCADING EXTENSION METHODS (Synced variable names to 'dao')
-    // =====================================================================
-    
     public boolean deleteMemberByKey(String pagibigId) {
         boolean databaseStatus = dao.deleteMember(pagibigId);
         if (databaseStatus) {

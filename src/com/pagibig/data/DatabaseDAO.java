@@ -1,3 +1,6 @@
+/*  Contains all direct SQL operations (load, insert, update, delete) 
+    for every table in the database, serving as the sole layer that talks to MySQL. */
+
 package com.pagibig.data;
 
 import com.pagibig.model.*;

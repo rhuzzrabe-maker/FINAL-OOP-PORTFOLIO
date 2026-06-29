@@ -1,3 +1,5 @@
+/*  Presents a username/password login screen with a 3-attempt lockout 
+    before granting access to the DashboardFrame. */
 package com.pagibig.main;
 
 import com.pagibig.data.DataStore;

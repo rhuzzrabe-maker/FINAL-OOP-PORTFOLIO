@@ -1,6 +1,7 @@
-package com.pagibig.main;
+/*  The application entry point. Launches the LoginFrame 
+    on the Swing event thread to start the program. */
 
-import com.pagibig.main.LoginFrame;
+package com.pagibig.main;
 
 import javax.swing.SwingUtilities;
 

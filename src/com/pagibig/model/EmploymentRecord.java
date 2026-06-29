@@ -1,3 +1,6 @@
+/*  Data class representing a member's current employment, 
+    linking them to an employer with occupation and income details. */
+    
 package com.pagibig.model;
 
 public class EmploymentRecord {

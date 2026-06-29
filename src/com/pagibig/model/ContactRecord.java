@@ -1,3 +1,5 @@
+/* Data class storing a member's contact details including phone numbers, email, and addresses. */
+
 package com.pagibig.model;
 
 public class ContactRecord {

@@ -1,3 +1,6 @@
+/*  The main admin window; displays all database tables across 
+    tabbed panels with full CRUD forms, live search filtering, and column sorting. */
+    
 package com.pagibig.main;
 
 import com.pagibig.data.DataStore;
@@ -1929,6 +1932,7 @@ public class DashboardFrame extends JFrame {
         }
     }
 
+    // To refresh all tables all at once
     private void refreshAllTables() {
         refreshMemberTable();
         refreshContactTable();
@@ -2059,8 +2063,8 @@ public class DashboardFrame extends JFrame {
         updateRowCountLabel();
     }
 
+    // Make the lengthiest text be the width of the column
     private void packColumnWidths(JTable table) {
-
         for (int column = 0; column < table.getColumnCount(); column++) {
             int maxWidth = 0;
 
@@ -2079,6 +2083,7 @@ public class DashboardFrame extends JFrame {
         }
     }
 
+    // Get heir code
     private String generateNextHeirCode(String pagibigId) {
         int maxNum = 0;
         for (com.pagibig.model.HeirRecord h : dataStore.getHeirs()) {
@@ -2097,6 +2102,7 @@ public class DashboardFrame extends JFrame {
         return "H" + String.format("%03d", maxNum + 1);
     }
 
+    // Get employer id
     private String generateNextEmployerId() {
         int maxNum = 0;
         for (com.pagibig.model.EmployerRecord emp : dataStore.getEmployers()) {
@@ -2116,6 +2122,7 @@ public class DashboardFrame extends JFrame {
         return "E" + String.format("%03d", maxNum + 1);
     }
 
+    // For gray placeholder hint text
     private void applyTextPlaceholderHint(JTextField field, String placeholderText) {
         field.setText(placeholderText);
         field.setForeground(Color.GRAY);
@@ -2139,6 +2146,7 @@ public class DashboardFrame extends JFrame {
         });
     }
 
+    // For existing data in database, turn back to black
     private void prefillField(JTextField field, String value, String placeholder) {
         if (value != null && !value.isEmpty()) {
             field.setText(value);
@@ -2147,6 +2155,7 @@ public class DashboardFrame extends JFrame {
 
     }
 
+    // Apply length limit (e.g. Pag-IBIG ID limit to 12 digits)
     private void applyLengthLimit(JTextField field, int maxLength) {
         ((javax.swing.text.AbstractDocument) field.getDocument())
                 .setDocumentFilter(new javax.swing.text.DocumentFilter() {
@@ -2172,6 +2181,7 @@ public class DashboardFrame extends JFrame {
                 });
     }
 
+    // Update row counter for label next to search bar
     private void updateRowCountLabel() {
         int count = switch (tabbedPane.getSelectedIndex()) {
             case 0 -> memberTable.getRowCount();

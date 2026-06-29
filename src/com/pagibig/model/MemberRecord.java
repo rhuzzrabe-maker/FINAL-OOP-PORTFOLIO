@@ -1,15 +1,14 @@
+/* Data class holding all personal and registration fields for a Pag-IBIG member. */
+
 package com.pagibig.model;
 
 public class MemberRecord {
-    // Existing variables
     private String pagibigId;
     private String memName;
     private String memType;
     private String sex;
     private String birthDate;
     private String citizenship;
-
-    // NEW variables added by you
     private String regisNum;
     private String occupationStatus;
     private String firstTime;

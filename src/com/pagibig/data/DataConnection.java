@@ -1,3 +1,6 @@
+/*  Reads database credentials from a .env file and provides 
+    a single getConnection() method that opens a MySQL JDBC connection. */
+
 package com.pagibig.data;
 
 import java.io.BufferedReader;

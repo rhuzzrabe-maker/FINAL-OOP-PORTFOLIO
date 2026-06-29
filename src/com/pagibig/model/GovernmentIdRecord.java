@@ -1,3 +1,5 @@
+/* Data class holding a member's various government ID numbers such as TIN, SSS, CRN, etc. */
+
 package com.pagibig.model;
 
 public class GovernmentIdRecord {

@@ -1,9 +1,12 @@
+/*  Computes and displays a statistical summary report of the member database, 
+    including employment status, sex demographics, age brackets, and member subtypes. */
+    
 package com.pagibig.main;
 
 import com.pagibig.data.DataStore;
+import com.pagibig.model.EmploymentRecord;
 import com.pagibig.model.MemberRecord;
 import com.pagibig.model.PreviousEmploymentRecord;
-import com.pagibig.model.EmploymentRecord;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.Period;

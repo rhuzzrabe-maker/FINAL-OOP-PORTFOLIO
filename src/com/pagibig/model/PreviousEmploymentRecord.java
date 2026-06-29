@@ -1,3 +1,5 @@
+/* Data class capturing a member's past employment history with a date range and office assignment. */
+
 package com.pagibig.model;
 
 public class PreviousEmploymentRecord {
